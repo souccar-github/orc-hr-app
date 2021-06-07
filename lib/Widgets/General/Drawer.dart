@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:orc_hr/Models/Project/LeaveRequest.dart';
 import 'package:orc_hr/SharedPref/SharedPref.dart';
 import 'package:orc_hr/Screens/Project/Services/LeavesBalance.dart';
+import 'package:orc_hr/Screens/Project/Services/PendingLeaveRequests.dart';
 import 'package:orc_hr/Screens/Project/Services/LeaveRequest.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -32,6 +33,13 @@ class AppDrawer extends StatelessWidget {
               onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(
                         builder: (context) => LeaveRequestPage(0)),
+                  )),
+          _createDrawerItem(
+              icon: Icons.timer,
+              text: "Pending Leave Requests",
+              onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => PendingLeaves()),
                   )),
           _createDrawerItem(
             icon: FontAwesomeIcons.signOutAlt,

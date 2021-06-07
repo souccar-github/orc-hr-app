@@ -79,6 +79,39 @@ class Project {
     }
   }
 
+  Future<List<LeaveRequest>> getPendingLeaveRequests() async {
+    String error;
+    try {
+      var username = await SharedPref.pref.getUserName();
+      var password = await SharedPref.pref.getPassword();
+      final response = await Statics.httpClient
+          .get(Statics.BaseUrl + "/api/leave/getPendingLeaveRequests", headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        'Authorization': '$username:$password',
+      });
+      if (response.statusCode == 200) {
+        List<LeaveRequest> items = new List<LeaveRequest>();
+        List itemListModel = json.decode(response.body);
+        for (var i = 0; i < itemListModel.length; i++) {
+          LeaveRequest h = LeaveRequest.fromJson(itemListModel[i]);
+          items.add(h);
+        }
+        if (items != null) {
+          return items;
+        }
+      } else {
+        error = (jsonDecode(response.body))["Message"] as String;
+        return Future.error(error ?? "Unknown Error");
+      }
+    } on SocketException {
+      return Future.error("check your internet connection");
+    } on ClientException {
+      return Future.error("check your internet connection");
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
   Future<List<LeaveReason>> getLeaveReasons() async {
     String error;
     try {
@@ -128,6 +161,87 @@ class Project {
         LeaveInfoModel item =
             LeaveInfoModel.fromJson(json.decode(response.body));
         return item;
+      } else {
+        error = (jsonDecode(response.body))["Message"] as String;
+        return Future.error(error ?? "Unknown Error");
+      }
+    } on SocketException {
+      return Future.error("check your internet connection");
+    } on ClientException {
+      return Future.error("check your internet connection");
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  Future<String> acceptLeaveRequest(int wfId, int leaveId,String note) async {
+    String error;
+    try {
+      var username = await SharedPref.pref.getUserName();
+      var password = await SharedPref.pref.getPassword();
+      final response = await Statics.httpClient.post(
+          Statics.BaseUrl +
+              "/api/leave/accept/${wfId.toString()}/${leaveId.toString()}/${note.toString()}",
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+            'Authorization': '$username:$password',
+          });
+      if (response.statusCode == 200) {
+        return "successfully";
+      } else {
+        error = (jsonDecode(response.body))["Message"] as String;
+        return Future.error(error ?? "Unknown Error");
+      }
+    } on SocketException {
+      return Future.error("check your internet connection");
+    } on ClientException {
+      return Future.error("check your internet connection");
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  Future<String> rejectLeaveRequest(int wfId, int leaveId,String note) async {
+    String error;
+    try {
+      var username = await SharedPref.pref.getUserName();
+      var password = await SharedPref.pref.getPassword();
+      final response = await Statics.httpClient.post(
+          Statics.BaseUrl +
+              "/api/leave/reject/${wfId.toString()}/${leaveId.toString()}/${note.toString()}",
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+            'Authorization': '$username:$password',
+          });
+      if (response.statusCode == 200) {
+        return "successfully";
+      } else {
+        error = (jsonDecode(response.body))["Message"] as String;
+        return Future.error(error ?? "Unknown Error");
+      }
+    } on SocketException {
+      return Future.error("check your internet connection");
+    } on ClientException {
+      return Future.error("check your internet connection");
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  Future<String> pendingLeaveRequest(int wfId, int leaveId,String note) async {
+    String error;
+    try {
+      var username = await SharedPref.pref.getUserName();
+      var password = await SharedPref.pref.getPassword();
+      final response = await Statics.httpClient.post(
+          Statics.BaseUrl +
+              "/api/leave/pending/${wfId.toString()}/${leaveId.toString()}/${note.toString()}",
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+            'Authorization': '$username:$password',
+          });
+      if (response.statusCode == 200) {
+        return "successfully";
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
         return Future.error(error ?? "Unknown Error");

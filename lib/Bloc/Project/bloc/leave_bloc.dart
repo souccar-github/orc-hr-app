@@ -112,5 +112,69 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
         yield LeaveError(error);
       }
     }
+    
+    if (event is AcceptLeaveRequest){
+      yield LeaveLoading();
+      String error = null;
+      var info;
+      await Project.apiClient.acceptLeaveRequest(event.workflowId,event.leaveId,event.note).then((onValue) {
+        info = onValue;
+      }).catchError((onError) {
+        error = onError;
+      });
+      if (error == null) {
+        yield AcceptLeaveRequestSuccessfully();
+      } else {
+        yield LeaveError(error);
+      }
+    }
+
+    if (event is RejectLeaveRequest){
+      yield LeaveLoading();
+      String error = null;
+      var info;
+      await Project.apiClient.rejectLeaveRequest(event.workflowId,event.leaveId,event.note).then((onValue) {
+        info = onValue;
+      }).catchError((onError) {
+        error = onError;
+      });
+      if (error == null) {
+        yield RejectLeaveRequestSuccessfully();
+      } else {
+        yield LeaveError(error);
+      }
+    }
+
+    if (event is PendingLeaveRequest){
+      yield LeaveLoading();
+      String error = null;
+      var info;
+      await Project.apiClient.pendingLeaveRequest(event.workflowId,event.leaveId,event.note).then((onValue) {
+        info = onValue;
+      }).catchError((onError) {
+        error = onError;
+      });
+      if (error == null) {
+        yield PendingLeaveRequestSuccessfully();
+      } else {
+        yield LeaveError(error);
+      }
+    }
+
+    if (event is GetPendingLeaveRequests){
+      yield LeaveLoading();
+      String error = null;
+      var _list = new List<LeaveRequest>();
+      await Project.apiClient.getPendingLeaveRequests().then((onValue) {
+        _list = onValue;
+      }).catchError((onError) {
+        error = onError;
+      });
+      if (error == null) {
+        yield GetPendingLeaveRequestsSuccessfully(_list);
+      } else {
+        yield LeaveError(error);
+      }
+    }
   }
 }
