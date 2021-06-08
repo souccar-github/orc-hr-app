@@ -192,6 +192,30 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                 _selectedSetting = _dropdownMenuItems
                     .firstWhere((i) => i.value.id == state.info.id)
                     .value;
+                var model = new LeaveRequest(
+                    "",
+                    0,
+                    DateTime.parse(endDate.substring(0, 10)),
+                    DateTime.parse(startDate.substring(0, 10)),
+                    DateTime.parse(fromTime),
+                    "",
+                    hourly,
+                    false,
+                    0,
+                    "",
+                    0,
+                    _selectedSetting == null ? 0 : _selectedSetting.id,
+                    "",
+                    0,
+                    0,
+                    "",
+                    DateTime.parse(requestDate),
+                    0,
+                    DateTime.parse(startDate.substring(0, 10)),
+                    DateTime.parse(endDate.substring(0, 10)),
+                    DateTime.parse(toTime),
+                    0);
+                bloc.add(GetSpentDays(model));
                 chartData = [
                   ChartData('Granted', state.info.granted, Colors.red),
                   ChartData('Remain', state.info.remain, Colors.green)

@@ -12,7 +12,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class ApprovePage extends StatefulWidget {
   final LeaveRequest leave;
   final LeaveBloc bloc;
-  const ApprovePage({this.bloc,this.leave});
+  const ApprovePage({this.bloc, this.leave});
   @override
   _ApprovePageState createState() => _ApprovePageState(this.leave);
 }
@@ -356,7 +356,8 @@ class _ApprovePageState extends State<ApprovePage> {
                     ),
                   ),
                   builder: (context, state) {
-                    return Center(child:  Stack(
+                    return Center(
+                        child: Stack(
                       alignment: Alignment.center,
                       children: <Widget>[
                         Positioned(
@@ -369,141 +370,155 @@ class _ApprovePageState extends State<ApprovePage> {
                           left: MediaQuery.of(context).size.width / 2 - 17,
                         ),
                         Container(
-                          padding: EdgeInsets.all(10),
-                          width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.all(10),
+                            width: MediaQuery.of(context).size.width,
                             color: Color.fromRGBO(243, 119, 55, 0.5),
                             height: 175,
-                            child: Padding(padding: EdgeInsets.all(20),child:  Row(
-                              children: <Widget>[
-                                Row(children: <Widget>[
-                                  Text("Note"),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width / 2-15,
-                                    child: textFormField((value) {
-                                      setState(() {
-                                        note = value;
-                                      });
-                                    },
-                                        "Type a note ...",
-                                        false,
-                                        TextInputType.multiline,
-                                        false,
-                                        5,
-                                        "",
-                                        false),
-                                  ),
-                                ]),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                    SizedBox(width:10 ,),
-
-                                Column(
+                            child: Padding(
+                                padding: EdgeInsets.all(20),
+                                child: Row(
                                   children: <Widget>[
-                                    DelayedAnimation(
-                                      child: ButtonTheme(
-                                          minWidth: 100.0,
-                                          height: 30.0,
-                                          child: RaisedButton(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    new BorderRadius.circular(
-                                                        15.0),
-                                                side: BorderSide(
-                                                    color: Colors.white)),
-                                            materialTapTargetSize:
-                                                MaterialTapTargetSize
-                                                    .shrinkWrap,
-                                            color: Color.fromRGBO(
-                                                243, 119, 55, 0.7),
-                                            child: Text(
-                                              "Accept",
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  color: Colors.white),
-                                            ),
-                                            onPressed: () {
-                                              bloc.add(AcceptLeaveRequest(
-                                                  leave.workflowItemId,
-                                                  leave.leaveId,
-                                                  note));
-                                            },
-                                          )),
-                                      delay: 200,
+                                    Row(children: <Widget>[
+                                      Text("Note"),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                    2 -
+                                                20,
+                                        child: textFormField((value) {
+                                          setState(() {
+                                            note = value;
+                                          });
+                                        },
+                                            "Type a note ...",
+                                            false,
+                                            TextInputType.multiline,
+                                            false,
+                                            5,
+                                            "",
+                                            false),
+                                      ),
+                                    ]),
+                                    SizedBox(
+                                      height: 10,
                                     ),
-                                    SizedBox(height:10 ,),
-                                    DelayedAnimation(
-                                      child: ButtonTheme(
-                                          minWidth: 100.0,
-                                          height: 30.0,
-                                          child: RaisedButton(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    new BorderRadius.circular(
-                                                        15.0),
-                                                side: BorderSide(
-                                                    color: Colors.white)),
-                                            materialTapTargetSize:
-                                                MaterialTapTargetSize
-                                                    .shrinkWrap,
-                                            color: Color.fromRGBO(
-                                                243, 119, 55, 0.7),
-                                            child: Text(
-                                              "Reject",
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  color: Colors.white),
-                                            ),
-                                            onPressed: () {
-                                              bloc.add(RejectLeaveRequest(
-                                                  leave.workflowItemId,
-                                                  leave.leaveId,
-                                                  note));
-                                            },
-                                          )),
-                                      delay: 200,
+                                    SizedBox(
+                                      width: 10,
                                     ),
-                                    SizedBox(height:10 ,),
-
-                                    DelayedAnimation(
-                                      child: ButtonTheme(
-                                          minWidth: 100.0,
-                                          height: 30.0,
-                                          child: RaisedButton(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    new BorderRadius.circular(
-                                                        15.0),
-                                                side: BorderSide(
-                                                    color: Colors.white)),
-                                            materialTapTargetSize:
-                                                MaterialTapTargetSize
-                                                    .shrinkWrap,
-                                            color: Color.fromRGBO(
-                                                243, 119, 55, 0.7),
-                                            child: Text(
-                                              "Pending",
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  color: Colors.white),
-                                            ),
-                                            onPressed: () {
-                                              bloc.add(PendingLeaveRequest(
-                                                  leave.workflowItemId,
-                                                  leave.leaveId,
-                                                  note));
-                                            },
-                                          )),
-                                      delay: 200,
+                                    Container(
+                                      width: MediaQuery.of(context).size.width /
+                                          3.8,
+                                      child: Column(
+                                        children: <Widget>[
+                                          DelayedAnimation(
+                                            child: ButtonTheme(
+                                                minWidth: 100.0,
+                                                height: 30.0,
+                                                child: RaisedButton(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          new BorderRadius
+                                                              .circular(15.0),
+                                                      side: BorderSide(
+                                                          color: Colors.white)),
+                                                  materialTapTargetSize:
+                                                      MaterialTapTargetSize
+                                                          .shrinkWrap,
+                                                  color: Color.fromRGBO(
+                                                      243, 119, 55, 0.7),
+                                                  child: Text(
+                                                    "Accept",
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: Colors.white),
+                                                  ),
+                                                  onPressed: () {
+                                                    bloc.add(AcceptLeaveRequest(
+                                                        leave.workflowItemId,
+                                                        leave.leaveId,
+                                                        note));
+                                                  },
+                                                )),
+                                            delay: 200,
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          DelayedAnimation(
+                                            child: ButtonTheme(
+                                                minWidth: 100.0,
+                                                height: 30.0,
+                                                child: RaisedButton(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          new BorderRadius
+                                                              .circular(15.0),
+                                                      side: BorderSide(
+                                                          color: Colors.white)),
+                                                  materialTapTargetSize:
+                                                      MaterialTapTargetSize
+                                                          .shrinkWrap,
+                                                  color: Color.fromRGBO(
+                                                      243, 119, 55, 0.7),
+                                                  child: Text(
+                                                    "Reject",
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: Colors.white),
+                                                  ),
+                                                  onPressed: () {
+                                                    bloc.add(RejectLeaveRequest(
+                                                        leave.workflowItemId,
+                                                        leave.leaveId,
+                                                        note));
+                                                  },
+                                                )),
+                                            delay: 200,
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          DelayedAnimation(
+                                            child: ButtonTheme(
+                                                minWidth: 100.0,
+                                                height: 30.0,
+                                                child: RaisedButton(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          new BorderRadius
+                                                              .circular(15.0),
+                                                      side: BorderSide(
+                                                          color: Colors.white)),
+                                                  materialTapTargetSize:
+                                                      MaterialTapTargetSize
+                                                          .shrinkWrap,
+                                                  color: Color.fromRGBO(
+                                                      243, 119, 55, 0.7),
+                                                  child: Text(
+                                                    "Pending",
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: Colors.white),
+                                                  ),
+                                                  onPressed: () {
+                                                    bloc.add(
+                                                        PendingLeaveRequest(
+                                                            leave
+                                                                .workflowItemId,
+                                                            leave.leaveId,
+                                                            note));
+                                                  },
+                                                )),
+                                            delay: 200,
+                                          )
+                                        ],
+                                      ),
                                     )
                                   ],
-                                )
-                              ],
-                            )))
+                                )))
                       ],
                     ));
                   },
