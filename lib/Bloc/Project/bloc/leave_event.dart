@@ -28,3 +28,30 @@ class PostLeaveRequest extends LeaveEvent{
   final LeaveRequest leave;
   PostLeaveRequest(this.leave);
 }
+
+class GetPendingLeaveRequests extends LeaveEvent{
+}
+
+class AcceptLeaveRequest extends LeaveEvent{
+  final int workflowId;
+  final int leaveId;
+  final String note;
+
+  AcceptLeaveRequest(this.workflowId, this.leaveId, this.note);
+}
+
+class RejectLeaveRequest extends LeaveEvent{
+  final int workflowId;
+  final int leaveId;
+  final String note;
+
+  RejectLeaveRequest(this.workflowId, this.leaveId, this.note);
+}
+
+class PendingLeaveRequest extends LeaveEvent{
+  final int workflowId;
+  final int leaveId;
+  final String note;
+
+  PendingLeaveRequest(this.workflowId, this.leaveId, this.note);
+}

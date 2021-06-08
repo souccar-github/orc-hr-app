@@ -1,7 +1,6 @@
 part of 'leave_bloc.dart';
 
-abstract class LeaveState {
-}
+abstract class LeaveState {}
 
 class LeaveInitial extends LeaveState {}
 
@@ -15,25 +14,22 @@ class LeaveError extends LeaveState {
   LeaveError(this.error);
 }
 
-class GetLeaveSettingInfoSuccessfully extends LeaveState{
+class GetLeaveSettingInfoSuccessfully extends LeaveState {
   final LeaveInfoModel info;
 
   GetLeaveSettingInfoSuccessfully(this.info);
-  
 }
 
-class GetLeaveSettingsSuccessfully extends LeaveState{
+class GetLeaveSettingsSuccessfully extends LeaveState {
   final List<LeaveSetting> settings;
 
   GetLeaveSettingsSuccessfully(this.settings);
-
 }
 
-class GetLeaveReasonsSuccessfully extends LeaveState{
+class GetLeaveReasonsSuccessfully extends LeaveState {
   final List<LeaveReason> reasons;
 
   GetLeaveReasonsSuccessfully(this.reasons);
-
 }
 
 class LeaveLoading extends LeaveState {}
@@ -43,7 +39,18 @@ class GetSpentDaysSuccessfully extends LeaveState {
   GetSpentDaysSuccessfully(this.days);
 }
 
-class DaysLoading extends LeaveState{}
+class DaysLoading extends LeaveState {}
 
-class PostLeaveRequestSuccessfully extends LeaveState{}
+class PostLeaveRequestSuccessfully extends LeaveState {}
 
+class AcceptLeaveRequestSuccessfully extends LeaveState {}
+
+class PendingLeaveRequestSuccessfully extends LeaveState {}
+
+class RejectLeaveRequestSuccessfully extends LeaveState {}
+
+class GetPendingLeaveRequestsSuccessfully extends LeaveState {
+  final List<LeaveRequest> items;
+
+  GetPendingLeaveRequestsSuccessfully(this.items);
+}

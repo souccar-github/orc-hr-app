@@ -8,38 +8,38 @@ part of 'LeaveRequest.dart';
 
 LeaveRequest _$LeaveRequestFromJson(Map<String, dynamic> json) {
   return LeaveRequest(
-    json['description'] as String,
-    json['employeeId'] as int,
-    json['endDate'] == null ? null : DateTime.parse(json['endDate'] as String),
-    json['fromDateTime'] == null
+    json['Description'] as String,
+    json['EmployeeId'] as int,
+    json['EndDate'] == null ? null : DateTime.parse(json['EndDate'] as String),
+    json['FromDateTime'] == null
         ? null
-        : DateTime.parse(json['fromDateTime'] as String),
-    json['fromTime'] == null
+        : DateTime.parse(json['FromDateTime'] as String),
+    json['FromTime'] == null
         ? null
-        : DateTime.parse(json['fromTime'] as String),
-    json['fullName'] as String,
-    json['isHourlyLeave'] as bool,
-    json['isSummerDate'] as bool,
-    json['leaveId'] as int,
-    json['leaveReason'] as String,
-    json['leaveReasonId'] as int,
-    json['leaveSettingId'] as int,
-    json['leaveSettingName'] as String,
-    json['pendingType'] as int,
-    json['positionId'] as int,
-    json['positionName'] as String,
-    json['requestDate'] == null
+        : DateTime.parse(json['FromTime'] as String),
+    json['FullName'] as String,
+    json['IsHourlyLeave'] as bool,
+    json['IsSummerDate'] as bool,
+    json['LeaveId'] as int,
+    json['LeaveReason'] as String,
+    json['LeaveReasonId'] as int,
+    json['LeaveSettingId'] as int,
+    json['LeaveSettingName'] as String,
+    json['PendingType'] as int,
+    json['PositionId'] as int,
+    json['PositionName'] as String,
+    json['RequestDate'] == null
         ? null
-        : DateTime.parse(json['requestDate'] as String),
-    (json['spentDays'] as num)?.toDouble(),
-    json['startDate'] == null
+        : DateTime.parse(json['RequestDate'] as String),
+    (json['SpentDays'] as num)?.toDouble(),
+    json['StartDate'] == null
         ? null
-        : DateTime.parse(json['startDate'] as String),
-    json['toDateTime'] == null
+        : DateTime.parse(json['StartDate'] as String),
+    json['ToDateTime'] == null
         ? null
-        : DateTime.parse(json['toDateTime'] as String),
-    json['toTime'] == null ? null : DateTime.parse(json['toTime'] as String),
-    json['workflowItemId'] as int,
+        : DateTime.parse(json['ToDateTime'] as String),
+    json['ToTime'] == null ? null : DateTime.parse(json['ToTime'] as String),
+    json['WorkflowItemId'] as int,
   );
 }
 

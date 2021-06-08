@@ -49,7 +49,6 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
     endDate = DateTime.now().toString();
     requestDate = DateTime.now().toString();
     duration = 0.0;
-
     hourly = false;
     _controller = new TextEditingController(text: DateTime.now().toString());
     _textController = new TextEditingController(text: duration.toString());
@@ -61,6 +60,30 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
     if (id != null && id != 0) {
       bloc.add(GetLeaveSettingInfo(id, DateTime.now()));
     }
+    var model = new LeaveRequest(
+        "",
+        0,
+        DateTime.parse(endDate.substring(0, 10)),
+        DateTime.parse(startDate.substring(0, 10)),
+        DateTime.parse(fromTime),
+        "",
+        hourly,
+        false,
+        0,
+        "",
+        0,
+        _selectedSetting == null ? 0 : _selectedSetting.id,
+        "",
+        0,
+        0,
+        "",
+        DateTime.parse(requestDate),
+        0,
+        DateTime.parse(startDate.substring(0, 10)),
+        DateTime.parse(endDate.substring(0, 10)),
+        DateTime.parse(toTime),
+        0);
+    bloc.add(GetSpentDays(model));
   }
 
   List<DropdownMenuItem<DropDownListItem>> buildDropdownMenuItems(
@@ -104,6 +127,30 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
       _selectedSetting = selectedItem;
     });
     bloc.add(GetLeaveSettingInfo(selectedItem.id, DateTime.now()));
+    var model = new LeaveRequest(
+        "",
+        0,
+        DateTime.parse(endDate.substring(0, 10)),
+        DateTime.parse(startDate.substring(0, 10)),
+        DateTime.parse(fromTime),
+        "",
+        hourly,
+        false,
+        0,
+        "",
+        0,
+        _selectedSetting == null ? 0 : _selectedSetting.id,
+        "",
+        0,
+        0,
+        "",
+        DateTime.parse(requestDate),
+        0,
+        DateTime.parse(startDate.substring(0, 10)),
+        DateTime.parse(endDate.substring(0, 10)),
+        DateTime.parse(toTime),
+        0);
+    bloc.add(GetSpentDays(model));
   }
 
   onChangeReasonsDropdownItem(DropDownListItem selectedItem) {
@@ -145,6 +192,30 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                 _selectedSetting = _dropdownMenuItems
                     .firstWhere((i) => i.value.id == state.info.id)
                     .value;
+                var model = new LeaveRequest(
+                    "",
+                    0,
+                    DateTime.parse(endDate.substring(0, 10)),
+                    DateTime.parse(startDate.substring(0, 10)),
+                    DateTime.parse(fromTime),
+                    "",
+                    hourly,
+                    false,
+                    0,
+                    "",
+                    0,
+                    _selectedSetting == null ? 0 : _selectedSetting.id,
+                    "",
+                    0,
+                    0,
+                    "",
+                    DateTime.parse(requestDate),
+                    0,
+                    DateTime.parse(startDate.substring(0, 10)),
+                    DateTime.parse(endDate.substring(0, 10)),
+                    DateTime.parse(toTime),
+                    0);
+                bloc.add(GetSpentDays(model));
                 chartData = [
                   ChartData('Granted', state.info.granted, Colors.red),
                   ChartData('Remain', state.info.remain, Colors.green)
@@ -159,7 +230,8 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                 ),
                 backgroundColor: Colors.green,
               ));
-              Navigator.of(context).pop();
+              Future.delayed(Duration(milliseconds: 1000),
+                  () => Navigator.of(context).pop());
             }
             if (state is GetSpentDaysSuccessfully) {
               setState(() {
@@ -621,7 +693,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                               height: 10,
                             ),
                             Row(children: <Widget>[
-                              Text("Note"),
+                              Text("Description"),
                               SizedBox(
                                 width: 20,
                               ),
@@ -718,62 +790,58 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                         color: Color.fromRGBO(243, 119, 55, 0.5),
                         height: 500,
                         child: Center(
-                          child: BlocBuilder<LeaveBloc, LeaveState>(
-                            cubit: bloc,
-                            builder: (context, state) {
-                              if (state is GetLeaveSettingInfoSuccessfully) {
-                                return Column(
-                                  children: <Widget>[
-                                    SizedBox(
-                                      height: 60,
-                                    ),
-                                    SfCircularChart(
-                                        legend: Legend(
-                                            isVisible: true,
-                                            position: LegendPosition.bottom),
-                                        series: <CircularSeries>[
-                                          DoughnutSeries<ChartData, String>(
-                                              dataSource: chartData,
-                                              pointColorMapper:
-                                                  (ChartData data, _) =>
-                                                      data.color,
-                                              xValueMapper:
-                                                  (ChartData data, _) => data.x,
-                                              yValueMapper:
-                                                  (ChartData data, _) => data.y,
-                                              name: state.info.title,
-                                              dataLabelSettings:
-                                                  DataLabelSettings(
-                                                      isVisible: true))
-                                        ]),
-                                    Text(
-                                      state.info.title,
-                                      style: TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(
-                                          "Balance :",
-                                          style: TextStyle(fontSize: 15),
-                                        ),
-                                        Text(state.info.balance.toString())
-                                      ],
-                                    ),
-                                  ],
-                                );
-                              }
-                              return Text(
-                                "Please Select Leave Type",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 16),
-                              );
-                            },
-                          ),
-                        ),
+                            child: info != null
+                                ? Column(
+                                    children: <Widget>[
+                                      SizedBox(
+                                        height: 60,
+                                      ),
+                                      SfCircularChart(
+                                          legend: Legend(
+                                              isVisible: true,
+                                              position: LegendPosition.bottom),
+                                          series: <CircularSeries>[
+                                            DoughnutSeries<ChartData, String>(
+                                                dataSource: chartData,
+                                                pointColorMapper:
+                                                    (ChartData data, _) =>
+                                                        data.color,
+                                                xValueMapper:
+                                                    (ChartData data, _) =>
+                                                        data.x,
+                                                yValueMapper:
+                                                    (ChartData data, _) =>
+                                                        data.y,
+                                                name: info.title,
+                                                dataLabelSettings:
+                                                    DataLabelSettings(
+                                                        isVisible: true))
+                                          ]),
+                                      Text(
+                                        info.title,
+                                        style: TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text(
+                                            "Balance :",
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                          Text(info.balance.toString())
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                                : Text(
+                                    "Please Select Leave Type",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  )),
                       )
                     ],
                   );
