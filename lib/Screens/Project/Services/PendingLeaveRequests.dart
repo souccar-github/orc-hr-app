@@ -5,6 +5,8 @@ import 'package:orc_hr/Bloc/Project/bloc/leave_bloc.dart';
 import 'package:orc_hr/Screens/Project/Services/ApprovePage.dart';
 import 'package:orc_hr/Widgets/General/Animation/delayed_animation.dart';
 
+import '../Notifications.dart';
+
 class PendingLeaves extends StatefulWidget {
   @override
   _PendingLeavesState createState() => _PendingLeavesState();
@@ -23,6 +25,19 @@ class _PendingLeavesState extends State<PendingLeaves> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+         actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.notifications,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => NotificationPage()),
+                );
+              },
+            )
+          ],
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),

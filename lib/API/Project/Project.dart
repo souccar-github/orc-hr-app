@@ -7,6 +7,7 @@ import 'package:orc_hr/Models/Project/LeaveSetting.dart';
 import 'package:orc_hr/Models/Project/LeaveReason.dart';
 import 'package:orc_hr/SharedPref/SharedPref.dart';
 import 'package:orc_hr/Models/Project/LeaveInfoModel.dart';
+import 'package:orc_hr/Models/Project/Notify.dart';
 import 'package:orc_hr/Models/Project/LeaveRequest.dart';
 
 class Project {
@@ -94,6 +95,68 @@ class Project {
         List itemListModel = json.decode(response.body);
         for (var i = 0; i < itemListModel.length; i++) {
           LeaveRequest h = LeaveRequest.fromJson(itemListModel[i]);
+          items.add(h);
+        }
+        if (items != null) {
+          return items;
+        }
+      } else {
+        error = (jsonDecode(response.body))["Message"] as String;
+        return Future.error(error ?? "Unknown Error");
+      }
+    } on SocketException {
+      return Future.error("check your internet connection");
+    } on ClientException {
+      return Future.error("check your internet connection");
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  Future<LeaveRequest> getLeaveByWorkflow(int id) async {
+    String error;
+    try {
+      var username = await SharedPref.pref.getUserName();
+      var password = await SharedPref.pref.getPassword();
+      final response = await Statics.httpClient
+          .get(Statics.BaseUrl + "/api/leave/getLeaveByWorkflow/$id", headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        'Authorization': '$username:$password',
+      });
+      if (response.statusCode == 200) {
+        LeaveRequest item =
+            LeaveRequest.fromJson(json.decode(response.body));
+        if (item != null) {
+          return item;
+        }
+      } else {
+        error = (jsonDecode(response.body))["Message"] as String;
+        return Future.error(error ?? "Unknown Error");
+      }
+    } on SocketException {
+      return Future.error("check your internet connection");
+    } on ClientException {
+      return Future.error("check your internet connection");
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  Future<List<Notify>> getUnreadNotification() async {
+    String error;
+    try {
+      var username = await SharedPref.pref.getUserName();
+      var password = await SharedPref.pref.getPassword();
+      final response = await Statics.httpClient
+          .get(Statics.BaseUrl + "/api/notify/checkUnRead", headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        'Authorization': '$username:$password',
+      });
+      if (response.statusCode == 200) {
+        List<Notify> items = new List<Notify>();
+        List itemListModel = json.decode(response.body);
+        for (var i = 0; i < itemListModel.length; i++) {
+          Notify h = Notify.fromJson(itemListModel[i]);
           items.add(h);
         }
         if (items != null) {

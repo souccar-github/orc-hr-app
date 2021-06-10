@@ -420,6 +420,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.6+3"
+  multilevel_drawer:
+    dependency: "direct main"
+    description:
+      name: multilevel_drawer
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   nested:
     dependency: transitive
     description:

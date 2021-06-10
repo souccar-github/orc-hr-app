@@ -56,7 +56,9 @@ class _ApprovePageState extends State<ApprovePage> {
               ),
               backgroundColor: Colors.green,
             ));
-            widget.bloc.add(GetPendingLeaveRequests());
+            if (widget.bloc != null) {
+              widget.bloc.add(GetPendingLeaveRequests());
+            }
             Future.delayed(Duration(milliseconds: 1500),
                 () => Navigator.of(context).pop());
           }
@@ -68,7 +70,9 @@ class _ApprovePageState extends State<ApprovePage> {
               ),
               backgroundColor: Colors.green,
             ));
-            widget.bloc.add(GetPendingLeaveRequests());
+            if (widget.bloc != null) {
+              widget.bloc.add(GetPendingLeaveRequests());
+            }
             Future.delayed(Duration(milliseconds: 1500),
                 () => Navigator.of(context).pop());
           }
@@ -80,7 +84,9 @@ class _ApprovePageState extends State<ApprovePage> {
               ),
               backgroundColor: Colors.green,
             ));
-            widget.bloc.add(GetPendingLeaveRequests());
+            if (widget.bloc != null) {
+              widget.bloc.add(GetPendingLeaveRequests());
+            }
             Future.delayed(Duration(milliseconds: 1500),
                 () => Navigator.of(context).pop());
           }

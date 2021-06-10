@@ -280,7 +280,16 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                         child: Column(
                           children: <Widget>[
                             Row(children: <Widget>[
-                              Text("Leave Type"),
+                              RichText(
+                                text: TextSpan(
+                                    text: "Leave Type",
+                                    style: TextStyle(color: Colors.black),
+                                    children: [
+                                      TextSpan(
+                                          text: ' *',
+                                          style: TextStyle(color: Colors.red))
+                                    ]),
+                              ),
                               SizedBox(
                                 width: 20,
                               ),
@@ -291,7 +300,16 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                               height: 10,
                             ),
                             Row(children: <Widget>[
-                              Text("Request Date"),
+                              RichText(
+                                text: TextSpan(
+                                    text: "Request Date",
+                                    style: TextStyle(color: Colors.black),
+                                    children: [
+                                      TextSpan(
+                                          text: ' *',
+                                          style: TextStyle(color: Colors.red))
+                                    ]),
+                              ),
                               SizedBox(
                                 width: 20,
                               ),
@@ -320,7 +338,16 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                               height: 10,
                             ),
                             Row(children: <Widget>[
-                              Text("Start Date"),
+                              RichText(
+                                text: TextSpan(
+                                    text: "Start Date",
+                                    style: TextStyle(color: Colors.black),
+                                    children: [
+                                      TextSpan(
+                                          text: ' *',
+                                          style: TextStyle(color: Colors.red))
+                                    ]),
+                              ),
                               SizedBox(
                                 width: 20,
                               ),
@@ -381,7 +408,16 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                               height: 10,
                             ),
                             Row(children: <Widget>[
-                              Text("End Date"),
+                              RichText(
+                                text: TextSpan(
+                                    text: "End Date",
+                                    style: TextStyle(color: Colors.black),
+                                    children: [
+                                      TextSpan(
+                                          text: ' *',
+                                          style: TextStyle(color: Colors.red))
+                                    ]),
+                              ),
                               SizedBox(
                                 width: 20,
                               ),
@@ -492,7 +528,17 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                             ]),
                             hourly
                                 ? Row(children: <Widget>[
-                                    Text("From Time"),
+                                    RichText(
+                                      text: TextSpan(
+                                          text: "From Time",
+                                          style: TextStyle(color: Colors.black),
+                                          children: [
+                                            TextSpan(
+                                                text: ' *',
+                                                style: TextStyle(
+                                                    color: Colors.red))
+                                          ]),
+                                    ),
                                     SizedBox(
                                       width: 20,
                                     ),
@@ -503,6 +549,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                         type: DateTimePickerType.time,
                                         firstDate: DateTime(2000),
                                         lastDate: DateTime(2100),
+                                        initialValue: DateTime.now().toIso8601String().substring(11,16),
                                         icon: Icon(Icons.access_time),
                                         dateLabelText: 'Time',
                                         onChanged: (val) {
@@ -548,7 +595,17 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                 : Container(),
                             hourly
                                 ? Row(children: <Widget>[
-                                    Text("To Time"),
+                                    RichText(
+                                      text: TextSpan(
+                                          text: "To Time",
+                                          style: TextStyle(color: Colors.black),
+                                          children: [
+                                            TextSpan(
+                                                text: ' *',
+                                                style: TextStyle(
+                                                    color: Colors.red))
+                                          ]),
+                                    ),
                                     SizedBox(
                                       width: 20,
                                     ),
@@ -558,6 +615,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                       child: DateTimePicker(
                                         type: DateTimePickerType.time,
                                         firstDate: DateTime(2000),
+                                        initialValue: DateTime.now().toIso8601String().substring(11,16),
                                         lastDate: DateTime(2100),
                                         icon: Icon(Icons.access_time),
                                         dateLabelText: 'Time',
@@ -678,7 +736,16 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                               height: 10,
                             ),
                             Row(children: <Widget>[
-                              Text("Leave Reason"),
+                              RichText(
+                                text: TextSpan(
+                                    text: "Leave Reason",
+                                    style: TextStyle(color: Colors.black),
+                                    children: [
+                                      TextSpan(
+                                          text: ' *',
+                                          style: TextStyle(color: Colors.red))
+                                    ]),
+                              ),
                               SizedBox(
                                 width: 20,
                               ),
@@ -743,7 +810,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                         false,
                                         0,
                                         _selectedReason == null
-                                            ? 0
+                                            ? ""
                                             : _selectedReason.name,
                                         _selectedReason == null
                                             ? 0
@@ -752,7 +819,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                             ? 0
                                             : _selectedSetting.id,
                                         _selectedSetting == null
-                                            ? 0
+                                            ? ""
                                             : _selectedSetting.name,
                                         0,
                                         0,

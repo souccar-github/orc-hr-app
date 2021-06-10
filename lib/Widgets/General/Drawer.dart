@@ -6,99 +6,115 @@ import 'package:orc_hr/SharedPref/SharedPref.dart';
 import 'package:orc_hr/Screens/Project/Services/LeavesBalance.dart';
 import 'package:orc_hr/Screens/Project/Services/PendingLeaveRequests.dart';
 import 'package:orc_hr/Screens/Project/Services/LeaveRequest.dart';
+import 'package:multilevel_drawer/multilevel_drawer.dart';
 
-class AppDrawer extends StatelessWidget {
+class AppDrawer extends StatefulWidget {
+  @override
+  _AppDrawerState createState() => _AppDrawerState();
+}
+
+class _AppDrawerState extends State<AppDrawer> {
+  String username;
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          _createHeader(),
-          Divider(
-            color: Color.fromRGBO(243, 119, 55, 1),
-            thickness: 5,
-          ),
-          _createDrawerItem(
-            icon: FontAwesomeIcons.chartPie,
-            text: 'Leave Balances',
-            onTap: () async {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => LeavesBalance()));
-            },
-          ),
-          _createDrawerItem(
-              icon: Icons.update,
-              text: "Leave Request",
-              onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) => LeaveRequestPage(0)),
-                  )),
-          _createDrawerItem(
-              icon: Icons.timer,
-              text: "Pending Leave Requests",
-              onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) => PendingLeaves()),
-                  )),
-          _createDrawerItem(
-            icon: FontAwesomeIcons.signOutAlt,
-            text: 'Sign out',
-            onTap: () async {
-              await SharedPref.pref.setUserName(null);
-              Navigator.of(context)
-                  .pushNamedAndRemoveUntil('/', ModalRoute.withName('/'));
-            },
-          ),
-        ],
-      ),
-    );
-  }
+    Future.delayed(Duration(microseconds: 0), () async {
+      var _username = await SharedPref.pref.getEmployeeName();
 
-  Widget _createHeader() {
-    return DrawerHeader(
-      margin: EdgeInsets.zero,
-      padding: EdgeInsets.zero,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.fill,
-          image: AssetImage('lib/assets/identety.png'),
+      setState(() {
+        username = _username;
+      });
+    });
+    return MultiLevelDrawer(
+      backgroundColor: Colors.white,
+      rippleColor: Colors.white,
+      subMenuBackgroundColor: Colors.grey.shade100,
+      divisionColor: Color.fromRGBO(243, 119, 55, 1),
+      header: Container(
+        padding: EdgeInsets.only(top: 50),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("lib/assets/identety.png"),
+            fit: BoxFit.fill,
+          ),
         ),
-      ),
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-            bottom: 12.0,
-            left: 16.0,
-            child: Text(
-              "Welcome",
-              style: TextStyle(
-                  color: Color.fromRGBO(243, 119, 55, 1),
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w500),
+        height: MediaQuery.of(context).size.height * 0.35,
+        child: Center(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image.asset(
+              "lib/assets/logo.png",
+              width: 100,
+              height: 100,
             ),
-          ),
-        ],
+            SizedBox(
+              height: 10,
+            ),
+            Text("Welcome .. $username"),
+            Divider(
+              color: Color.fromRGBO(243, 119, 55, 1),
+              thickness: 5,
+            )
+          ],
+        )),
       ),
-    );
-  }
-
-  Widget _createDrawerItem(
-      {IconData icon, String text, GestureTapCallback onTap}) {
-    return ListTile(
-      title: Row(
-        children: <Widget>[
-          Icon(
-            icon,
+      children: [
+        MLMenuItem(
+            leading: Icon(
+              Icons.time_to_leave,
+              color: Color.fromRGBO(243, 119, 55, 1),
+            ),
+            trailing: Icon(
+              Icons.arrow_right,
+              color: Color.fromRGBO(243, 119, 55, 1),
+            ),
+            content: Text(
+              "Leave Services",
+            ),
+            subMenuItems: [
+              MLSubmenu(
+                  onClick: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => LeavesBalance()));
+                  },
+                  submenuContent: Text("Leave Balances")),
+              MLSubmenu(
+                  onClick: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => LeaveRequestPage(0)),
+                    );
+                  },
+                  submenuContent: Text("Leave Request")),
+              MLSubmenu(
+                  onClick: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => PendingLeaves()),
+                    );
+                  },
+                  submenuContent: Text("Pending Leave Requests")),
+            ],
+            onClick: () {}),
+        MLMenuItem(
+          leading: Icon(
+            FontAwesomeIcons.signOutAlt,
             color: Color.fromRGBO(243, 119, 55, 1),
           ),
-          Padding(
-            padding: EdgeInsets.only(left: 8.0),
-            child: Text(text),
-          )
-        ],
-      ),
-      onTap: onTap,
+          content: Text("Sign Out"),
+          onClick: () async {
+            await SharedPref.pref.setUserName(null);
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil('/', ModalRoute.withName('/'));
+          },
+        )
+      ],
     );
   }
 }

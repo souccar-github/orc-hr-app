@@ -101,6 +101,9 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
       yield LeaveLoading();
       String error = null;
       var info;
+      if (event.leave.leaveSettingId == 0 || event.leave.leaveSettingId == null || event.leave.leaveReasonId == 0 || event.leave.leaveReasonId == null){
+        yield LeaveError("Required Message");
+      }
       await Project.apiClient.addLeaveRequest(event.leave).then((onValue) {
         info = onValue;
       }).catchError((onError) {
