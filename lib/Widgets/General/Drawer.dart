@@ -55,7 +55,12 @@ class _AppDrawerState extends State<AppDrawer> {
             SizedBox(
               height: 10,
             ),
-            Text("Welcome .. $username"),
+            Text(
+              "$username",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             Divider(
               color: Color.fromRGBO(243, 119, 55, 1),
               thickness: 5,
@@ -101,6 +106,20 @@ class _AppDrawerState extends State<AppDrawer> {
                   },
                   submenuContent: Text("Pending Leave Requests")),
             ],
+            onClick: () {}),
+        MLMenuItem(
+            leading: Icon(
+              FontAwesomeIcons.exchangeAlt,
+              color: Color.fromRGBO(243, 119, 55, 1),
+            ),
+            trailing: Icon(
+              Icons.arrow_right,
+              color: Color.fromRGBO(243, 119, 55, 1),
+            ),
+            content: Text(
+              "Enterance Exit Services",
+            ),
+            subMenuItems: [],
             onClick: () {}),
         MLMenuItem(
           leading: Icon(

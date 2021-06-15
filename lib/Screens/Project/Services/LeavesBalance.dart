@@ -115,6 +115,7 @@ class _LeavesBalanceState extends State<LeavesBalance> {
                               children: <Widget>[
                                 SfCircularChart(
                                   legend: Legend(
+                                      overflowMode: LegendItemOverflowMode.wrap,
                                       isVisible: true,
                                       position: LegendPosition.bottom),
                                   series: <CircularSeries>[
@@ -193,6 +194,7 @@ class _LeavesBalanceState extends State<LeavesBalance> {
                               children: <Widget>[
                                 SfCircularChart(
                                   legend: Legend(
+                                      overflowMode: LegendItemOverflowMode.wrap,
                                       isVisible: true,
                                       position: LegendPosition.bottom),
                                   series: <CircularSeries>[
