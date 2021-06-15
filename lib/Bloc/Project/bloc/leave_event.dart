@@ -20,13 +20,14 @@ class GetLeaveReasons extends LeaveEvent{
 
 class GetSpentDays extends LeaveEvent{
   final LeaveRequest leave ;
-
   GetSpentDays(this.leave);
 }
 
 class PostLeaveRequest extends LeaveEvent{
   final LeaveRequest leave;
-  PostLeaveRequest(this.leave);
+  final LeaveInfoModel info;
+  final double duration;
+  PostLeaveRequest(this.leave,this.info,this.duration);
 }
 
 class GetPendingLeaveRequests extends LeaveEvent{

@@ -9,6 +9,8 @@ import 'package:orc_hr/Widgets/General/Animation/delayed_animation.dart';
 import 'package:orc_hr/Widgets/General/Drawer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../Notifications.dart';
+
 class LeavesBalance extends StatefulWidget {
   @override
   _LeavesBalanceState createState() => _LeavesBalanceState();
@@ -45,6 +47,19 @@ class _LeavesBalanceState extends State<LeavesBalance> {
         },
       ),
       appBar: AppBar(
+         actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.notifications,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => NotificationPage()),
+                );
+              },
+            )
+          ],
         title: Text(
           'Leaves Balance',
           textAlign: TextAlign.center,
@@ -100,6 +115,7 @@ class _LeavesBalanceState extends State<LeavesBalance> {
                               children: <Widget>[
                                 SfCircularChart(
                                   legend: Legend(
+                                      overflowMode: LegendItemOverflowMode.wrap,
                                       isVisible: true,
                                       position: LegendPosition.bottom),
                                   series: <CircularSeries>[
@@ -178,6 +194,7 @@ class _LeavesBalanceState extends State<LeavesBalance> {
                               children: <Widget>[
                                 SfCircularChart(
                                   legend: Legend(
+                                      overflowMode: LegendItemOverflowMode.wrap,
                                       isVisible: true,
                                       position: LegendPosition.bottom),
                                   series: <CircularSeries>[

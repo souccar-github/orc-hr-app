@@ -21,10 +21,22 @@ class SharedPref {
     p.setString("username", userName);
   }
 
+  Future<Void> setEmployeeName(String empName) async {
+    final SharedPreferences p = await _getSharedPref;
+    p.setString("empName", empName.substring(1,empName.length-1));
+  }
+
+
   Future<String> getUserName() async {
     final SharedPreferences p = await _getSharedPref;
     String username = p.getString("username");
     return username;
+  }
+
+  Future<String> getEmployeeName() async {
+    final SharedPreferences p = await _getSharedPref;
+    String empName = p.getString("empName");
+    return empName;
   }
 
   Future<Void> setPassword(String password) async {

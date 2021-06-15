@@ -24,6 +24,8 @@ class LeaveRequestPage extends StatefulWidget {
 class _LeaveRequestState extends State<LeaveRequestPage> {
   int id;
   double duration;
+  bool isDivisibleToHours;
+  bool isIndivisible;
   DropDownListItem _selectedSetting;
   DropDownListItem _selectedReason;
   LeaveBloc bloc;
@@ -44,7 +46,8 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
   void initState() {
     super.initState();
     fromTime = DateTime.now().toString();
-
+    isIndivisible = false;
+    isDivisibleToHours = true;
     startDate = DateTime.now().toString();
     endDate = DateTime.now().toString();
     requestDate = DateTime.now().toString();
@@ -65,7 +68,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
         0,
         DateTime.parse(endDate.substring(0, 10)),
         DateTime.parse(startDate.substring(0, 10)),
-        DateTime.parse(fromTime),
+        fromTime == null ? new DateTime.now() : DateTime.parse(fromTime),
         "",
         hourly,
         false,
@@ -81,7 +84,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
         0,
         DateTime.parse(startDate.substring(0, 10)),
         DateTime.parse(endDate.substring(0, 10)),
-        DateTime.parse(toTime),
+        toTime== null ? new DateTime.now() : DateTime.parse(toTime),
         0);
     bloc.add(GetSpentDays(model));
   }
@@ -132,7 +135,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
         0,
         DateTime.parse(endDate.substring(0, 10)),
         DateTime.parse(startDate.substring(0, 10)),
-        DateTime.parse(fromTime),
+        fromTime == null ? new DateTime.now() : DateTime.parse(fromTime),
         "",
         hourly,
         false,
@@ -148,7 +151,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
         0,
         DateTime.parse(startDate.substring(0, 10)),
         DateTime.parse(endDate.substring(0, 10)),
-        DateTime.parse(toTime),
+        toTime== null ? new DateTime.now() : DateTime.parse(toTime),
         0);
     bloc.add(GetSpentDays(model));
   }
@@ -192,12 +195,18 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                 _selectedSetting = _dropdownMenuItems
                     .firstWhere((i) => i.value.id == state.info.id)
                     .value;
+                if (info.isDivisibleToHours){
+                  isDivisibleToHours = info.isDivisibleToHours;
+                }
+                if (info.isIndivisible){
+                  isIndivisible = info.isIndivisible;
+                }
                 var model = new LeaveRequest(
                     "",
                     0,
                     DateTime.parse(endDate.substring(0, 10)),
                     DateTime.parse(startDate.substring(0, 10)),
-                    DateTime.parse(fromTime),
+                    fromTime == null ? new DateTime.now() : DateTime.parse(fromTime),
                     "",
                     hourly,
                     false,
@@ -213,7 +222,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                     0,
                     DateTime.parse(startDate.substring(0, 10)),
                     DateTime.parse(endDate.substring(0, 10)),
-                    DateTime.parse(toTime),
+                    toTime== null ? new DateTime.now() : DateTime.parse(toTime),
                     0);
                 bloc.add(GetSpentDays(model));
                 chartData = [
@@ -234,8 +243,10 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                   () => Navigator.of(context).pop());
             }
             if (state is GetSpentDaysSuccessfully) {
+             
               setState(() {
                 _textController.text = state.days.toString();
+                duration = double.parse(state.days);
               });
             }
             if (state is GetLeaveSettingsSuccessfully) {
@@ -280,7 +291,16 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                         child: Column(
                           children: <Widget>[
                             Row(children: <Widget>[
-                              Text("Leave Type"),
+                              RichText(
+                                text: TextSpan(
+                                    text: "Leave Type",
+                                    style: TextStyle(color: Colors.black),
+                                    children: [
+                                      TextSpan(
+                                          text: ' *',
+                                          style: TextStyle(color: Colors.red))
+                                    ]),
+                              ),
                               SizedBox(
                                 width: 20,
                               ),
@@ -291,7 +311,16 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                               height: 10,
                             ),
                             Row(children: <Widget>[
-                              Text("Request Date"),
+                              RichText(
+                                text: TextSpan(
+                                    text: "Request Date",
+                                    style: TextStyle(color: Colors.black),
+                                    children: [
+                                      TextSpan(
+                                          text: ' *',
+                                          style: TextStyle(color: Colors.red))
+                                    ]),
+                              ),
                               SizedBox(
                                 width: 20,
                               ),
@@ -320,7 +349,16 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                               height: 10,
                             ),
                             Row(children: <Widget>[
-                              Text("Start Date"),
+                              RichText(
+                                text: TextSpan(
+                                    text: "Start Date",
+                                    style: TextStyle(color: Colors.black),
+                                    children: [
+                                      TextSpan(
+                                          text: ' *',
+                                          style: TextStyle(color: Colors.red))
+                                    ]),
+                              ),
                               SizedBox(
                                 width: 20,
                               ),
@@ -329,12 +367,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                 child: DateTimePicker(
                                   type: DateTimePickerType.date,
                                   dateMask: 'dd MMM, yyyy',
-                                  initialValue: startDate ??
-                                      (new DateTime(
-                                              DateTime.now().year,
-                                              DateTime.now().month,
-                                              DateTime.now().day))
-                                          .toString(),
+                                  initialValue: DateTime.now().toString(),
                                   firstDate: DateTime(2000),
                                   lastDate: DateTime(2100),
                                   icon: Icon(Icons.event),
@@ -349,7 +382,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                               endDate.substring(0, 10)),
                                           DateTime.parse(
                                               startDate.substring(0, 10)),
-                                          DateTime.parse(fromTime),
+                                          fromTime == null ? new DateTime.now() : fromTime == null ? new DateTime.now() : DateTime.parse(fromTime),
                                           "",
                                           hourly,
                                           false,
@@ -369,7 +402,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                               startDate.substring(0, 10)),
                                           DateTime.parse(
                                               endDate.substring(0, 10)),
-                                          DateTime.parse(toTime),
+                                          toTime== null ? new DateTime.now() : DateTime.parse(toTime),
                                           0);
                                       bloc.add(GetSpentDays(model));
                                     });
@@ -380,8 +413,17 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                             SizedBox(
                               height: 10,
                             ),
-                            Row(children: <Widget>[
-                              Text("End Date"),
+                            !isIndivisible? Row(children: <Widget>[
+                              RichText(
+                                text: TextSpan(
+                                    text: "End Date",
+                                    style: TextStyle(color: Colors.black),
+                                    children: [
+                                      TextSpan(
+                                          text: ' *',
+                                          style: TextStyle(color: Colors.red))
+                                    ]),
+                              ),
                               SizedBox(
                                 width: 20,
                               ),
@@ -407,7 +449,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                               endDate.substring(0, 10)),
                                           DateTime.parse(
                                               startDate.substring(0, 10)),
-                                          DateTime.parse(fromTime),
+                                          fromTime == null ? new DateTime.now() : DateTime.parse(fromTime),
                                           "",
                                           hourly,
                                           false,
@@ -427,18 +469,18 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                               startDate.substring(0, 10)),
                                           DateTime.parse(
                                               endDate.substring(0, 10)),
-                                          DateTime.parse(toTime),
+                                          toTime== null ? new DateTime.now() : DateTime.parse(toTime),
                                           0);
                                       bloc.add(GetSpentDays(model));
                                     });
                                   },
                                 ),
                               ),
-                            ]),
+                            ]):Container(),
                             SizedBox(
-                              height: 10,
+                              height:!isIndivisible? 10:0,
                             ),
-                            Row(children: <Widget>[
+                            (isDivisibleToHours && !isIndivisible)? Row(children: <Widget>[
                               Text("Hourly Leave"),
                               SizedBox(
                                 width: 20,
@@ -463,7 +505,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                             endDate.substring(0, 10)),
                                         DateTime.parse(
                                             startDate.substring(0, 10)),
-                                        DateTime.parse(fromTime),
+                                        fromTime == null ? new DateTime.now() : DateTime.parse(fromTime),
                                         "",
                                         hourly,
                                         false,
@@ -483,16 +525,26 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                             startDate.substring(0, 10)),
                                         DateTime.parse(
                                             endDate.substring(0, 10)),
-                                        DateTime.parse(toTime),
+                                        toTime== null ? new DateTime.now() : DateTime.parse(toTime),
                                         0);
                                     bloc.add(GetSpentDays(model));
                                   });
                                 },
                               ),
-                            ]),
+                            ]):Container(),
                             hourly
                                 ? Row(children: <Widget>[
-                                    Text("From Time"),
+                                    RichText(
+                                      text: TextSpan(
+                                          text: "From Time",
+                                          style: TextStyle(color: Colors.black),
+                                          children: [
+                                            TextSpan(
+                                                text: ' *',
+                                                style: TextStyle(
+                                                    color: Colors.red))
+                                          ]),
+                                    ),
                                     SizedBox(
                                       width: 20,
                                     ),
@@ -503,6 +555,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                         type: DateTimePickerType.time,
                                         firstDate: DateTime(2000),
                                         lastDate: DateTime(2100),
+                                        initialValue: DateTime.now().toIso8601String().substring(11,16),
                                         icon: Icon(Icons.access_time),
                                         dateLabelText: 'Time',
                                         onChanged: (val) {
@@ -517,7 +570,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                                     endDate.substring(0, 10)),
                                                 DateTime.parse(
                                                     startDate.substring(0, 10)),
-                                                DateTime.parse(fromTime),
+                                                fromTime == null ? new DateTime.now() : DateTime.parse(fromTime),
                                                 "",
                                                 hourly,
                                                 false,
@@ -537,7 +590,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                                     startDate.substring(0, 10)),
                                                 DateTime.parse(
                                                     endDate.substring(0, 10)),
-                                                DateTime.parse(toTime),
+                                                toTime== null ? new DateTime.now() : DateTime.parse(toTime),
                                                 0);
                                             bloc.add(GetSpentDays(model));
                                           });
@@ -548,7 +601,17 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                 : Container(),
                             hourly
                                 ? Row(children: <Widget>[
-                                    Text("To Time"),
+                                    RichText(
+                                      text: TextSpan(
+                                          text: "To Time",
+                                          style: TextStyle(color: Colors.black),
+                                          children: [
+                                            TextSpan(
+                                                text: ' *',
+                                                style: TextStyle(
+                                                    color: Colors.red))
+                                          ]),
+                                    ),
                                     SizedBox(
                                       width: 20,
                                     ),
@@ -558,6 +621,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                       child: DateTimePicker(
                                         type: DateTimePickerType.time,
                                         firstDate: DateTime(2000),
+                                        initialValue: DateTime.now().toIso8601String().substring(11,16),
                                         lastDate: DateTime(2100),
                                         icon: Icon(Icons.access_time),
                                         dateLabelText: 'Time',
@@ -573,7 +637,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                                     endDate.substring(0, 10)),
                                                 DateTime.parse(
                                                     startDate.substring(0, 10)),
-                                                DateTime.parse(fromTime),
+                                                fromTime == null ? new DateTime.now() : DateTime.parse(fromTime),
                                                 "",
                                                 hourly,
                                                 false,
@@ -593,7 +657,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                                     startDate.substring(0, 10)),
                                                 DateTime.parse(
                                                     endDate.substring(0, 10)),
-                                                DateTime.parse(toTime),
+                                                toTime== null ? new DateTime.now() : DateTime.parse(toTime),
                                                 0);
                                             bloc.add(GetSpentDays(model));
                                           });
@@ -678,7 +742,16 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                               height: 10,
                             ),
                             Row(children: <Widget>[
-                              Text("Leave Reason"),
+                              RichText(
+                                text: TextSpan(
+                                    text: "Leave Reason",
+                                    style: TextStyle(color: Colors.black),
+                                    children: [
+                                      TextSpan(
+                                          text: ' *',
+                                          style: TextStyle(color: Colors.red))
+                                    ]),
+                              ),
                               SizedBox(
                                 width: 20,
                               ),
@@ -737,13 +810,13 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                             endDate.substring(0, 10)),
                                         DateTime.parse(
                                             startDate.substring(0, 10)),
-                                        DateTime.parse(fromTime),
+                                        fromTime == null ? new DateTime.now() : DateTime.parse(fromTime),
                                         "",
                                         hourly,
                                         false,
                                         0,
                                         _selectedReason == null
-                                            ? 0
+                                            ? ""
                                             : _selectedReason.name,
                                         _selectedReason == null
                                             ? 0
@@ -752,7 +825,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                             ? 0
                                             : _selectedSetting.id,
                                         _selectedSetting == null
-                                            ? 0
+                                            ? ""
                                             : _selectedSetting.name,
                                         0,
                                         0,
@@ -763,9 +836,9 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                             startDate.substring(0, 10)),
                                         DateTime.parse(
                                             endDate.substring(0, 10)),
-                                        DateTime.parse(toTime),
+                                        toTime== null ? new DateTime.now() : DateTime.parse(toTime),
                                         0);
-                                    bloc.add(PostLeaveRequest(model));
+                                    bloc.add(PostLeaveRequest(model,info,duration));
                                   },
                                 )),
                           ],

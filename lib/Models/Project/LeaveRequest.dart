@@ -12,14 +12,14 @@ class LeaveRequest {
   final int leaveSettingId;
   final String leaveSettingName;
   final DateTime startDate;
-  final DateTime endDate;
+  DateTime endDate;
   final bool isHourlyLeave;
   final bool isSummerDate;
 
   final DateTime fromTime;
   final DateTime toTime;
   final DateTime fromDateTime;
-  final DateTime toDateTime;
+  DateTime toDateTime;
 
   final double spentDays;
   final String leaveReason;
