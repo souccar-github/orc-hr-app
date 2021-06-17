@@ -21,3 +21,9 @@ class GetLeaveByWorkflowIdSuccessfully extends NotificationState{
 
   GetLeaveByWorkflowIdSuccessfully(this.item);
 }
+
+class GetEntranceExitRecordByWorkflowIdSuccessfully extends NotificationState{
+  final EntranceExitRequest item;
+
+  GetEntranceExitRecordByWorkflowIdSuccessfully(this.item);
+}

@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:orc_hr/Bloc/Project/bloc/entranceexit_bloc.dart';
 import 'package:orc_hr/Models/Project/LeaveRequest.dart';
 import 'package:orc_hr/SharedPref/SharedPref.dart';
-import 'package:orc_hr/Screens/Project/Services/LeavesBalance.dart';
-import 'package:orc_hr/Screens/Project/Services/PendingLeaveRequests.dart';
-import 'package:orc_hr/Screens/Project/Services/LeaveRequest.dart';
+import 'package:orc_hr/Screens/Project/Services/Leave/LeavesBalance.dart';
+import 'package:orc_hr/Screens/Project/Services/Leave/PendingLeaveRequests.dart';
+import 'package:orc_hr/Screens/Project/Services/EntranceExit/PendingEntranceExitRequests.dart';
+import 'package:orc_hr/Screens/Project/Services/Leave/LeaveRequest.dart';
+import 'package:orc_hr/Screens/Project/Services/EntranceExit/EntranceExitRequest.dart';
 import 'package:multilevel_drawer/multilevel_drawer.dart';
 
 class AppDrawer extends StatefulWidget {
@@ -119,7 +122,23 @@ class _AppDrawerState extends State<AppDrawer> {
             content: Text(
               "Enterance Exit Services",
             ),
-            subMenuItems: [],
+            subMenuItems: [
+              MLSubmenu(
+                  onClick: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => EntranceExitRequestPage()),
+                    );
+                  },
+                  submenuContent: Text("Entrance Exit Request")),
+                    MLSubmenu(
+                  onClick: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => PendingEntranceExitRequests()),
+                    );
+                  },
+                  submenuContent: Text("Pending Entrance Exit Requests")),
+            ],
             onClick: () {}),
         MLMenuItem(
           leading: Icon(

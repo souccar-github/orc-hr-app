@@ -11,3 +11,10 @@ class GetLeaveByWorkflowId extends NotificationEvent{
 
   GetLeaveByWorkflowId(this.id);
 }
+
+class GetEntranceExitRecordByWorkflowId extends NotificationEvent{
+  final int id;
+
+  GetEntranceExitRecordByWorkflowId(this.id);
+}
+

@@ -195,10 +195,10 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                 _selectedSetting = _dropdownMenuItems
                     .firstWhere((i) => i.value.id == state.info.id)
                     .value;
-                if (info.isDivisibleToHours){
+                if (info.isDivisibleToHours!=null){
                   isDivisibleToHours = info.isDivisibleToHours;
                 }
-                if (info.isIndivisible){
+                if (info.isIndivisible!=null){
                   isIndivisible = info.isIndivisible;
                 }
                 var model = new LeaveRequest(
@@ -804,7 +804,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                   ),
                                   onPressed: () {
                                     var model = new LeaveRequest(
-                                        note,
+                                        note??"",
                                         0,
                                         DateTime.parse(
                                             endDate.substring(0, 10)),

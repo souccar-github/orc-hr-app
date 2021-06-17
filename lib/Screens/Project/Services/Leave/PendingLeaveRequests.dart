@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orc_hr/Bloc/Project/bloc/leave_bloc.dart';
-import 'package:orc_hr/Screens/Project/Services/ApprovePage.dart';
+import 'package:orc_hr/Screens/Project/Services/Leave/ApprovePage.dart';
 import 'package:orc_hr/Widgets/General/Animation/delayed_animation.dart';
 
-import '../Notifications.dart';
+import '../../Notifications.dart';
 
 class PendingLeaves extends StatefulWidget {
   @override
