@@ -12,6 +12,9 @@ class PostEntranceExitRequest extends EntranceexitEvent{
 class GetPendingEntranceexitRequests extends EntranceexitEvent{
 }
 
+class GetMyPendingRequests extends EntranceexitEvent{
+}
+
 class AcceptEntranceexitRequest extends EntranceexitEvent{
   final int workflowId;
   final int recordId;

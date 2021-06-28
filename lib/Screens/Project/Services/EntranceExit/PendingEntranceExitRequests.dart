@@ -44,7 +44,7 @@ class _PendingEntranceExitRequestsState extends State<PendingEntranceExitRequest
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          'Pending Entranceexit Requests',
+          'Pending Requests',
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headline6,
         ),

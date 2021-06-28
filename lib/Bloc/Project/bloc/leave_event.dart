@@ -41,6 +41,9 @@ class AcceptLeaveRequest extends LeaveEvent{
   AcceptLeaveRequest(this.workflowId, this.leaveId, this.note);
 }
 
+class GetMyPendingRequests extends LeaveEvent{
+}
+
 class RejectLeaveRequest extends LeaveEvent{
   final int workflowId;
   final int leaveId;

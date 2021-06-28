@@ -5,6 +5,7 @@ import 'package:http/http.dart';
 import 'package:orc_hr/API/Statics.dart';
 import 'package:orc_hr/Models/Project/LeaveSetting.dart';
 import 'package:orc_hr/Models/Project/LeaveReason.dart';
+import 'package:orc_hr/Models/Project/WorkflowInfo.dart';
 import 'package:orc_hr/SharedPref/SharedPref.dart';
 import 'package:orc_hr/Models/Project/LeaveInfoModel.dart';
 import 'package:orc_hr/Models/Project/Notify.dart';
@@ -267,6 +268,76 @@ class Project {
         List itemListModel = json.decode(response.body);
         for (var i = 0; i < itemListModel.length; i++) {
           LeaveReason h = LeaveReason.fromJson(itemListModel[i]);
+          items.add(h);
+        }
+        if (items != null) {
+          return items;
+        }
+      }else if (response.statusCode == 401) {
+        return Future.error("You are unauthorized !");
+      } else {
+        error = (jsonDecode(response.body))["Message"] as String;
+        return Future.error(error ?? "Unknown Error");
+      }
+    } on SocketException {
+      return Future.error("check your internet connection");
+    } on ClientException {
+      return Future.error("check your internet connection");
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  Future<List<WorkflowInfo>> getMyPendingLeaveRequests() async {
+    String error;
+    try {
+      var username = await SharedPref.pref.getUserName();
+      var password = await SharedPref.pref.getPassword();
+      final response = await Statics.httpClient
+          .get(Statics.BaseUrl + "/api/leave/getMyPending", headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        'Authorization': '$username:$password',
+      });
+      if (response.statusCode == 200) {
+        List<WorkflowInfo> items = new List<WorkflowInfo>();
+        List itemListModel = json.decode(response.body);
+        for (var i = 0; i < itemListModel.length; i++) {
+          WorkflowInfo h = WorkflowInfo.fromJson(itemListModel[i]);
+          items.add(h);
+        }
+        if (items != null) {
+          return items;
+        }
+      }else if (response.statusCode == 401) {
+        return Future.error("You are unauthorized !");
+      } else {
+        error = (jsonDecode(response.body))["Message"] as String;
+        return Future.error(error ?? "Unknown Error");
+      }
+    } on SocketException {
+      return Future.error("check your internet connection");
+    } on ClientException {
+      return Future.error("check your internet connection");
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  Future<List<WorkflowInfo>> getMyPendingEntranceExitRequests() async {
+    String error;
+    try {
+      var username = await SharedPref.pref.getUserName();
+      var password = await SharedPref.pref.getPassword();
+      final response = await Statics.httpClient
+          .get(Statics.BaseUrl + "/api/entranceExit/getMyPending", headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        'Authorization': '$username:$password',
+      });
+      if (response.statusCode == 200) {
+        List<WorkflowInfo> items = new List<WorkflowInfo>();
+        List itemListModel = json.decode(response.body);
+        for (var i = 0; i < itemListModel.length; i++) {
+          WorkflowInfo h = WorkflowInfo.fromJson(itemListModel[i]);
           items.add(h);
         }
         if (items != null) {

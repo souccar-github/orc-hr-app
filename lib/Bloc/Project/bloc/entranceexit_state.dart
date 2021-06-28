@@ -11,6 +11,12 @@ class EntranceExitError extends EntranceexitState{
   EntranceExitError(this.error);
 }
 
+class GetMyPendingRequestsSuccessfully extends EntranceexitState{
+  final List<WorkflowInfo> list;
+
+  GetMyPendingRequestsSuccessfully(this.list);
+}
+
 class EntranceExitLoading extends EntranceexitState{}
 
 class PostEntranceExitRequestSuccessfully extends EntranceexitState{}

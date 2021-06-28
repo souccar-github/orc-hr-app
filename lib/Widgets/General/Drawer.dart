@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:orc_hr/Bloc/Project/bloc/entranceexit_bloc.dart';
 import 'package:orc_hr/Models/Project/LeaveRequest.dart';
+import 'package:orc_hr/Screens/Project/Services/EntranceExit/MyPendingRequests.dart';
+import 'package:orc_hr/Screens/Project/Services/Leave/MyPendingRequests.dart' as leave;
 import 'package:orc_hr/SharedPref/SharedPref.dart';
 import 'package:orc_hr/Screens/Project/Services/Leave/LeavesBalance.dart';
 import 'package:orc_hr/Screens/Project/Services/Leave/PendingLeaveRequests.dart';
@@ -108,6 +110,14 @@ class _AppDrawerState extends State<AppDrawer> {
                     );
                   },
                   submenuContent: Text("Pending Leave Requests")),
+              MLSubmenu(
+                  onClick: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => leave.MyPendingRequests()),
+                    );
+                  },
+                  submenuContent: Text("My Pending Requests")),
             ],
             onClick: () {}),
         MLMenuItem(
@@ -131,13 +141,22 @@ class _AppDrawerState extends State<AppDrawer> {
                     );
                   },
                   submenuContent: Text("Entrance Exit Request")),
-                    MLSubmenu(
+              MLSubmenu(
                   onClick: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => PendingEntranceExitRequests()),
+                      MaterialPageRoute(
+                          builder: (context) => PendingEntranceExitRequests()),
                     );
                   },
                   submenuContent: Text("Pending Entrance Exit Requests")),
+              MLSubmenu(
+                  onClick: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => MyPendingRequests()),
+                    );
+                  },
+                  submenuContent: Text("My Pending Requests")),
             ],
             onClick: () {}),
         MLMenuItem(
