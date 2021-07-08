@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:orc_hr/Localization/Localization.dart';
 import 'package:orc_hr/Bloc/Project/bloc/leave_bloc.dart';
-import 'package:orc_hr/Screens/Project/Services/ApprovePage.dart';
+import 'package:orc_hr/Screens/Project/Services/Leave/ApprovePage.dart';
 import 'package:orc_hr/Widgets/General/Animation/delayed_animation.dart';
 
-import '../Notifications.dart';
+import '../../Notifications.dart';
 
 class PendingLeaves extends StatefulWidget {
   @override
@@ -43,7 +44,7 @@ class _PendingLeavesState extends State<PendingLeaves> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          'Pending Leave Requests',
+          Localization.of(context).getTranslatedValue("PendingLeaveRequests"),
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headline6,
         ),
@@ -130,7 +131,7 @@ class _PendingLeavesState extends State<PendingLeaves> {
                                               color: Color.fromRGBO(
                                                   243, 119, 55, 0.7),
                                               child: Text(
-                                                "Approve",
+                                                Localization.of(context).getTranslatedValue("Approve"),
                                                 style: TextStyle(
                                                     fontSize: 18,
                                                     color: Colors.white),

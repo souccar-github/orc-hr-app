@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:orc_hr/API/Project/Project.dart';
 import 'package:orc_hr/Models/Project/LeaveRequest.dart';
+import 'package:orc_hr/Models/Project/EntranceExitRequest.dart';
 import 'package:orc_hr/Models/Project/Notify.dart';
 import 'package:bloc/bloc.dart';
 
@@ -41,6 +42,22 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       });
       if (error == null) {
         yield GetLeaveByWorkflowIdSuccessfully(leave);
+      } else {
+        yield NotificationError(error);
+      }
+    }
+
+    if (event is GetEntranceExitRecordByWorkflowId){
+      yield NotificationLoading();
+      String error = null;
+      EntranceExitRequest leave;
+      await Project.apiClient.getEntranceExitRecordByWorkflow(event.id).then((onValue) {
+        leave = onValue;
+      }).catchError((onError) {
+        error = onError;
+      });
+      if (error == null) {
+        yield GetEntranceExitRecordByWorkflowIdSuccessfully(leave);
       } else {
         yield NotificationError(error);
       }

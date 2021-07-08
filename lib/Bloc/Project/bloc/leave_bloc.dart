@@ -7,6 +7,7 @@ import 'package:orc_hr/Models/Project/LeaveInfoModel.dart';
 import 'package:orc_hr/Models/Project/LeaveRequest.dart';
 import 'package:orc_hr/Models/Project/LeaveSetting.dart';
 import 'package:orc_hr/Models/Project/LeaveReason.dart';
+import 'package:orc_hr/Models/Project/WorkflowInfo.dart';
 part 'leave_event.dart';
 part 'leave_state.dart';
 
@@ -191,6 +192,22 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
       });
       if (error == null) {
         yield GetPendingLeaveRequestsSuccessfully(_list);
+      } else {
+        yield LeaveError(error);
+      }
+    }
+
+    if (event is GetMyPendingRequests) {
+      yield LeaveLoading();
+      String error = null;
+      var _list = new List<WorkflowInfo>();
+      await Project.apiClient.getMyPendingLeaveRequests().then((onValue) {
+        _list = onValue;
+      }).catchError((onError) {
+        error = onError;
+      });
+      if (error == null) {
+        yield GetMyPendingRequestsSuccessfully(_list);
       } else {
         yield LeaveError(error);
       }

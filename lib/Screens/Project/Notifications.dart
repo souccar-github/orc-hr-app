@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orc_hr/Screens/Project/Services/ApprovePage.dart';
+import 'package:orc_hr/Localization/Localization.dart';
+import 'package:orc_hr/Screens/Project/Services/Leave/ApprovePage.dart';
+import 'package:orc_hr/Screens/Project/Services/entranceExit/ApprovePage.dart'
+    as record;
 import 'package:orc_hr/Bloc/Project/bloc/notification_bloc.dart';
 import 'package:orc_hr/Widgets/General/Animation/delayed_animation.dart';
 
@@ -28,7 +31,7 @@ class _NotificationPageState extends State<NotificationPage> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          'Notifications',
+          Localization.of(context).getTranslatedValue("Notifications"),
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headline6,
         ),
@@ -53,6 +56,13 @@ class _NotificationPageState extends State<NotificationPage> {
                       leave: state.item,
                     )));
           }
+          if (state is GetEntranceExitRecordByWorkflowIdSuccessfully) {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) => record.ApprovePage(
+                      bloc: null,
+                      record: state.item,
+                    )));
+          }
         },
         child: BlocBuilder<NotificationBloc, NotificationState>(
           cubit: bloc,
@@ -72,8 +82,17 @@ class _NotificationPageState extends State<NotificationPage> {
                       elevation: 5,
                       child: InkWell(
                         onTap: () {
-                          bloc.add(GetLeaveByWorkflowId(
-                              state.items[index].workflowItemId));
+                          switch (state.items[index].type) {
+                            case "EntranceExitRecordRequest":
+                              bloc.add(GetEntranceExitRecordByWorkflowId(
+                                  state.items[index].workflowItemId));
+                              break;
+                            case "EmployeeLeaveRequest":
+                              bloc.add(GetLeaveByWorkflowId(
+                                  state.items[index].workflowItemId));
+                              break;
+                          }
+                         
                         },
                         child: Padding(
                           padding: EdgeInsets.all(7),

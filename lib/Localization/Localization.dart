@@ -25,7 +25,7 @@ class Localization {
   }
 
   String getTranslatedValue(String key){
-    return _localizedValues[key];
+    return _localizedValues[key]??key;
   }
 
   static const LocalizationsDelegate<Localization> delegate =_LocalizationDelegate();

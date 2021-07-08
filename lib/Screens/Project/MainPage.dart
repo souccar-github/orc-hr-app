@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:orc_hr/Widgets/General/Drawer.dart';
+import 'package:orc_hr/Localization/Localization.dart';
 import 'package:orc_hr/Screens/Project/Notifications.dart';
 
 class MainPage extends StatefulWidget {
@@ -27,7 +28,7 @@ class _MainPageState extends State<MainPage> {
             )
           ],
           title: Text(
-            'ORC-HR',
+            Localization.of(context).getTranslatedValue("ORC-HR"),
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headline6,
           ),

@@ -21,7 +21,9 @@ class General {
           });
       if (response.statusCode == 200) {
         return response.body ;
-      } else {
+      }else if (response.statusCode == 401) {
+        return Future.error("username or password is not correct");
+      }  else {
         error = (jsonDecode(response.body))["Message"] as String;
         return Future.error(error ?? "Unknown Error"); 
       }

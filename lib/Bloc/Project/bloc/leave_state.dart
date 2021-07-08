@@ -39,6 +39,12 @@ class GetSpentDaysSuccessfully extends LeaveState {
   GetSpentDaysSuccessfully(this.days);
 }
 
+class GetMyPendingRequestsSuccessfully extends LeaveState{
+  final List<WorkflowInfo> list;
+
+  GetMyPendingRequestsSuccessfully(this.list);
+}
+
 class DaysLoading extends LeaveState {}
 
 class PostLeaveRequestSuccessfully extends LeaveState {}

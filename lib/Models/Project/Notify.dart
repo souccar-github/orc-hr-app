@@ -6,10 +6,12 @@ part 'Notify.g.dart';
 class Notify {
   final int workflowItemId;
   final String body;
+  final String type;
 
   Notify(
       this.workflowItemId,
-      this.body);
+      this.body,
+      this.type);
 
   factory Notify.fromJson(Map<String, dynamic> json) =>
       _$NotifysFromJson(json);

@@ -4,6 +4,7 @@ import 'package:orc_hr/Bloc/Project/bloc/leave_bloc.dart';
 import 'package:orc_hr/Models/Project/DropdownItemModel.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:orc_hr/Models/Project/LeaveRequest.dart';
+import 'package:orc_hr/Localization/Localization.dart';
 import 'package:orc_hr/Models/Project/LeaveSetting.dart';
 import 'package:orc_hr/Models/Project/LeaveReason.dart';
 import 'package:orc_hr/Models/Project/LeaveInfoModel.dart';
@@ -171,7 +172,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          'Leave Request',
+         Localization.of(context).getTranslatedValue("LeaveRequest"),
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headline6,
         ),
@@ -195,10 +196,10 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                 _selectedSetting = _dropdownMenuItems
                     .firstWhere((i) => i.value.id == state.info.id)
                     .value;
-                if (info.isDivisibleToHours){
+                if (info.isDivisibleToHours!=null){
                   isDivisibleToHours = info.isDivisibleToHours;
                 }
-                if (info.isIndivisible){
+                if (info.isIndivisible!=null){
                   isIndivisible = info.isIndivisible;
                 }
                 var model = new LeaveRequest(
@@ -226,15 +227,15 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                     0);
                 bloc.add(GetSpentDays(model));
                 chartData = [
-                  ChartData('Granted', state.info.granted, Colors.red),
-                  ChartData('Remain', state.info.remain, Colors.green)
+                  ChartData(Localization.of(context).getTranslatedValue("Granted"), state.info.granted, Colors.red),
+                  ChartData(Localization.of(context).getTranslatedValue("Remain"), state.info.remain, Colors.green)
                 ];
               });
             }
             if (state is PostLeaveRequestSuccessfully) {
               Scaffold.of(context).showSnackBar(SnackBar(
                 content: Text(
-                  "Leave Requested Successfully",
+                  Localization.of(context).getTranslatedValue("LeaveRequestedSuccessfully"),
                   style: TextStyle(color: Colors.white),
                 ),
                 backgroundColor: Colors.green,
@@ -293,7 +294,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                             Row(children: <Widget>[
                               RichText(
                                 text: TextSpan(
-                                    text: "Leave Type",
+                                    text: Localization.of(context).getTranslatedValue("LeaveType"),
                                     style: TextStyle(color: Colors.black),
                                     children: [
                                       TextSpan(
@@ -304,7 +305,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                               SizedBox(
                                 width: 20,
                               ),
-                              dropdown(context, _selectedSetting, "Leave Type",
+                              dropdown(context, _selectedSetting, Localization.of(context).getTranslatedValue("LeaveType"),
                                   _dropdownMenuItems, onChangeDropdownItem),
                             ]),
                             SizedBox(
@@ -313,7 +314,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                             Row(children: <Widget>[
                               RichText(
                                 text: TextSpan(
-                                    text: "Request Date",
+                                    text: Localization.of(context).getTranslatedValue("RequestDate"),
                                     style: TextStyle(color: Colors.black),
                                     children: [
                                       TextSpan(
@@ -338,7 +339,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                   firstDate: DateTime(2000),
                                   lastDate: DateTime(2100),
                                   icon: Icon(Icons.event),
-                                  dateLabelText: 'Date',
+                                  dateLabelText: Localization.of(context).getTranslatedValue("Date"),
                                   onChanged: (val) {
                                     requestDate = val;
                                   },
@@ -351,7 +352,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                             Row(children: <Widget>[
                               RichText(
                                 text: TextSpan(
-                                    text: "Start Date",
+                                    text: Localization.of(context).getTranslatedValue("StartDate"),
                                     style: TextStyle(color: Colors.black),
                                     children: [
                                       TextSpan(
@@ -371,7 +372,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                   firstDate: DateTime(2000),
                                   lastDate: DateTime(2100),
                                   icon: Icon(Icons.event),
-                                  dateLabelText: 'Date',
+                                  dateLabelText: Localization.of(context).getTranslatedValue("Date"),
                                   onChanged: (val) {
                                     setState(() {
                                       startDate = val + "  00:00:00";
@@ -416,7 +417,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                             !isIndivisible? Row(children: <Widget>[
                               RichText(
                                 text: TextSpan(
-                                    text: "End Date",
+                                    text: Localization.of(context).getTranslatedValue("EndDate"),
                                     style: TextStyle(color: Colors.black),
                                     children: [
                                       TextSpan(
@@ -481,7 +482,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                               height:!isIndivisible? 10:0,
                             ),
                             (isDivisibleToHours && !isIndivisible)? Row(children: <Widget>[
-                              Text("Hourly Leave"),
+                              Text(Localization.of(context).getTranslatedValue("HourlyLeave")),
                               SizedBox(
                                 width: 20,
                               ),
@@ -536,7 +537,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                 ? Row(children: <Widget>[
                                     RichText(
                                       text: TextSpan(
-                                          text: "From Time",
+                                          text: Localization.of(context).getTranslatedValue("FromTime"),
                                           style: TextStyle(color: Colors.black),
                                           children: [
                                             TextSpan(
@@ -557,7 +558,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                         lastDate: DateTime(2100),
                                         initialValue: DateTime.now().toIso8601String().substring(11,16),
                                         icon: Icon(Icons.access_time),
-                                        dateLabelText: 'Time',
+                                        dateLabelText: Localization.of(context).getTranslatedValue("Time"),
                                         onChanged: (val) {
                                           setState(() {
                                             fromTime =
@@ -603,7 +604,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                 ? Row(children: <Widget>[
                                     RichText(
                                       text: TextSpan(
-                                          text: "To Time",
+                                          text: Localization.of(context).getTranslatedValue("ToTime"),
                                           style: TextStyle(color: Colors.black),
                                           children: [
                                             TextSpan(
@@ -624,7 +625,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                         initialValue: DateTime.now().toIso8601String().substring(11,16),
                                         lastDate: DateTime(2100),
                                         icon: Icon(Icons.access_time),
-                                        dateLabelText: 'Time',
+                                        dateLabelText: Localization.of(context).getTranslatedValue("Time"),
                                         onChanged: (val) {
                                           setState(() {
                                             toTime =
@@ -670,7 +671,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                               height: 10,
                             ),
                             Row(children: <Widget>[
-                              Text("Duration"),
+                              Text(Localization.of(context).getTranslatedValue("Duration")),
                               SizedBox(
                                 width: 20,
                               ),
@@ -685,7 +686,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                           20.0, 10.0, 20.0, 10.0),
                                       filled: true,
                                       fillColor: Colors.white,
-                                      hintText: "Duration",
+                                      hintText: Localization.of(context).getTranslatedValue("Duration"),
                                       labelStyle: TextStyle(
                                           color:
                                               Color.fromRGBO(243, 119, 55, 1)),
@@ -744,7 +745,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                             Row(children: <Widget>[
                               RichText(
                                 text: TextSpan(
-                                    text: "Leave Reason",
+                                    text: Localization.of(context).getTranslatedValue("LeaveReason"),
                                     style: TextStyle(color: Colors.black),
                                     children: [
                                       TextSpan(
@@ -758,7 +759,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                               dropdown(
                                   context,
                                   _selectedReason,
-                                  "Leave Reason",
+                                  Localization.of(context).getTranslatedValue("LeaveReason"),
                                   _reasonsDropdownMenuItems,
                                   onChangeReasonsDropdownItem),
                             ]),
@@ -766,7 +767,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                               height: 10,
                             ),
                             Row(children: <Widget>[
-                              Text("Description"),
+                              Text(Localization.of(context).getTranslatedValue("Description")),
                               SizedBox(
                                 width: 20,
                               ),
@@ -774,13 +775,13 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                 width: MediaQuery.of(context).size.width / 2,
                                 child: textFormField(
                                     onChangeTextField,
-                                    "Type a note ...",
+                                    Localization.of(context).getTranslatedValue("Typeadescription"),
                                     false,
                                     TextInputType.multiline,
                                     false,
                                     5,
                                     "",
-                                    false),
+                                    false,context),
                               ),
                             ]),
                             SizedBox(
@@ -798,13 +799,13 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                       MaterialTapTargetSize.shrinkWrap,
                                   color: Color.fromRGBO(243, 119, 55, 1),
                                   child: Text(
-                                    "Apply",
+                                    Localization.of(context).getTranslatedValue("Apply"),
                                     style: TextStyle(
                                         fontSize: 18, color: Colors.white),
                                   ),
                                   onPressed: () {
                                     var model = new LeaveRequest(
-                                        note,
+                                        note??"",
                                         0,
                                         DateTime.parse(
                                             endDate.substring(0, 10)),
@@ -901,7 +902,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                             MainAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
-                                            "Balance :",
+                                            Localization.of(context).getTranslatedValue("Balanc:"),
                                             style: TextStyle(fontSize: 15),
                                           ),
                                           Text(info.balance.toString())
@@ -910,7 +911,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                     ],
                                   )
                                 : Text(
-                                    "Please Select Leave Type",
+                                    Localization.of(context).getTranslatedValue("PleaseSelectLeaveType"),
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16),

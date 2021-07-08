@@ -4,12 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:orc_hr/Bloc/Project/bloc/leave_bloc.dart';
 import 'package:orc_hr/Models/Project/LeaveInfoModel.dart';
-import 'package:orc_hr/Screens/Project/Services/LeaveRequest.dart';
+import 'package:orc_hr/Screens/Project/Services/Leave/LeaveRequest.dart';
+import 'package:orc_hr/Localization/Localization.dart';
 import 'package:orc_hr/Widgets/General/Animation/delayed_animation.dart';
 import 'package:orc_hr/Widgets/General/Drawer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import '../../Notifications.dart';
 
-import '../Notifications.dart';
 
 class LeavesBalance extends StatefulWidget {
   @override
@@ -37,7 +38,7 @@ class _LeavesBalanceState extends State<LeavesBalance> {
               Icons.add,
               size: 20,
             ),
-            Text("Other"),
+            Text(Localization.of(context).getTranslatedValue("Other")),
           ],
         ),
         onPressed: () {
@@ -61,7 +62,7 @@ class _LeavesBalanceState extends State<LeavesBalance> {
             )
           ],
         title: Text(
-          'Leaves Balance',
+          Localization.of(context).getTranslatedValue("LeavesBalance"),
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headline6,
         ),
@@ -90,12 +91,12 @@ class _LeavesBalanceState extends State<LeavesBalance> {
             }
             if (state is MainLeavesBalanceInitSuccessfully) {
               List<ChartData> firstChartData = [
-                ChartData('Granted', state.infos[0].granted, Colors.red),
-                ChartData('Remain', state.infos[0].remain, Colors.green)
+                ChartData(Localization.of(context).getTranslatedValue("Granted"), state.infos[0].granted, Colors.red),
+                ChartData(Localization.of(context).getTranslatedValue("Remain"), state.infos[0].remain, Colors.green)
               ];
               List<ChartData> secChartData = [
-                ChartData('Granted', state.infos[1].granted, Colors.red),
-                ChartData('Remain', state.infos[1].remain, Colors.green)
+                ChartData(Localization.of(context).getTranslatedValue("Granted"), state.infos[1].granted, Colors.red),
+                ChartData(Localization.of(context).getTranslatedValue("Remain"), state.infos[1].remain, Colors.green)
               ];
               return SingleChildScrollView(
                 child: Container(
@@ -147,7 +148,7 @@ class _LeavesBalanceState extends State<LeavesBalance> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     Text(
-                                      "Balance :",
+                                      Localization.of(context).getTranslatedValue("Balance:"),
                                       style: TextStyle(fontSize: 15),
                                     ),
                                     Text(state.infos[0].balance.toString())
@@ -170,7 +171,7 @@ class _LeavesBalanceState extends State<LeavesBalance> {
                                             MaterialTapTargetSize.shrinkWrap,
                                         color: Color.fromRGBO(243, 119, 55, 1),
                                         child: Text(
-                                          "Request Leave",
+                                          Localization.of(context).getTranslatedValue("RequestLeave"),
                                           style: TextStyle(
                                               fontSize: 18,
                                               color: Colors.white),
@@ -226,7 +227,7 @@ class _LeavesBalanceState extends State<LeavesBalance> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     Text(
-                                      "Balance :",
+                                      Localization.of(context).getTranslatedValue("Balance:"),
                                       style: TextStyle(fontSize: 15),
                                     ),
                                     Text(state.infos[1].balance.toString())
@@ -249,7 +250,7 @@ class _LeavesBalanceState extends State<LeavesBalance> {
                                             MaterialTapTargetSize.shrinkWrap,
                                         color: Color.fromRGBO(243, 119, 55, 1),
                                         child: Text(
-                                          "Request Leave",
+                                          Localization.of(context).getTranslatedValue("RequestLeave"),
                                           style: TextStyle(
                                               fontSize: 18,
                                               color: Colors.white),

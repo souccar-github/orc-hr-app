@@ -1,12 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:orc_hr/Bloc/Project/bloc/entranceexit_bloc.dart';
+import 'package:orc_hr/Localization/Localization.dart';
 import 'package:orc_hr/Models/Project/LeaveRequest.dart';
+import 'package:orc_hr/Screens/Project/Services/EntranceExit/MyPendingRequests.dart';
+import 'package:orc_hr/Screens/Project/Services/Leave/MyPendingRequests.dart'
+    as leave;
+import 'package:orc_hr/Screens/Project/Services/Mission/MyPendingRequests.dart'
+    as mission;
 import 'package:orc_hr/SharedPref/SharedPref.dart';
-import 'package:orc_hr/Screens/Project/Services/LeavesBalance.dart';
-import 'package:orc_hr/Screens/Project/Services/PendingLeaveRequests.dart';
-import 'package:orc_hr/Screens/Project/Services/LeaveRequest.dart';
-import 'package:multilevel_drawer/multilevel_drawer.dart';
+import 'package:orc_hr/Screens/Project/Services/Leave/LeavesBalance.dart';
+import 'package:orc_hr/main.dart';
+import 'package:orc_hr/Widgets/General/multiLevelDrawer.dart';
+import 'package:orc_hr/Screens/Project/Services/Leave/PendingLeaveRequests.dart';
+import 'package:orc_hr/Screens/Project/Services/Mission/PendingMissionRequests.dart';
+import 'package:orc_hr/Screens/Project/Services/EntranceExit/PendingEntranceExitRequests.dart';
+import 'package:orc_hr/Screens/Project/Services/Leave/LeaveRequest.dart';
+import 'package:orc_hr/Screens/Project/Services/Mission/MissionRequest.dart';
+import 'package:orc_hr/Screens/Project/Services/EntranceExit/EntranceExitRequest.dart';
 
 class AppDrawer extends StatefulWidget {
   @override
@@ -14,6 +26,7 @@ class AppDrawer extends StatefulWidget {
 }
 
 class _AppDrawerState extends State<AppDrawer> {
+  var locale = null;
   String username;
   @override
   void initState() {
@@ -24,11 +37,13 @@ class _AppDrawerState extends State<AppDrawer> {
   Widget build(BuildContext context) {
     Future.delayed(Duration(microseconds: 0), () async {
       var _username = await SharedPref.pref.getEmployeeName();
-
       setState(() {
         username = _username;
       });
     });
+    setState(() {
+        locale = Localizations.localeOf(context).languageCode;
+      });
     return MultiLevelDrawer(
       backgroundColor: Colors.white,
       rippleColor: Colors.white,
@@ -79,7 +94,7 @@ class _AppDrawerState extends State<AppDrawer> {
               color: Color.fromRGBO(243, 119, 55, 1),
             ),
             content: Text(
-              "Leave Services",
+              Localization.of(context).getTranslatedValue("LeaveServices"),
             ),
             subMenuItems: [
               MLSubmenu(
@@ -89,7 +104,8 @@ class _AppDrawerState extends State<AppDrawer> {
                         MaterialPageRoute(
                             builder: (context) => LeavesBalance()));
                   },
-                  submenuContent: Text("Leave Balances")),
+                  submenuContent: Text(Localization.of(context)
+                      .getTranslatedValue("LeaveBalances"))),
               MLSubmenu(
                   onClick: () {
                     Navigator.of(context).push(
@@ -97,14 +113,25 @@ class _AppDrawerState extends State<AppDrawer> {
                           builder: (context) => LeaveRequestPage(0)),
                     );
                   },
-                  submenuContent: Text("Leave Request")),
+                  submenuContent: Text(Localization.of(context)
+                      .getTranslatedValue("LeaveRequest"))),
               MLSubmenu(
                   onClick: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => PendingLeaves()),
                     );
                   },
-                  submenuContent: Text("Pending Leave Requests")),
+                  submenuContent: Text(Localization.of(context)
+                      .getTranslatedValue("PendingLeaveRequests"))),
+              MLSubmenu(
+                  onClick: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => leave.MyPendingRequests()),
+                    );
+                  },
+                  submenuContent: Text(Localization.of(context)
+                      .getTranslatedValue("MyPendingRequests"))),
             ],
             onClick: () {}),
         MLMenuItem(
@@ -117,16 +144,118 @@ class _AppDrawerState extends State<AppDrawer> {
               color: Color.fromRGBO(243, 119, 55, 1),
             ),
             content: Text(
-              "Enterance Exit Services",
+              Localization.of(context)
+                  .getTranslatedValue("EnteranceExitServices"),
             ),
-            subMenuItems: [],
+            subMenuItems: [
+              MLSubmenu(
+                  onClick: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => EntranceExitRequestPage()),
+                    );
+                  },
+                  submenuContent: Text(Localization.of(context)
+                      .getTranslatedValue("EntranceExitRequest"))),
+              MLSubmenu(
+                  onClick: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => PendingEntranceExitRequests()),
+                    );
+                  },
+                  submenuContent: Text(Localization.of(context)
+                      .getTranslatedValue("PendingEntranceExitRequests"))),
+              MLSubmenu(
+                  onClick: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => MyPendingRequests()),
+                    );
+                  },
+                  submenuContent: Text(Localization.of(context)
+                      .getTranslatedValue("MyPendingRequests"))),
+            ],
             onClick: () {}),
+        MLMenuItem(
+            leading: Icon(
+              Icons.time_to_leave,
+              color: Color.fromRGBO(243, 119, 55, 1),
+            ),
+            trailing: Icon(
+              Icons.arrow_right,
+              color: Color.fromRGBO(243, 119, 55, 1),
+            ),
+            content: Text(
+              Localization.of(context).getTranslatedValue("MissionServices"),
+            ),
+            subMenuItems: [
+              MLSubmenu(
+                  onClick: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => MissionRequestPage()),
+                    );
+                  },
+                  submenuContent: Text(Localization.of(context)
+                      .getTranslatedValue("MissionRequest"))),
+              MLSubmenu(
+                  onClick: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => PendingMissions()),
+                    );
+                  },
+                  submenuContent: Text(Localization.of(context)
+                      .getTranslatedValue("PendingMissionRequests"))),
+              MLSubmenu(
+                  onClick: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => mission.MyPendingRequests()),
+                    );
+                  },
+                  submenuContent: Text(Localization.of(context)
+                      .getTranslatedValue("MyPendingRequests"))),
+            ],
+            onClick: () {}),
+        MLMenuItem(
+          leading: Icon(
+            Icons.settings,
+            color: Color.fromRGBO(243, 119, 55, 1),
+          ),
+          content: Text(Localization.of(context).getTranslatedValue("Setting")),
+          subMenuItems: [
+            MLSubmenu(
+                onClick: () {
+                  if (locale == 'en') {
+                    MyApp.setLocale(
+                        context, Locale.fromSubtags(languageCode: 'ar'));
+                    SharedPref.pref.setLocale('ar');
+                  } else {
+                    MyApp.setLocale(
+                        context, Locale.fromSubtags(languageCode: 'en'));
+                    SharedPref.pref.setLocale('en');
+                  }
+                },
+                submenuContent: Text(locale == 'en'
+                    ? Localization.of(context)
+                        .getTranslatedValue("ArabicLanguage")
+                    : Localization.of(context)
+                        .getTranslatedValue("EnglishLanguage"))),
+          ],
+          onClick: () async {
+            await SharedPref.pref.setUserName(null);
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil('/', ModalRoute.withName('/'));
+          },
+        ),
         MLMenuItem(
           leading: Icon(
             FontAwesomeIcons.signOutAlt,
             color: Color.fromRGBO(243, 119, 55, 1),
           ),
-          content: Text("Sign Out"),
+          content: Text(Localization.of(context).getTranslatedValue("SignOut")),
           onClick: () async {
             await SharedPref.pref.setUserName(null);
             Navigator.of(context)

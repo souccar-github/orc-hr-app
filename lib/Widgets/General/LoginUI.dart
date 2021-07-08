@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:orc_hr/Localization/Localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orc_hr/Bloc/General/bloc/auth_bloc.dart';
@@ -40,7 +41,7 @@ Widget loginUI(AuthBloc authBloc, BuildContext context) {
                     contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                     filled: true,
                     fillColor: Colors.white,
-                    hintText: "Username",
+                    hintText: Localization.of(context).getTranslatedValue("Username"),
                     labelStyle:
                         TextStyle(color: Color.fromRGBO(243, 119, 55, 1)),
                     enabledBorder: new OutlineInputBorder(
@@ -86,7 +87,7 @@ Widget loginUI(AuthBloc authBloc, BuildContext context) {
                     contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                     filled: true,
                     fillColor: Colors.white,
-                    hintText: "Password",
+                    hintText: Localization.of(context).getTranslatedValue("Password"),
                     labelStyle:
                         TextStyle(color: Color.fromRGBO(243, 119, 55, 1)),
                     enabledBorder: new OutlineInputBorder(
@@ -142,7 +143,7 @@ Widget loginUI(AuthBloc authBloc, BuildContext context) {
                                   MaterialTapTargetSize.shrinkWrap,
                               color: Color.fromRGBO(243, 119, 55, 1),
                               child: Text(
-                                "Login",
+                                Localization.of(context).getTranslatedValue("Login"),
                                 style: TextStyle(
                                     fontSize: 20, color: Colors.white),
                               ),
