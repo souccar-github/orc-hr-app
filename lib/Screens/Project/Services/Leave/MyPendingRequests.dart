@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orc_hr/Bloc/Project/bloc/leave_bloc.dart';
+import 'package:orc_hr/Localization/Localization.dart';
 import 'package:orc_hr/Widgets/Project/PendingList.dart';
 
 class MyPendingRequests extends StatefulWidget {
@@ -29,7 +30,7 @@ class _MyPendingRequestsState extends State<MyPendingRequests> {
             onPressed: () => Navigator.of(context).pop(),
           ),
           title: Text(
-            'My Pending Requests',
+            Localization.of(context).getTranslatedValue("MyPendingRequests"),
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headline6,
           ),

@@ -6,6 +6,7 @@ import 'package:orc_hr/Bloc/Project/bloc/leave_bloc.dart';
 import 'package:orc_hr/Models/Project/LeaveRequest.dart';
 import 'package:orc_hr/Widgets/General/Animation/delayed_animation.dart';
 import 'package:orc_hr/Widgets/General/TextFormField.dart';
+import 'package:orc_hr/Localization/Localization.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -39,7 +40,7 @@ class _ApprovePageState extends State<ApprovePage> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          'Leave Approve',
+          Localization.of(context).getTranslatedValue("LeaveApprove"),
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headline6,
         ),
@@ -51,7 +52,7 @@ class _ApprovePageState extends State<ApprovePage> {
           if (state is AcceptLeaveRequestSuccessfully) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(
-                "Leave Accepted Successfully",
+                Localization.of(context).getTranslatedValue("LeaveAcceptedSuccessfully"),
                 style: TextStyle(color: Colors.white),
               ),
               backgroundColor: Colors.green,
@@ -65,7 +66,7 @@ class _ApprovePageState extends State<ApprovePage> {
           if (state is PendingLeaveRequestSuccessfully) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(
-                "Leave Pending Successfully",
+                Localization.of(context).getTranslatedValue("LeavePendingSuccessfully"),
                 style: TextStyle(color: Colors.white),
               ),
               backgroundColor: Colors.green,
@@ -79,7 +80,7 @@ class _ApprovePageState extends State<ApprovePage> {
           if (state is RejectLeaveRequestSuccessfully) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(
-                "Leave Rejected Successfully",
+                Localization.of(context).getTranslatedValue("LeaveRejectedSuccessfully"),
                 style: TextStyle(color: Colors.white),
               ),
               backgroundColor: Colors.green,
@@ -127,7 +128,7 @@ class _ApprovePageState extends State<ApprovePage> {
                           child: Column(
                             children: <Widget>[
                               Row(children: <Widget>[
-                                Text("Employee Name"),
+                                Text(Localization.of(context).getTranslatedValue("EmployeeName")),
                                 SizedBox(
                                   width: 20,
                                 ),
@@ -141,14 +142,14 @@ class _ApprovePageState extends State<ApprovePage> {
                                       false,
                                       1,
                                       leave.fullName,
-                                      true),
+                                      true,context),
                                 ),
                               ]),
                               SizedBox(
                                 height: 10,
                               ),
                               Row(children: <Widget>[
-                                Text("Leave Setting"),
+                                Text(Localization.of(context).getTranslatedValue("LeaveSetting")),
                                 SizedBox(
                                   width: 20,
                                 ),
@@ -162,14 +163,14 @@ class _ApprovePageState extends State<ApprovePage> {
                                       false,
                                       1,
                                       leave.leaveSettingName,
-                                      true),
+                                      true,context),
                                 ),
                               ]),
                               SizedBox(
                                 height: 10,
                               ),
                               Row(children: <Widget>[
-                                Text("Request Date"),
+                                Text(Localization.of(context).getTranslatedValue("RequestDate")),
                                 SizedBox(
                                   width: 20,
                                 ),
@@ -183,14 +184,14 @@ class _ApprovePageState extends State<ApprovePage> {
                                       false,
                                       1,
                                       formatter.format(leave.requestDate),
-                                      true),
+                                      true,context),
                                 ),
                               ]),
                               SizedBox(
                                 height: 10,
                               ),
                               Row(children: <Widget>[
-                                Text("Start Date"),
+                                Text(Localization.of(context).getTranslatedValue("StartDate")),
                                 SizedBox(
                                   width: 20,
                                 ),
@@ -204,14 +205,14 @@ class _ApprovePageState extends State<ApprovePage> {
                                       false,
                                       1,
                                       formatter.format(leave.startDate),
-                                      true),
+                                      true,context),
                                 ),
                               ]),
                               SizedBox(
                                 height: 10,
                               ),
                               Row(children: <Widget>[
-                                Text("End Date"),
+                                Text(Localization.of(context).getTranslatedValue("EndDate")),
                                 SizedBox(
                                   width: 20,
                                 ),
@@ -225,14 +226,14 @@ class _ApprovePageState extends State<ApprovePage> {
                                       false,
                                       1,
                                       formatter.format(leave.endDate),
-                                      true),
+                                      true,context),
                                 ),
                               ]),
                               SizedBox(
                                 height: 10,
                               ),
                               Row(children: <Widget>[
-                                Text("Hourly Leave"),
+                                Text(Localization.of(context).getTranslatedValue("HourlyLeave")),
                                 SizedBox(
                                   width: 20,
                                 ),
@@ -246,7 +247,7 @@ class _ApprovePageState extends State<ApprovePage> {
                               ),
                               leave.isHourlyLeave
                                   ? Row(children: <Widget>[
-                                      Text("From Time"),
+                                      Text(Localization.of(context).getTranslatedValue("FromTime")),
                                       SizedBox(
                                         width: 20,
                                       ),
@@ -263,13 +264,13 @@ class _ApprovePageState extends State<ApprovePage> {
                                             1,
                                             timeFormatter
                                                 .format(leave.fromTime),
-                                            true),
+                                            true,context),
                                       ),
                                     ])
                                   : Container(),
                               leave.isHourlyLeave
                                   ? Row(children: <Widget>[
-                                      Text("To Time"),
+                                      Text(Localization.of(context).getTranslatedValue("ToTime")),
                                       SizedBox(
                                         width: 20,
                                       ),
@@ -285,7 +286,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                             false,
                                             1,
                                             timeFormatter.format(leave.toTime),
-                                            true),
+                                            true,context),
                                       ),
                                     ])
                                   : Container(),
@@ -293,7 +294,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                 height: 10,
                               ),
                               Row(children: <Widget>[
-                                Text("Duration"),
+                                Text(Localization.of(context).getTranslatedValue("Duration")),
                                 SizedBox(
                                   width: 20,
                                 ),
@@ -307,14 +308,14 @@ class _ApprovePageState extends State<ApprovePage> {
                                       false,
                                       1,
                                       leave.spentDays.toString(),
-                                      true),
+                                      true,context),
                                 ),
                               ]),
                               SizedBox(
                                 height: 10,
                               ),
                               Row(children: <Widget>[
-                                Text("Leave Reason"),
+                                Text(Localization.of(context).getTranslatedValue("LeaveReason")),
                                 SizedBox(
                                   width: 20,
                                 ),
@@ -328,14 +329,14 @@ class _ApprovePageState extends State<ApprovePage> {
                                       false,
                                       1,
                                       leave.leaveReason,
-                                      true),
+                                      true,context),
                                 ),
                               ]),
                               SizedBox(
                                 height: 10,
                               ),
                               Row(children: <Widget>[
-                                Text("Description"),
+                                Text(Localization.of(context).getTranslatedValue("Description")),
                                 SizedBox(
                                   width: 20,
                                 ),
@@ -349,7 +350,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                       false,
                                       5,
                                       leave.description,
-                                      true),
+                                      true,context),
                                 ),
                               ]),
                               SizedBox(
@@ -385,7 +386,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                 child: Row(
                                   children: <Widget>[
                                     Row(children: <Widget>[
-                                      Text("Note"),
+                                      Text(Localization.of(context).getTranslatedValue("Note")),
                                       SizedBox(
                                         width: 10,
                                       ),
@@ -399,13 +400,13 @@ class _ApprovePageState extends State<ApprovePage> {
                                             note = value;
                                           });
                                         },
-                                            "Type a note ...",
+                                            Localization.of(context).getTranslatedValue("Typeanote"),
                                             false,
                                             TextInputType.multiline,
                                             false,
                                             5,
                                             "",
-                                            false),
+                                            false,context),
                                       ),
                                     ]),
                                     SizedBox(
@@ -436,7 +437,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                                   color: Color.fromRGBO(
                                                       243, 119, 55, 0.7),
                                                   child: Text(
-                                                    "Accept",
+                                                    Localization.of(context).getTranslatedValue("Accept"),
                                                     style: TextStyle(
                                                         fontSize: 18,
                                                         color: Colors.white),
@@ -470,7 +471,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                                   color: Color.fromRGBO(
                                                       243, 119, 55, 0.7),
                                                   child: Text(
-                                                    "Reject",
+                                                    Localization.of(context).getTranslatedValue("Reject"),
                                                     style: TextStyle(
                                                         fontSize: 18,
                                                         color: Colors.white),
@@ -504,7 +505,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                                   color: Color.fromRGBO(
                                                       243, 119, 55, 0.7),
                                                   child: Text(
-                                                    "Pending",
+                                                    Localization.of(context).getTranslatedValue("Pending"),
                                                     style: TextStyle(
                                                         fontSize: 18,
                                                         color: Colors.white),

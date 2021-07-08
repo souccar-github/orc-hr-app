@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:orc_hr/Localization/Localization.dart';
 import 'package:orc_hr/Models/Project/WorkflowInfo.dart';
 
 Widget pendingRequests(List<WorkflowInfo> list) {
@@ -26,7 +27,8 @@ Widget pendingRequests(List<WorkflowInfo> list) {
                                 ? Row(
                                     children: <Widget>[
                                       Text(
-                                        "Request Date : ",
+                                        Localization.of(context)
+                                            .getTranslatedValue("RequestDate:"),
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold),
                                       ),
@@ -39,15 +41,33 @@ Widget pendingRequests(List<WorkflowInfo> list) {
                                       )
                                     ],
                                   )
-                                : Text(
-                                    list[index]
-                                            .date
-                                            .toIso8601String()
-                                            .substring(0, 10) ??
-                                        "",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
+                                : list[index].type == "12"
+                                    ? Row(
+                                    children: <Widget>[
+                                      Text(
+                                        Localization.of(context)
+                                            .getTranslatedValue("RequestDate:"),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        list[index]
+                                                .date
+                                                .toIso8601String()
+                                                .substring(0, 10) ??
+                                            "",
+                                      )
+                                    ],
+                                  )
+                                    : Text(
+                                        list[index]
+                                                .date
+                                                .toIso8601String()
+                                                .substring(0, 10) ??
+                                            "",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
                             SizedBox(
                               height: 10,
                             ),
@@ -65,9 +85,13 @@ Widget pendingRequests(List<WorkflowInfo> list) {
                 alignment: Alignment.centerRight,
                 child: Stack(
                   children: <Widget>[
-                    list[index].waitingApprove?Text("Waiting for Approve ...",
-                                style: TextStyle(
-                                    fontSize: 14, color: Colors.black54)):Container()
+                    list[index].waitingApprove
+                        ? Text(
+                            Localization.of(context)
+                                .getTranslatedValue("WaitingforApprove"),
+                            style:
+                                TextStyle(fontSize: 14, color: Colors.black54))
+                        : Container()
                   ],
                 ),
               )

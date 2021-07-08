@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:orc_hr/Localization/Localization.dart';
 import 'package:flutter/material.dart';
 
 Widget textFormField(Function(String) _onChanged, String _hint, bool isReq,
-    TextInputType _type, bool _obscureText, int _lines, String _initial,bool _readOnly) {
+    TextInputType _type, bool _obscureText, int _lines, String _initial,bool _readOnly,BuildContext context) {
   return TextFormField(
     onChanged: _onChanged,
     initialValue: _initial,
@@ -42,7 +43,7 @@ Widget textFormField(Function(String) _onChanged, String _hint, bool isReq,
     ),
     validator: (text) {
       if (isReq && (text == null || text == "")) {
-        return "Required";
+        return Localization.of(context).getTranslatedValue("Required");
       }
       return null;
     },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orc_hr/Bloc/Project/bloc/entranceexit_bloc.dart';
 import 'package:orc_hr/Bloc/Project/bloc/leave_bloc.dart';
+import 'package:orc_hr/Localization/Localization.dart';
 import 'package:orc_hr/Models/Project/DropdownItemModel.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:orc_hr/Models/Project/EntranceExitRequest.dart';
@@ -37,13 +38,13 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
     items.add(
       DropdownMenuItem(
         value: 0,
-        child: Text("Entrance"),
+        child: Text(Localization.of(context).getTranslatedValue("Entrance")),
       ),
     );
     items.add(
       DropdownMenuItem(
         value: 1,
-        child: Text("Exit"),
+        child: Text(Localization.of(context).getTranslatedValue("Exit")),
       ),
     );
     _dropdownMenuItems = items;
@@ -72,7 +73,7 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          'Entrance Exit Request',
+          Localization.of(context).getTranslatedValue("EntranceExitRequest"),
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headline6,
         ),
@@ -93,7 +94,7 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
             if (state is PostEntranceExitRequestSuccessfully) {
               Scaffold.of(context).showSnackBar(SnackBar(
                 content: Text(
-                  "EntranceExit Requested Successfully",
+                  Localization.of(context).getTranslatedValue("EntranceExitRequestedSuccessfully"),
                   style: TextStyle(color: Colors.white),
                 ),
                 backgroundColor: Colors.green,
@@ -123,7 +124,7 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
                           Row(children: <Widget>[
                             RichText(
                               text: TextSpan(
-                                  text: "Record Date",
+                                  text: Localization.of(context).getTranslatedValue("RecordDate"),
                                   style: TextStyle(color: Colors.black),
                                   children: [
                                     TextSpan(
@@ -143,7 +144,7 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
                                 firstDate: DateTime(2000),
                                 lastDate: DateTime(2100),
                                 icon: Icon(Icons.event),
-                                dateLabelText: 'Date',
+                                dateLabelText: Localization.of(context).getTranslatedValue("Date"),
                                 onChanged: (val) {
                                   recordDateTime = val;
                                 },
@@ -156,7 +157,7 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
                           Row(children: <Widget>[
                             RichText(
                               text: TextSpan(
-                                  text: "Record Type",
+                                  text: Localization.of(context).getTranslatedValue("RecordType"),
                                   style: TextStyle(color: Colors.black),
                                   children: [
                                     TextSpan(
@@ -191,7 +192,7 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
                                 ),
                               ),
                               hint: Text(
-                                "Record Type",
+                                Localization.of(context).getTranslatedValue("RecordType"),
                                 style: TextStyle(fontSize: 16),
                               ), // Not necessary for Option 1
                               value: _selectedType,
@@ -203,7 +204,7 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
                             height: 10,
                           ),
                           Row(children: <Widget>[
-                            Text("Note"),
+                            Text(Localization.of(context).getTranslatedValue("Note")),
                             SizedBox(
                               width: 20,
                             ),
@@ -211,13 +212,13 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
                               width: MediaQuery.of(context).size.width / 2,
                               child: textFormField(
                                   onChangeTextField,
-                                  "Type a note ...",
+                                  Localization.of(context).getTranslatedValue("Typeanote"),
                                   false,
                                   TextInputType.multiline,
                                   false,
                                   5,
                                   "",
-                                  false),
+                                  false,context),
                             ),
                           ]),
                           SizedBox(
@@ -235,7 +236,7 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
                                     MaterialTapTargetSize.shrinkWrap,
                                 color: Color.fromRGBO(243, 119, 55, 1),
                                 child: Text(
-                                  "Apply",
+                                  Localization.of(context).getTranslatedValue("Apply"),
                                   style: TextStyle(
                                       fontSize: 18, color: Colors.white),
                                 ),

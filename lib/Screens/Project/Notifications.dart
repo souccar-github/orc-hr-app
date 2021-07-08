@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:orc_hr/Localization/Localization.dart';
 import 'package:orc_hr/Screens/Project/Services/Leave/ApprovePage.dart';
 import 'package:orc_hr/Screens/Project/Services/entranceExit/ApprovePage.dart'
     as record;
@@ -30,7 +31,7 @@ class _NotificationPageState extends State<NotificationPage> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          'Notifications',
+          Localization.of(context).getTranslatedValue("Notifications"),
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headline6,
         ),

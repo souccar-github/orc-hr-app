@@ -2,58 +2,58 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orc_hr/Localization/Localization.dart';
-import 'package:orc_hr/Bloc/Project/bloc/leave_bloc.dart';
-import 'package:orc_hr/Screens/Project/Services/Leave/ApprovePage.dart';
+import 'package:orc_hr/Bloc/Project/bloc/mission_bloc.dart';
+import 'package:orc_hr/Screens/Project/Services/Mission/ApprovePage.dart';
 import 'package:orc_hr/Widgets/General/Animation/delayed_animation.dart';
 
 import '../../Notifications.dart';
 
-class PendingLeaves extends StatefulWidget {
+class PendingMissions extends StatefulWidget {
   @override
-  _PendingLeavesState createState() => _PendingLeavesState();
+  _PendingMissionsState createState() => _PendingMissionsState();
 }
 
-class _PendingLeavesState extends State<PendingLeaves> {
-  LeaveBloc bloc;
+class _PendingMissionsState extends State<PendingMissions> {
+  MissionBloc bloc;
   @override
   void initState() {
     super.initState();
-    bloc = new LeaveBloc();
-    bloc.add(GetPendingLeaveRequests());
+    bloc = new MissionBloc();
+    bloc.add(GetPendingMissionRequests());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-         actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.notifications,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => NotificationPage()),
-                );
-              },
-            )
-          ],
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.notifications,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => NotificationPage()),
+              );
+            },
+          )
+        ],
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          Localization.of(context).getTranslatedValue("PendingLeaveRequests"),
+          Localization.of(context).getTranslatedValue("PendingMissionRequests"),
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headline6,
         ),
       ),
       backgroundColor: Colors.white,
-      body: BlocListener<LeaveBloc, LeaveState>(
+      body: BlocListener<MissionBloc, MissionState>(
         cubit: bloc,
         listener: (context, state) {
-          if (state is LeaveError) {
+          if (state is MissionError) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(
                 state.error,
@@ -63,15 +63,15 @@ class _PendingLeavesState extends State<PendingLeaves> {
             ));
           }
         },
-        child: BlocBuilder<LeaveBloc, LeaveState>(
+        child: BlocBuilder<MissionBloc, MissionState>(
           cubit: bloc,
           builder: (context, state) {
-            if (state is LeaveLoading) {
+            if (state is MissionLoading) {
               return Center(
                 child: CircularProgressIndicator(),
               );
             }
-            if (state is GetPendingLeaveRequestsSuccessfully) {
+            if (state is GetPendingMissionRequestsSuccessfully) {
               return Padding(
                 padding: EdgeInsets.all(7),
                 child: ListView.builder(
@@ -92,13 +92,25 @@ class _PendingLeavesState extends State<PendingLeaves> {
                                         const EdgeInsets.only(left: 10, top: 5),
                                     child: Column(
                                       children: <Widget>[
-                                        Text(state.items[index].fullName ?? "",style: TextStyle(fontWeight: FontWeight.bold),),
+                                        Text(
+                                          state.items[index].fullName ?? "",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                         SizedBox(
                                           height: 10,
                                         ),
-                                        Text(state.items[index]
-                                                .leaveSettingName ??
-                                            "",style: TextStyle(fontSize: 14,color: Colors.black54)),
+                                        Text(
+                                            state.items[index].isHourlyMission
+                                                ? Localization.of(context)
+                                                    .getTranslatedValue(
+                                                        "HourlyMission")
+                                                : Localization.of(context)
+                                                    .getTranslatedValue(
+                                                        "TravilMission"),
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black54)),
                                       ],
                                     ),
                                   ),
@@ -131,7 +143,9 @@ class _PendingLeavesState extends State<PendingLeaves> {
                                               color: Color.fromRGBO(
                                                   243, 119, 55, 0.7),
                                               child: Text(
-                                                Localization.of(context).getTranslatedValue("Approve"),
+                                                Localization.of(context)
+                                                    .getTranslatedValue(
+                                                        "Approve"),
                                                 style: TextStyle(
                                                     fontSize: 18,
                                                     color: Colors.white),
@@ -141,8 +155,8 @@ class _PendingLeavesState extends State<PendingLeaves> {
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           ApprovePage(
-                                                            bloc:bloc,
-                                                              leave:
+                                                              bloc: bloc,
+                                                              mission:
                                                                   state.items[
                                                                       index])),
                                                 );

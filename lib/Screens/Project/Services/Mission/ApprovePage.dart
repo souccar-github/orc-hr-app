@@ -1,51 +1,34 @@
-import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:orc_hr/Bloc/Project/bloc/entranceexit_bloc.dart';
-import 'package:orc_hr/Models/Project/EntranceExitRequest.dart';
-import 'package:orc_hr/Localization/Localization.dart';
+import 'package:orc_hr/Bloc/Project/bloc/mission_bloc.dart';
+import 'package:orc_hr/Models/Project/MissionRequest.dart';
 import 'package:orc_hr/Widgets/General/Animation/delayed_animation.dart';
 import 'package:orc_hr/Widgets/General/TextFormField.dart';
+import 'package:orc_hr/Localization/Localization.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ApprovePage extends StatefulWidget {
-  final EntranceExitRequest record;
-  final EntranceexitBloc bloc;
-  const ApprovePage({this.bloc, this.record});
+  final MissionRequest mission;
+  final MissionBloc bloc;
+  const ApprovePage({this.bloc, this.mission});
   @override
-  _ApprovePageState createState() => _ApprovePageState(this.record);
+  _ApprovePageState createState() => _ApprovePageState(this.mission);
 }
 
 class _ApprovePageState extends State<ApprovePage> {
-  final EntranceExitRequest record;
+  final MissionRequest mission;
   String note;
-  EntranceexitBloc bloc;
+  MissionBloc bloc;
   DateFormat formatter = DateFormat('dd/MM/yyyy');
   DateFormat timeFormatter = DateFormat('hh:mm');
-  _ApprovePageState(this.record);
-  List<DropdownMenuItem<int>> _dropdownMenuItems =
-      new List<DropdownMenuItem<int>>();
+  _ApprovePageState(this.mission);
   @override
   void initState() {
     super.initState();
-    List<DropdownMenuItem<int>> items = List();
-    items.add(
-      DropdownMenuItem(
-        value: 0,
-        child: Text(Localization.of(context).getTranslatedValue("Entrance")),
-      ),
-    );
-    items.add(
-      DropdownMenuItem(
-        value: 1,
-        child: Text(Localization.of(context).getTranslatedValue("Exit")),
-      ),
-    );
-    _dropdownMenuItems = items;
-    bloc = new EntranceexitBloc();
+    bloc = new MissionBloc();
   }
 
   @override
@@ -57,58 +40,58 @@ class _ApprovePageState extends State<ApprovePage> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          Localization.of(context).getTranslatedValue("EntranceExitApprove"),
+          Localization.of(context).getTranslatedValue("MissionApprove"),
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headline6,
         ),
       ),
       backgroundColor: Colors.white,
-      body: BlocListener<EntranceexitBloc, EntranceexitState>(
+      body: BlocListener<MissionBloc, MissionState>(
         cubit: bloc,
         listener: (context, state) {
-          if (state is AcceptEntranceexitRequestSuccessfully) {
+          if (state is AcceptMissionRequestSuccessfully) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(
-                Localization.of(context).getTranslatedValue("EntranceExitAcceptedSuccessfully"),
+                Localization.of(context).getTranslatedValue("MissionAcceptedSuccessfully"),
                 style: TextStyle(color: Colors.white),
               ),
               backgroundColor: Colors.green,
             ));
             if (widget.bloc != null) {
-              widget.bloc.add(GetPendingEntranceexitRequests());
+              widget.bloc.add(GetPendingMissionRequests());
             }
             Future.delayed(Duration(milliseconds: 1500),
                 () => Navigator.of(context).pop());
           }
-          if (state is PendingEntranceexitRequestSuccessfully) {
+          if (state is PendingMissionRequestSuccessfully) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(
-                Localization.of(context).getTranslatedValue("EntranceExitPendingSuccessfully"),
+                Localization.of(context).getTranslatedValue("MissionPendingSuccessfully"),
                 style: TextStyle(color: Colors.white),
               ),
               backgroundColor: Colors.green,
             ));
             if (widget.bloc != null) {
-              widget.bloc.add(GetPendingEntranceexitRequests());
+              widget.bloc.add(GetPendingMissionRequests());
             }
             Future.delayed(Duration(milliseconds: 1500),
                 () => Navigator.of(context).pop());
           }
-          if (state is RejectEntranceexitRequestSuccessfully) {
+          if (state is RejectMissionRequestSuccessfully) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(
-                Localization.of(context).getTranslatedValue("EntranceExitRejectedSuccessfully"),
+                Localization.of(context).getTranslatedValue("MissionRejectedSuccessfully"),
                 style: TextStyle(color: Colors.white),
               ),
               backgroundColor: Colors.green,
             ));
             if (widget.bloc != null) {
-              widget.bloc.add(GetPendingEntranceexitRequests());
+              widget.bloc.add(GetPendingMissionRequests());
             }
             Future.delayed(Duration(milliseconds: 1500),
                 () => Navigator.of(context).pop());
           }
-          if (state is EntranceExitError) {
+          if (state is MissionError) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(
                 state.error,
@@ -118,10 +101,10 @@ class _ApprovePageState extends State<ApprovePage> {
             ));
           }
         },
-        child: BlocBuilder<EntranceexitBloc, EntranceexitState>(
+        child: BlocBuilder<MissionBloc, MissionState>(
             cubit: bloc,
             builder: (context, state) {
-              if (state is EntranceExitLoading) {
+              if (state is MissionLoading) {
                 return Center(
                   child: CircularProgressIndicator(),
                 );
@@ -145,47 +128,7 @@ class _ApprovePageState extends State<ApprovePage> {
                           child: Column(
                             children: <Widget>[
                               Row(children: <Widget>[
-                                RichText(
-                                  text: TextSpan(
-                                      text: Localization.of(context).getTranslatedValue("RecordDate"),
-                                      style: TextStyle(color: Colors.black),
-                                      children: [
-                                        TextSpan(
-                                            text: ' *',
-                                            style: TextStyle(color: Colors.red))
-                                      ]),
-                                ),
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Container(
-                                  width: MediaQuery.of(context).size.width / 2,
-                                  child: DateTimePicker(
-                                    type: DateTimePickerType.dateTime,
-                                    dateMask: 'dd /MM /yyyy , hh:mm',
-                                    initialValue: record.recordDate.toString(),
-                                    firstDate: DateTime(2000),
-                                    lastDate: DateTime(2100),
-                                    icon: Icon(Icons.event),
-                                    dateLabelText: Localization.of(context).getTranslatedValue("Date"),
-                                    onChanged: null,
-                                  ),
-                                ),
-                              ]),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(children: <Widget>[
-                                RichText(
-                                  text: TextSpan(
-                                      text: Localization.of(context).getTranslatedValue("RecordType"),
-                                      style: TextStyle(color: Colors.black),
-                                      children: [
-                                        TextSpan(
-                                            text: ' *',
-                                            style: TextStyle(color: Colors.red))
-                                      ]),
-                                ),
+                                Text(Localization.of(context).getTranslatedValue("EmployeeName")),
                                 SizedBox(
                                   width: 20,
                                 ),
@@ -198,7 +141,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                       TextInputType.text,
                                       false,
                                       1,
-                                      record.logTypeString,
+                                      mission.fullName,
                                       true,context),
                                 ),
                               ]),
@@ -206,23 +149,129 @@ class _ApprovePageState extends State<ApprovePage> {
                                 height: 10,
                               ),
                               Row(children: <Widget>[
-                                Text(Localization.of(context).getTranslatedValue("Note")),
+                                Text(Localization.of(context).getTranslatedValue("StartDate")),
                                 SizedBox(
                                   width: 20,
                                 ),
                                 Container(
                                   width: MediaQuery.of(context).size.width / 2,
                                   child: textFormField(
-                                      (_) => {},
-                                      Localization.of(context).getTranslatedValue("Typeanote"),
+                                      (_) {},
+                                      "",
+                                      false,
+                                      TextInputType.text,
+                                      false,
+                                      1,
+                                      formatter.format(mission.startDate),
+                                      true,context),
+                                ),
+                              ]),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(children: <Widget>[
+                                Text(Localization.of(context).getTranslatedValue("EndDate")),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Container(
+                                  width: MediaQuery.of(context).size.width / 2,
+                                  child: textFormField(
+                                      (_) {},
+                                      "",
+                                      false,
+                                      TextInputType.text,
+                                      false,
+                                      1,
+                                      formatter.format(mission.endDate),
+                                      true,context),
+                                ),
+                              ]),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(children: <Widget>[
+                                Text(Localization.of(context).getTranslatedValue("HourlyMission")),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Checkbox(
+                                  value: mission.isHourlyMission,
+                                  onChanged: null,
+                                ),
+                              ]),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              mission.isHourlyMission
+                                  ? Row(children: <Widget>[
+                                      Text(Localization.of(context).getTranslatedValue("FromTime")),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                2,
+                                        child: textFormField(
+                                            (_) {},
+                                            "",
+                                            false,
+                                            TextInputType.text,
+                                            false,
+                                            1,
+                                            timeFormatter
+                                                .format(mission.fromTime),
+                                            true,context),
+                                      ),
+                                    ])
+                                  : Container(),
+                              mission.isHourlyMission
+                                  ? Row(children: <Widget>[
+                                      Text(Localization.of(context).getTranslatedValue("ToTime")),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                2,
+                                        child: textFormField(
+                                            (_) {},
+                                            "",
+                                            false,
+                                            TextInputType.text,
+                                            false,
+                                            1,
+                                            timeFormatter.format(mission.toTime),
+                                            true,context),
+                                      ),
+                                    ])
+                                  : Container(),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(children: <Widget>[
+                                Text(Localization.of(context).getTranslatedValue("Description")),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Container(
+                                  width: MediaQuery.of(context).size.width / 2,
+                                  child: textFormField(
+                                      (_) {},
+                                      "",
                                       false,
                                       TextInputType.multiline,
                                       false,
                                       5,
-                                      record.note,
+                                      mission.description,
                                       true,context),
                                 ),
                               ]),
+                              SizedBox(
+                                height: 10,
+                              ),
                             ],
                           ),
                         ),
@@ -310,12 +359,10 @@ class _ApprovePageState extends State<ApprovePage> {
                                                         color: Colors.white),
                                                   ),
                                                   onPressed: () {
-                                                    bloc.add(
-                                                        AcceptEntranceexitRequest(
-                                                            record
-                                                                .workflowItemId,
-                                                            record.recordId,
-                                                            note));
+                                                    bloc.add(AcceptMissionRequest(
+                                                        mission.workflowItemId,
+                                                        mission.missionId,
+                                                        note,mission.isHourlyMission));
                                                   },
                                                 )),
                                             delay: 200,
@@ -346,12 +393,10 @@ class _ApprovePageState extends State<ApprovePage> {
                                                         color: Colors.white),
                                                   ),
                                                   onPressed: () {
-                                                    bloc.add(
-                                                        RejectEntranceexitRequest(
-                                                            record
-                                                                .workflowItemId,
-                                                            record.recordId,
-                                                            note));
+                                                    bloc.add(RejectMissionRequest(
+                                                        mission.workflowItemId,
+                                                        mission.missionId,
+                                                        note,mission.isHourlyMission));
                                                   },
                                                 )),
                                             delay: 200,
@@ -383,11 +428,11 @@ class _ApprovePageState extends State<ApprovePage> {
                                                   ),
                                                   onPressed: () {
                                                     bloc.add(
-                                                        PendingEntranceexitRequest(
-                                                            record
+                                                        PendingMissionRequest(
+                                                            mission
                                                                 .workflowItemId,
-                                                            record.recordId,
-                                                            note));
+                                                            mission.missionId,
+                                                            note,mission.isHourlyMission));
                                                   },
                                                 )),
                                             delay: 200,

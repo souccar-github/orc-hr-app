@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:orc_hr/Bloc/General/bloc/auth_bloc.dart';
 import 'package:orc_hr/Localization/Localization.dart';
-import 'package:orc_hr/Screens/General/SplashScreen.dart';
-import 'package:orc_hr/Screens/Project/MainPage.dart';
+
+import 'Screens/General/SplashScreen.dart';
+import 'SharedPref/SharedPref.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,7 +13,9 @@ void main() {
 class MyApp extends StatefulWidget {
   static void setLocale(BuildContext context, Locale locale) {
     _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
-    state.setLocale(locale);
+    Future.delayed(Duration(milliseconds: 0), () async {
+      state.setLocale(locale);
+    });
   }
 
   @override
@@ -61,6 +63,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      initialRoute: "/",
       debugShowCheckedModeBanner: false,
       localizationsDelegates: [
         Localization.delegate,
@@ -70,16 +73,15 @@ class _MyAppState extends State<MyApp> {
       ],
       localeResolutionCallback: (deviceLocale, supportedLoacales) {
         for (var locale in supportedLoacales) {
-          if (locale.languageCode == deviceLocale.languageCode &&
-              locale.countryCode == deviceLocale.countryCode)
+          if (locale.languageCode == deviceLocale.languageCode)
             return deviceLocale;
         }
         return supportedLoacales.first;
       },
       locale: _locale,
       supportedLocales: [
-        const Locale('en', 'US'),
-        const Locale('ar', 'SY'),
+        const Locale('en'),
+        const Locale('ar'),
       ],
       theme: ThemeData(
         iconTheme: IconThemeData(color: Colors.white, size: 25),

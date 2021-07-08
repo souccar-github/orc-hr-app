@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:orc_hr/Localization/Localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orc_hr/Bloc/Project/bloc/entranceexit_bloc.dart';
+import 'package:orc_hr/Bloc/Project/bloc/mission_bloc.dart';
+import 'package:orc_hr/Localization/Localization.dart';
 import 'package:orc_hr/Widgets/Project/PendingList.dart';
 
 class MyPendingRequests extends StatefulWidget {
@@ -13,11 +13,11 @@ class MyPendingRequests extends StatefulWidget {
 }
 
 class _MyPendingRequestsState extends State<MyPendingRequests> {
-  EntranceexitBloc bloc;
+  MissionBloc bloc;
   @override
   void initState() {
     super.initState();
-    bloc = new EntranceexitBloc();
+    bloc = new MissionBloc();
     bloc.add(GetMyPendingRequests());
   }
 
@@ -36,10 +36,10 @@ class _MyPendingRequestsState extends State<MyPendingRequests> {
           ),
         ),
         backgroundColor: Colors.white,
-        body: BlocListener<EntranceexitBloc, EntranceexitState>(
+        body: BlocListener<MissionBloc, MissionState>(
             cubit: bloc,
             listener: (context, state) {
-              if (state is EntranceExitError) {
+              if (state is MissionError) {
                 Scaffold.of(context).showSnackBar(SnackBar(
                   content: Text(
                     state.error,
@@ -49,10 +49,10 @@ class _MyPendingRequestsState extends State<MyPendingRequests> {
                 ));
               }
             },
-            child: BlocBuilder<EntranceexitBloc, EntranceexitState>(
+            child: BlocBuilder<MissionBloc, MissionState>(
               cubit: bloc,
               builder: (context, state) {
-                if (state is EntranceExitLoading) {
+                if (state is MissionLoading) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
