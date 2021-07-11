@@ -17,7 +17,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 class LeaveRequestPage extends StatefulWidget {
   int id;
-  LeaveRequestPage(this.id);
+  LeaveBloc bloc;
+  LeaveRequestPage(this.id, this.bloc);
   @override
   _LeaveRequestState createState() => _LeaveRequestState(this.id);
 }
@@ -85,7 +86,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
         0,
         DateTime.parse(startDate.substring(0, 10)),
         DateTime.parse(endDate.substring(0, 10)),
-        toTime== null ? new DateTime.now() : DateTime.parse(toTime),
+        toTime == null ? new DateTime.now() : DateTime.parse(toTime),
         0);
     bloc.add(GetSpentDays(model));
   }
@@ -152,7 +153,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
         0,
         DateTime.parse(startDate.substring(0, 10)),
         DateTime.parse(endDate.substring(0, 10)),
-        toTime== null ? new DateTime.now() : DateTime.parse(toTime),
+        toTime == null ? new DateTime.now() : DateTime.parse(toTime),
         0);
     bloc.add(GetSpentDays(model));
   }
@@ -172,7 +173,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-         Localization.of(context).getTranslatedValue("LeaveRequest"),
+          Localization.of(context).getTranslatedValue("LeaveRequest"),
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headline6,
         ),
@@ -196,10 +197,10 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                 _selectedSetting = _dropdownMenuItems
                     .firstWhere((i) => i.value.id == state.info.id)
                     .value;
-                if (info.isDivisibleToHours!=null){
+                if (info.isDivisibleToHours != null) {
                   isDivisibleToHours = info.isDivisibleToHours;
                 }
-                if (info.isIndivisible!=null){
+                if (info.isIndivisible != null) {
                   isIndivisible = info.isIndivisible;
                 }
                 var model = new LeaveRequest(
@@ -207,7 +208,9 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                     0,
                     DateTime.parse(endDate.substring(0, 10)),
                     DateTime.parse(startDate.substring(0, 10)),
-                    fromTime == null ? new DateTime.now() : DateTime.parse(fromTime),
+                    fromTime == null
+                        ? new DateTime.now()
+                        : DateTime.parse(fromTime),
                     "",
                     hourly,
                     false,
@@ -223,28 +226,40 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                     0,
                     DateTime.parse(startDate.substring(0, 10)),
                     DateTime.parse(endDate.substring(0, 10)),
-                    toTime== null ? new DateTime.now() : DateTime.parse(toTime),
+                    toTime == null
+                        ? new DateTime.now()
+                        : DateTime.parse(toTime),
                     0);
                 bloc.add(GetSpentDays(model));
                 chartData = [
-                  ChartData(Localization.of(context).getTranslatedValue("Granted"), state.info.granted, Colors.red),
-                  ChartData(Localization.of(context).getTranslatedValue("Remain"), state.info.remain, Colors.green)
+                  ChartData(
+                      Localization.of(context).getTranslatedValue("Granted"),
+                      state.info.granted,
+                      Colors.red),
+                  ChartData(
+                      Localization.of(context).getTranslatedValue("Remain"),
+                      state.info.remain,
+                      Colors.green)
                 ];
               });
             }
             if (state is PostLeaveRequestSuccessfully) {
               Scaffold.of(context).showSnackBar(SnackBar(
                 content: Text(
-                  Localization.of(context).getTranslatedValue("LeaveRequestedSuccessfully"),
+                  Localization.of(context)
+                      .getTranslatedValue("LeaveRequestedSuccessfully"),
                   style: TextStyle(color: Colors.white),
                 ),
                 backgroundColor: Colors.green,
               ));
-              Future.delayed(Duration(milliseconds: 1000),
-                  () => Navigator.of(context).pop());
+              Future.delayed(Duration(milliseconds: 1000), () {
+                if (widget.bloc != null){
+                  widget.bloc.add(InitMainLeavesBalancePage());
+                }
+                Navigator.of(context).pop();
+              });
             }
             if (state is GetSpentDaysSuccessfully) {
-             
               setState(() {
                 _textController.text = state.days.toString();
                 duration = double.parse(state.days);
@@ -294,7 +309,8 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                             Row(children: <Widget>[
                               RichText(
                                 text: TextSpan(
-                                    text: Localization.of(context).getTranslatedValue("LeaveType"),
+                                    text: Localization.of(context)
+                                        .getTranslatedValue("LeaveType"),
                                     style: TextStyle(color: Colors.black),
                                     children: [
                                       TextSpan(
@@ -305,8 +321,13 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                               SizedBox(
                                 width: 20,
                               ),
-                              dropdown(context, _selectedSetting, Localization.of(context).getTranslatedValue("LeaveType"),
-                                  _dropdownMenuItems, onChangeDropdownItem),
+                              dropdown(
+                                  context,
+                                  _selectedSetting,
+                                  Localization.of(context)
+                                      .getTranslatedValue("LeaveType"),
+                                  _dropdownMenuItems,
+                                  onChangeDropdownItem),
                             ]),
                             SizedBox(
                               height: 10,
@@ -314,7 +335,8 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                             Row(children: <Widget>[
                               RichText(
                                 text: TextSpan(
-                                    text: Localization.of(context).getTranslatedValue("RequestDate"),
+                                    text: Localization.of(context)
+                                        .getTranslatedValue("RequestDate"),
                                     style: TextStyle(color: Colors.black),
                                     children: [
                                       TextSpan(
@@ -339,7 +361,8 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                   firstDate: DateTime(2000),
                                   lastDate: DateTime(2100),
                                   icon: Icon(Icons.event),
-                                  dateLabelText: Localization.of(context).getTranslatedValue("Date"),
+                                  dateLabelText: Localization.of(context)
+                                      .getTranslatedValue("Date"),
                                   onChanged: (val) {
                                     requestDate = val;
                                   },
@@ -352,7 +375,8 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                             Row(children: <Widget>[
                               RichText(
                                 text: TextSpan(
-                                    text: Localization.of(context).getTranslatedValue("StartDate"),
+                                    text: Localization.of(context)
+                                        .getTranslatedValue("StartDate"),
                                     style: TextStyle(color: Colors.black),
                                     children: [
                                       TextSpan(
@@ -372,7 +396,8 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                   firstDate: DateTime(2000),
                                   lastDate: DateTime(2100),
                                   icon: Icon(Icons.event),
-                                  dateLabelText: Localization.of(context).getTranslatedValue("Date"),
+                                  dateLabelText: Localization.of(context)
+                                      .getTranslatedValue("Date"),
                                   onChanged: (val) {
                                     setState(() {
                                       startDate = val + "  00:00:00";
@@ -383,7 +408,11 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                               endDate.substring(0, 10)),
                                           DateTime.parse(
                                               startDate.substring(0, 10)),
-                                          fromTime == null ? new DateTime.now() : fromTime == null ? new DateTime.now() : DateTime.parse(fromTime),
+                                          fromTime == null
+                                              ? new DateTime.now()
+                                              : fromTime == null
+                                                  ? new DateTime.now()
+                                                  : DateTime.parse(fromTime),
                                           "",
                                           hourly,
                                           false,
@@ -403,7 +432,9 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                               startDate.substring(0, 10)),
                                           DateTime.parse(
                                               endDate.substring(0, 10)),
-                                          toTime== null ? new DateTime.now() : DateTime.parse(toTime),
+                                          toTime == null
+                                              ? new DateTime.now()
+                                              : DateTime.parse(toTime),
                                           0);
                                       bloc.add(GetSpentDays(model));
                                     });
@@ -414,130 +445,148 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                             SizedBox(
                               height: 10,
                             ),
-                            !isIndivisible? Row(children: <Widget>[
-                              RichText(
-                                text: TextSpan(
-                                    text: Localization.of(context).getTranslatedValue("EndDate"),
-                                    style: TextStyle(color: Colors.black),
-                                    children: [
-                                      TextSpan(
-                                          text: ' *',
-                                          style: TextStyle(color: Colors.red))
-                                    ]),
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width / 2,
-                                child: DateTimePicker(
-                                  readOnly: hourly,
-                                  controller: _controller,
-                                  enabled: !hourly,
-                                  type: DateTimePickerType.date,
-                                  dateMask: 'dd MMM, yyyy',
-                                  firstDate: DateTime(2000),
-                                  lastDate: DateTime(2100),
-                                  icon: Icon(Icons.event),
-                                  dateLabelText: 'Date',
-                                  onChanged: (val) {
-                                    setState(() {
-                                      endDate = val + " 00:00:00";
-                                      var model = new LeaveRequest(
-                                          "",
-                                          0,
-                                          DateTime.parse(
-                                              endDate.substring(0, 10)),
-                                          DateTime.parse(
-                                              startDate.substring(0, 10)),
-                                          fromTime == null ? new DateTime.now() : DateTime.parse(fromTime),
-                                          "",
-                                          hourly,
-                                          false,
-                                          0,
-                                          "",
-                                          0,
-                                          _selectedSetting == null
-                                              ? 0
-                                              : _selectedSetting.id,
-                                          "",
-                                          0,
-                                          0,
-                                          "",
-                                          DateTime.parse(requestDate),
-                                          0,
-                                          DateTime.parse(
-                                              startDate.substring(0, 10)),
-                                          DateTime.parse(
-                                              endDate.substring(0, 10)),
-                                          toTime== null ? new DateTime.now() : DateTime.parse(toTime),
-                                          0);
-                                      bloc.add(GetSpentDays(model));
-                                    });
-                                  },
-                                ),
-                              ),
-                            ]):Container(),
+                            !isIndivisible
+                                ? Row(children: <Widget>[
+                                    RichText(
+                                      text: TextSpan(
+                                          text: Localization.of(context)
+                                              .getTranslatedValue("EndDate"),
+                                          style: TextStyle(color: Colors.black),
+                                          children: [
+                                            TextSpan(
+                                                text: ' *',
+                                                style: TextStyle(
+                                                    color: Colors.red))
+                                          ]),
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Container(
+                                      width:
+                                          MediaQuery.of(context).size.width / 2,
+                                      child: DateTimePicker(
+                                        readOnly: hourly,
+                                        controller: _controller,
+                                        enabled: !hourly,
+                                        type: DateTimePickerType.date,
+                                        dateMask: 'dd MMM, yyyy',
+                                        firstDate: DateTime(2000),
+                                        lastDate: DateTime(2100),
+                                        icon: Icon(Icons.event),
+                                        dateLabelText: 'Date',
+                                        onChanged: (val) {
+                                          setState(() {
+                                            endDate = val + " 00:00:00";
+                                            var model = new LeaveRequest(
+                                                "",
+                                                0,
+                                                DateTime.parse(
+                                                    endDate.substring(0, 10)),
+                                                DateTime.parse(
+                                                    startDate.substring(0, 10)),
+                                                fromTime == null
+                                                    ? new DateTime.now()
+                                                    : DateTime.parse(fromTime),
+                                                "",
+                                                hourly,
+                                                false,
+                                                0,
+                                                "",
+                                                0,
+                                                _selectedSetting == null
+                                                    ? 0
+                                                    : _selectedSetting.id,
+                                                "",
+                                                0,
+                                                0,
+                                                "",
+                                                DateTime.parse(requestDate),
+                                                0,
+                                                DateTime.parse(
+                                                    startDate.substring(0, 10)),
+                                                DateTime.parse(
+                                                    endDate.substring(0, 10)),
+                                                toTime == null
+                                                    ? new DateTime.now()
+                                                    : DateTime.parse(toTime),
+                                                0);
+                                            bloc.add(GetSpentDays(model));
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                  ])
+                                : Container(),
                             SizedBox(
-                              height:!isIndivisible? 10:0,
+                              height: !isIndivisible ? 10 : 0,
                             ),
-                            (isDivisibleToHours && !isIndivisible)? Row(children: <Widget>[
-                              Text(Localization.of(context).getTranslatedValue("HourlyLeave")),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Checkbox(
-                                value: hourly,
-                                onChanged: (bool value) {
-                                  setState(() {
-                                    hourly = value;
-                                    _controller.text =
-                                        DateTime.now().toString();
-                                    endDate = startDate;
-                                    if (!hourly) {
-                                      fromTime = DateTime.now().toString();
+                            (isDivisibleToHours && !isIndivisible)
+                                ? Row(children: <Widget>[
+                                    Text(Localization.of(context)
+                                        .getTranslatedValue("HourlyLeave")),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Checkbox(
+                                      value: hourly,
+                                      onChanged: (bool value) {
+                                        setState(() {
+                                          hourly = value;
+                                          _controller.text =
+                                              DateTime.now().toString();
+                                          endDate = startDate;
+                                          if (!hourly) {
+                                            fromTime =
+                                                DateTime.now().toString();
 
-                                      toTime = DateTime.now().toString();
-                                    }
-                                    var model = new LeaveRequest(
-                                        "",
-                                        0,
-                                        DateTime.parse(
-                                            endDate.substring(0, 10)),
-                                        DateTime.parse(
-                                            startDate.substring(0, 10)),
-                                        fromTime == null ? new DateTime.now() : DateTime.parse(fromTime),
-                                        "",
-                                        hourly,
-                                        false,
-                                        0,
-                                        "",
-                                        0,
-                                        _selectedSetting == null
-                                            ? 0
-                                            : _selectedSetting.id,
-                                        "",
-                                        0,
-                                        0,
-                                        "",
-                                        DateTime.parse(requestDate),
-                                        0,
-                                        DateTime.parse(
-                                            startDate.substring(0, 10)),
-                                        DateTime.parse(
-                                            endDate.substring(0, 10)),
-                                        toTime== null ? new DateTime.now() : DateTime.parse(toTime),
-                                        0);
-                                    bloc.add(GetSpentDays(model));
-                                  });
-                                },
-                              ),
-                            ]):Container(),
+                                            toTime = DateTime.now().toString();
+                                          }
+                                          var model = new LeaveRequest(
+                                              "",
+                                              0,
+                                              DateTime.parse(
+                                                  endDate.substring(0, 10)),
+                                              DateTime.parse(
+                                                  startDate.substring(0, 10)),
+                                              fromTime == null
+                                                  ? new DateTime.now()
+                                                  : DateTime.parse(fromTime),
+                                              "",
+                                              hourly,
+                                              false,
+                                              0,
+                                              "",
+                                              0,
+                                              _selectedSetting == null
+                                                  ? 0
+                                                  : _selectedSetting.id,
+                                              "",
+                                              0,
+                                              0,
+                                              "",
+                                              DateTime.parse(requestDate),
+                                              0,
+                                              DateTime.parse(
+                                                  startDate.substring(0, 10)),
+                                              DateTime.parse(
+                                                  endDate.substring(0, 10)),
+                                              toTime == null
+                                                  ? new DateTime.now()
+                                                  : DateTime.parse(toTime),
+                                              0);
+                                          bloc.add(GetSpentDays(model));
+                                        });
+                                      },
+                                    ),
+                                  ])
+                                : Container(),
                             hourly
                                 ? Row(children: <Widget>[
                                     RichText(
                                       text: TextSpan(
-                                          text: Localization.of(context).getTranslatedValue("FromTime"),
+                                          text: Localization.of(context)
+                                              .getTranslatedValue("FromTime"),
                                           style: TextStyle(color: Colors.black),
                                           children: [
                                             TextSpan(
@@ -556,9 +605,12 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                         type: DateTimePickerType.time,
                                         firstDate: DateTime(2000),
                                         lastDate: DateTime(2100),
-                                        initialValue: DateTime.now().toIso8601String().substring(11,16),
+                                        initialValue: DateTime.now()
+                                            .toIso8601String()
+                                            .substring(11, 16),
                                         icon: Icon(Icons.access_time),
-                                        dateLabelText: Localization.of(context).getTranslatedValue("Time"),
+                                        dateLabelText: Localization.of(context)
+                                            .getTranslatedValue("Time"),
                                         onChanged: (val) {
                                           setState(() {
                                             fromTime =
@@ -571,7 +623,9 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                                     endDate.substring(0, 10)),
                                                 DateTime.parse(
                                                     startDate.substring(0, 10)),
-                                                fromTime == null ? new DateTime.now() : DateTime.parse(fromTime),
+                                                fromTime == null
+                                                    ? new DateTime.now()
+                                                    : DateTime.parse(fromTime),
                                                 "",
                                                 hourly,
                                                 false,
@@ -591,7 +645,9 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                                     startDate.substring(0, 10)),
                                                 DateTime.parse(
                                                     endDate.substring(0, 10)),
-                                                toTime== null ? new DateTime.now() : DateTime.parse(toTime),
+                                                toTime == null
+                                                    ? new DateTime.now()
+                                                    : DateTime.parse(toTime),
                                                 0);
                                             bloc.add(GetSpentDays(model));
                                           });
@@ -604,7 +660,8 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                 ? Row(children: <Widget>[
                                     RichText(
                                       text: TextSpan(
-                                          text: Localization.of(context).getTranslatedValue("ToTime"),
+                                          text: Localization.of(context)
+                                              .getTranslatedValue("ToTime"),
                                           style: TextStyle(color: Colors.black),
                                           children: [
                                             TextSpan(
@@ -622,10 +679,13 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                       child: DateTimePicker(
                                         type: DateTimePickerType.time,
                                         firstDate: DateTime(2000),
-                                        initialValue: DateTime.now().toIso8601String().substring(11,16),
+                                        initialValue: DateTime.now()
+                                            .toIso8601String()
+                                            .substring(11, 16),
                                         lastDate: DateTime(2100),
                                         icon: Icon(Icons.access_time),
-                                        dateLabelText: Localization.of(context).getTranslatedValue("Time"),
+                                        dateLabelText: Localization.of(context)
+                                            .getTranslatedValue("Time"),
                                         onChanged: (val) {
                                           setState(() {
                                             toTime =
@@ -638,7 +698,9 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                                     endDate.substring(0, 10)),
                                                 DateTime.parse(
                                                     startDate.substring(0, 10)),
-                                                fromTime == null ? new DateTime.now() : DateTime.parse(fromTime),
+                                                fromTime == null
+                                                    ? new DateTime.now()
+                                                    : DateTime.parse(fromTime),
                                                 "",
                                                 hourly,
                                                 false,
@@ -658,7 +720,9 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                                     startDate.substring(0, 10)),
                                                 DateTime.parse(
                                                     endDate.substring(0, 10)),
-                                                toTime== null ? new DateTime.now() : DateTime.parse(toTime),
+                                                toTime == null
+                                                    ? new DateTime.now()
+                                                    : DateTime.parse(toTime),
                                                 0);
                                             bloc.add(GetSpentDays(model));
                                           });
@@ -671,7 +735,8 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                               height: 10,
                             ),
                             Row(children: <Widget>[
-                              Text(Localization.of(context).getTranslatedValue("Duration")),
+                              Text(Localization.of(context)
+                                  .getTranslatedValue("Duration")),
                               SizedBox(
                                 width: 20,
                               ),
@@ -686,7 +751,8 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                           20.0, 10.0, 20.0, 10.0),
                                       filled: true,
                                       fillColor: Colors.white,
-                                      hintText: Localization.of(context).getTranslatedValue("Duration"),
+                                      hintText: Localization.of(context)
+                                          .getTranslatedValue("Duration"),
                                       labelStyle: TextStyle(
                                           color:
                                               Color.fromRGBO(243, 119, 55, 1)),
@@ -745,7 +811,8 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                             Row(children: <Widget>[
                               RichText(
                                 text: TextSpan(
-                                    text: Localization.of(context).getTranslatedValue("LeaveReason"),
+                                    text: Localization.of(context)
+                                        .getTranslatedValue("LeaveReason"),
                                     style: TextStyle(color: Colors.black),
                                     children: [
                                       TextSpan(
@@ -759,7 +826,8 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                               dropdown(
                                   context,
                                   _selectedReason,
-                                  Localization.of(context).getTranslatedValue("LeaveReason"),
+                                  Localization.of(context)
+                                      .getTranslatedValue("LeaveReason"),
                                   _reasonsDropdownMenuItems,
                                   onChangeReasonsDropdownItem),
                             ]),
@@ -767,7 +835,8 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                               height: 10,
                             ),
                             Row(children: <Widget>[
-                              Text(Localization.of(context).getTranslatedValue("Description")),
+                              Text(Localization.of(context)
+                                  .getTranslatedValue("Description")),
                               SizedBox(
                                 width: 20,
                               ),
@@ -775,13 +844,15 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                 width: MediaQuery.of(context).size.width / 2,
                                 child: textFormField(
                                     onChangeTextField,
-                                    Localization.of(context).getTranslatedValue("Typeadescription"),
+                                    Localization.of(context)
+                                        .getTranslatedValue("Typeadescription"),
                                     false,
                                     TextInputType.multiline,
                                     false,
                                     5,
                                     "",
-                                    false,context),
+                                    false,
+                                    context),
                               ),
                             ]),
                             SizedBox(
@@ -799,19 +870,22 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                       MaterialTapTargetSize.shrinkWrap,
                                   color: Color.fromRGBO(243, 119, 55, 1),
                                   child: Text(
-                                    Localization.of(context).getTranslatedValue("Apply"),
+                                    Localization.of(context)
+                                        .getTranslatedValue("Apply"),
                                     style: TextStyle(
                                         fontSize: 18, color: Colors.white),
                                   ),
                                   onPressed: () {
                                     var model = new LeaveRequest(
-                                        note??"",
+                                        note ?? "",
                                         0,
                                         DateTime.parse(
                                             endDate.substring(0, 10)),
                                         DateTime.parse(
                                             startDate.substring(0, 10)),
-                                        fromTime == null ? new DateTime.now() : DateTime.parse(fromTime),
+                                        fromTime == null
+                                            ? new DateTime.now()
+                                            : DateTime.parse(fromTime),
                                         "",
                                         hourly,
                                         false,
@@ -837,9 +911,12 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                             startDate.substring(0, 10)),
                                         DateTime.parse(
                                             endDate.substring(0, 10)),
-                                        toTime== null ? new DateTime.now() : DateTime.parse(toTime),
+                                        toTime == null
+                                            ? new DateTime.now()
+                                            : DateTime.parse(toTime),
                                         0);
-                                    bloc.add(PostLeaveRequest(model,info,duration));
+                                    bloc.add(PostLeaveRequest(
+                                        model, info, duration));
                                   },
                                 )),
                           ],
@@ -902,7 +979,8 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                             MainAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
-                                            Localization.of(context).getTranslatedValue("Balanc:"),
+                                            Localization.of(context)
+                                                .getTranslatedValue("Balanc:"),
                                             style: TextStyle(fontSize: 15),
                                           ),
                                           Text(info.balance.toString())
@@ -911,7 +989,8 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                     ],
                                   )
                                 : Text(
-                                    Localization.of(context).getTranslatedValue("PleaseSelectLeaveType"),
+                                    Localization.of(context).getTranslatedValue(
+                                        "PleaseSelectLeaveType"),
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16),
