@@ -43,7 +43,7 @@ class _LeavesBalanceState extends State<LeavesBalance> {
         ),
         onPressed: () {
           Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => LeaveRequestPage(0)),
+            MaterialPageRoute(builder: (context) => LeaveRequestPage(0,bloc)),
           );
         },
       ),
@@ -180,7 +180,7 @@ class _LeavesBalanceState extends State<LeavesBalance> {
                                           Navigator.of(context).push(
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    LeaveRequestPage(state.infos[0].id)),
+                                                    LeaveRequestPage(state.infos[0].id,bloc)),
                                           );
                                         },
                                       )),
@@ -259,7 +259,7 @@ class _LeavesBalanceState extends State<LeavesBalance> {
                                           Navigator.of(context).push(
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    LeaveRequestPage(state.infos[1].id)),
+                                                    LeaveRequestPage(state.infos[1].id,bloc)),
                                           );
                                         },
                                       )),

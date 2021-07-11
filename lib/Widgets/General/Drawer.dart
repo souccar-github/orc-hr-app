@@ -42,8 +42,8 @@ class _AppDrawerState extends State<AppDrawer> {
       });
     });
     setState(() {
-        locale = Localizations.localeOf(context).languageCode;
-      });
+      locale = Localizations.localeOf(context).languageCode;
+    });
     return MultiLevelDrawer(
       backgroundColor: Colors.white,
       rippleColor: Colors.white,
@@ -110,7 +110,7 @@ class _AppDrawerState extends State<AppDrawer> {
                   onClick: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (context) => LeaveRequestPage(0)),
+                          builder: (context) => LeaveRequestPage(0, null)),
                     );
                   },
                   submenuContent: Text(Localization.of(context)
@@ -224,6 +224,10 @@ class _AppDrawerState extends State<AppDrawer> {
             Icons.settings,
             color: Color.fromRGBO(243, 119, 55, 1),
           ),
+          trailing: Icon(
+              Icons.arrow_right,
+              color: Color.fromRGBO(243, 119, 55, 1),
+            ),
           content: Text(Localization.of(context).getTranslatedValue("Setting")),
           subMenuItems: [
             MLSubmenu(
@@ -232,10 +236,12 @@ class _AppDrawerState extends State<AppDrawer> {
                     MyApp.setLocale(
                         context, Locale.fromSubtags(languageCode: 'ar'));
                     SharedPref.pref.setLocale('ar');
+                    Navigator.of(context).pop();
                   } else {
                     MyApp.setLocale(
                         context, Locale.fromSubtags(languageCode: 'en'));
                     SharedPref.pref.setLocale('en');
+                    Navigator.of(context).pop();
                   }
                 },
                 submenuContent: Text(locale == 'en'
