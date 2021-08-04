@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,20 +32,22 @@ class _ApprovePageState extends State<ApprovePage> {
   @override
   void initState() {
     super.initState();
-    List<DropdownMenuItem<int>> items = List();
-    items.add(
-      DropdownMenuItem(
-        value: 0,
-        child: Text(Localization.of(context).getTranslatedValue("Entrance")),
-      ),
-    );
-    items.add(
-      DropdownMenuItem(
-        value: 1,
-        child: Text(Localization.of(context).getTranslatedValue("Exit")),
-      ),
-    );
-    _dropdownMenuItems = items;
+    Future.delayed(Duration(milliseconds: 0), () {
+      List<DropdownMenuItem<int>> items = List();
+      items.add(
+        DropdownMenuItem(
+          value: 0,
+          child: Text(Localization.of(context).getTranslatedValue("Entrance")),
+        ),
+      );
+      items.add(
+        DropdownMenuItem(
+          value: 1,
+          child: Text(Localization.of(context).getTranslatedValue("Exit")),
+        ),
+      );
+      _dropdownMenuItems = items;
+    });
     bloc = new EntranceexitBloc();
   }
 
@@ -69,7 +72,8 @@ class _ApprovePageState extends State<ApprovePage> {
           if (state is AcceptEntranceexitRequestSuccessfully) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(
-                Localization.of(context).getTranslatedValue("EntranceExitAcceptedSuccessfully"),
+                Localization.of(context)
+                    .getTranslatedValue("EntranceExitAcceptedSuccessfully"),
                 style: TextStyle(color: Colors.white),
               ),
               backgroundColor: Colors.green,
@@ -83,7 +87,8 @@ class _ApprovePageState extends State<ApprovePage> {
           if (state is PendingEntranceexitRequestSuccessfully) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(
-                Localization.of(context).getTranslatedValue("EntranceExitPendingSuccessfully"),
+                Localization.of(context)
+                    .getTranslatedValue("EntranceExitPendingSuccessfully"),
                 style: TextStyle(color: Colors.white),
               ),
               backgroundColor: Colors.green,
@@ -97,7 +102,8 @@ class _ApprovePageState extends State<ApprovePage> {
           if (state is RejectEntranceexitRequestSuccessfully) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(
-                Localization.of(context).getTranslatedValue("EntranceExitRejectedSuccessfully"),
+                Localization.of(context)
+                    .getTranslatedValue("EntranceExitRejectedSuccessfully"),
                 style: TextStyle(color: Colors.white),
               ),
               backgroundColor: Colors.green,
@@ -147,7 +153,8 @@ class _ApprovePageState extends State<ApprovePage> {
                               Row(children: <Widget>[
                                 RichText(
                                   text: TextSpan(
-                                      text: Localization.of(context).getTranslatedValue("RecordDate"),
+                                      text: Localization.of(context)
+                                          .getTranslatedValue("RecordDate"),
                                       style: TextStyle(color: Colors.black),
                                       children: [
                                         TextSpan(
@@ -167,7 +174,8 @@ class _ApprovePageState extends State<ApprovePage> {
                                     firstDate: DateTime(2000),
                                     lastDate: DateTime(2100),
                                     icon: Icon(Icons.event),
-                                    dateLabelText: Localization.of(context).getTranslatedValue("Date"),
+                                    dateLabelText: Localization.of(context)
+                                        .getTranslatedValue("Date"),
                                     onChanged: null,
                                   ),
                                 ),
@@ -178,7 +186,8 @@ class _ApprovePageState extends State<ApprovePage> {
                               Row(children: <Widget>[
                                 RichText(
                                   text: TextSpan(
-                                      text: Localization.of(context).getTranslatedValue("RecordType"),
+                                      text: Localization.of(context)
+                                          .getTranslatedValue("RecordType"),
                                       style: TextStyle(color: Colors.black),
                                       children: [
                                         TextSpan(
@@ -199,14 +208,16 @@ class _ApprovePageState extends State<ApprovePage> {
                                       false,
                                       1,
                                       record.logTypeString,
-                                      true,context),
+                                      true,
+                                      context),
                                 ),
                               ]),
                               SizedBox(
                                 height: 10,
                               ),
                               Row(children: <Widget>[
-                                Text(Localization.of(context).getTranslatedValue("Note")),
+                                Text(Localization.of(context)
+                                    .getTranslatedValue("Note")),
                                 SizedBox(
                                   width: 20,
                                 ),
@@ -214,13 +225,15 @@ class _ApprovePageState extends State<ApprovePage> {
                                   width: MediaQuery.of(context).size.width / 2,
                                   child: textFormField(
                                       (_) => {},
-                                      Localization.of(context).getTranslatedValue("Typeanote"),
+                                      Localization.of(context)
+                                          .getTranslatedValue("Typeanote"),
                                       false,
                                       TextInputType.multiline,
                                       false,
                                       5,
                                       record.note,
-                                      true,context),
+                                      true,
+                                      context),
                                 ),
                               ]),
                             ],
@@ -244,47 +257,66 @@ class _ApprovePageState extends State<ApprovePage> {
                           left: MediaQuery.of(context).size.width / 2 - 17,
                         ),
                         Container(
-                            padding: EdgeInsets.all(10),
+                            padding: EdgeInsets.all(
+                                MediaQuery.of(context).size.width * 2 / 100),
                             width: MediaQuery.of(context).size.width,
                             color: Color.fromRGBO(243, 119, 55, 0.5),
                             height: 175,
                             child: Padding(
-                                padding: EdgeInsets.all(20),
+                                padding: EdgeInsets.all(
+                                    MediaQuery.of(context).size.width *
+                                        4 /
+                                        100),
                                 child: Row(
                                   children: <Widget>[
                                     Row(children: <Widget>[
-                                      Text(Localization.of(context).getTranslatedValue("Note")),
+                                      Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              10 /
+                                              100,
+                                          child: AutoSizeText(
+                                              Localization.of(context)
+                                                  .getTranslatedValue("Note"))),
                                       SizedBox(
-                                        width: 10,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                2 /
+                                                100,
                                       ),
                                       Container(
                                         width:
-                                            MediaQuery.of(context).size.width /
-                                                    2 -
+                                            MediaQuery.of(context).size.width *
+                                                    53 /
+                                                    100 -
                                                 20,
                                         child: textFormField((value) {
                                           setState(() {
                                             note = value;
                                           });
                                         },
-                                            Localization.of(context).getTranslatedValue("Typeanote"),
+                                            Localization.of(context)
+                                                .getTranslatedValue(
+                                                    "Typeanote"),
                                             false,
                                             TextInputType.multiline,
                                             false,
                                             5,
                                             "",
-                                            false,context),
+                                            false,
+                                            context),
                                       ),
                                     ]),
                                     SizedBox(
-                                      height: 10,
-                                    ),
-                                    SizedBox(
-                                      width: 10,
+                                      width: MediaQuery.of(context).size.width *
+                                          3 /
+                                          100,
                                     ),
                                     Container(
-                                      width: MediaQuery.of(context).size.width /
-                                          3.8,
+                                      width: MediaQuery.of(context).size.width *
+                                          22 /
+                                          100,
                                       child: Column(
                                         children: <Widget>[
                                           DelayedAnimation(
@@ -303,12 +335,21 @@ class _ApprovePageState extends State<ApprovePage> {
                                                           .shrinkWrap,
                                                   color: Color.fromRGBO(
                                                       243, 119, 55, 0.7),
-                                                  child: Text(
-                                                    Localization.of(context).getTranslatedValue("Accept"),
-                                                    style: TextStyle(
-                                                        fontSize: 18,
-                                                        color: Colors.white),
-                                                  ),
+                                                  child: Container(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              20 /
+                                                              100,
+                                                      child: AutoSizeText(
+                                                        Localization.of(context)
+                                                            .getTranslatedValue(
+                                                                "Accept"),
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      )),
                                                   onPressed: () {
                                                     bloc.add(
                                                         AcceptEntranceexitRequest(
@@ -339,12 +380,21 @@ class _ApprovePageState extends State<ApprovePage> {
                                                           .shrinkWrap,
                                                   color: Color.fromRGBO(
                                                       243, 119, 55, 0.7),
-                                                  child: Text(
-                                                    Localization.of(context).getTranslatedValue("Reject"),
-                                                    style: TextStyle(
-                                                        fontSize: 18,
-                                                        color: Colors.white),
-                                                  ),
+                                                  child: Container(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              20 /
+                                                              100,
+                                                      child: AutoSizeText(
+                                                        Localization.of(context)
+                                                            .getTranslatedValue(
+                                                                "Reject"),
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      )),
                                                   onPressed: () {
                                                     bloc.add(
                                                         RejectEntranceexitRequest(
@@ -375,11 +425,20 @@ class _ApprovePageState extends State<ApprovePage> {
                                                           .shrinkWrap,
                                                   color: Color.fromRGBO(
                                                       243, 119, 55, 0.7),
-                                                  child: Text(
-                                                    Localization.of(context).getTranslatedValue("Pending"),
-                                                    style: TextStyle(
-                                                        fontSize: 18,
-                                                        color: Colors.white),
+                                                  child: Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            20 /
+                                                            100,
+                                                    child: AutoSizeText(
+                                                      Localization.of(context)
+                                                          .getTranslatedValue(
+                                                              "Pending"),
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
                                                   ),
                                                   onPressed: () {
                                                     bloc.add(

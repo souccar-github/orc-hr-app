@@ -23,10 +23,8 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient
-          .get(Statics.BaseUrl + "/api/leave/getInit", headers: {
-        HttpHeaders.contentTypeHeader: 'application/json',
-        'Authorization': '$username:$password',
-        'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+          .get(Statics.BaseUrl + "/api/leave/getInit?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",headers: {
+        HttpHeaders.authorizationHeader: '$username:$password',
       });
       if (response.statusCode == 200) {
         List<LeaveInfoModel> items = new List<LeaveInfoModel>();
@@ -59,10 +57,10 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient
-          .get(Statics.BaseUrl + "/api/leave/getLeaveSettings", headers: {
+          .get(Statics.BaseUrl + "/api/leave/getLeaveSettings?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}", headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
-        'Authorization': '$username:$password',
-        'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+        HttpHeaders.authorizationHeader: '$username:$password',
+        
       });
       if (response.statusCode == 200) {
         List<LeaveSetting> items = new List<LeaveSetting>();
@@ -95,11 +93,11 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.get(
-          Statics.BaseUrl + "/api/leave/getPendingLeaveRequests",
+          Statics.BaseUrl + "/api/leave/getPendingLeaveRequests?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
-            'Authorization': '$username:$password',
-            'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
           });
       if (response.statusCode == 200) {
         List<LeaveRequest> items = new List<LeaveRequest>();
@@ -132,11 +130,11 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.get(
-          Statics.BaseUrl + "/api/mission/getPendingMissionRequests",
+          Statics.BaseUrl + "/api/mission/getPendingMissionRequests?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
-            'Authorization': '$username:$password',
-            'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
           });
       if (response.statusCode == 200) {
         List<MissionRequest> items = new List<MissionRequest>();
@@ -169,11 +167,11 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.get(
-          Statics.BaseUrl + "/api/entranceExit/getPendingEntranceExitRequests",
+          Statics.BaseUrl + "/api/entranceExit/getPendingEntranceExitRequests?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
-            'Authorization': '$username:$password',
-            'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
           });
       if (response.statusCode == 200) {
         List<EntranceExitRequest> items = new List<EntranceExitRequest>();
@@ -207,10 +205,10 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient
-          .get(Statics.BaseUrl + "/api/leave/getLeaveByWorkflow/$id", headers: {
+          .get(Statics.BaseUrl + "/api/leave/getLeaveByWorkflow/$id?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}", headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
-        'Authorization': '$username:$password',
-        'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+        HttpHeaders.authorizationHeader: '$username:$password',
+        
       });
       if (response.statusCode == 200) {
         LeaveRequest item = LeaveRequest.fromJson(json.decode(response.body));
@@ -239,11 +237,11 @@ class Project {
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.get(
           Statics.BaseUrl +
-              "/api/entranceExit/getEntranceExitRecordByWorkflow/$id",
+              "/api/entranceExit/getEntranceExitRecordByWorkflow/$id?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
-            'Authorization': '$username:$password',
-            'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
           });
       if (response.statusCode == 200) {
         EntranceExitRequest item =
@@ -272,10 +270,10 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient
-          .get(Statics.BaseUrl + "/api/notify/checkUnRead", headers: {
+          .get(Statics.BaseUrl + "/api/notify/checkUnRead?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}", headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
-        'Authorization': '$username:$password',
-        'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+        HttpHeaders.authorizationHeader: '$username:$password',
+        
       });
       if (response.statusCode == 200) {
         List<Notify> items = new List<Notify>();
@@ -308,10 +306,10 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient
-          .get(Statics.BaseUrl + "/api/leave/getLeaveReasons", headers: {
+          .get(Statics.BaseUrl + "/api/leave/getLeaveReasons?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}", headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
-        'Authorization': '$username:$password',
-        'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+        HttpHeaders.authorizationHeader: '$username:$password',
+        
       });
       if (response.statusCode == 200) {
         List<LeaveReason> items = new List<LeaveReason>();
@@ -344,10 +342,9 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient
-          .get(Statics.BaseUrl + "/api/leave/getMyPending", headers: {
-        HttpHeaders.contentTypeHeader: 'application/json',
-        'Authorization': '$username:$password',
-        'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+          .get(Statics.BaseUrl + "/api/leave/getMyPending/${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}", headers: {
+        HttpHeaders.authorizationHeader: '$username:$password',
+        
       });
       if (response.statusCode == 200) {
         List<WorkflowInfo> items = new List<WorkflowInfo>();
@@ -380,10 +377,10 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient
-          .get(Statics.BaseUrl + "/api/mission/getMyPending", headers: {
+          .get(Statics.BaseUrl + "/api/mission/getMyPending?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}", headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
-        'Authorization': '$username:$password',
-        'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+        HttpHeaders.authorizationHeader: '$username:$password',
+        
       });
       if (response.statusCode == 200) {
         List<WorkflowInfo> items = new List<WorkflowInfo>();
@@ -416,10 +413,10 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient
-          .get(Statics.BaseUrl + "/api/entranceExit/getMyPending", headers: {
+          .get(Statics.BaseUrl + "/api/entranceExit/getMyPending?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}", headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
-        'Authorization': '$username:$password',
-        'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+        HttpHeaders.authorizationHeader: '$username:$password',
+        
       });
       if (response.statusCode == 200) {
         List<WorkflowInfo> items = new List<WorkflowInfo>();
@@ -453,11 +450,11 @@ class Project {
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.get(
           Statics.BaseUrl +
-              "/api/leave/getLeaveSettingInfo/${id.toString()}/${startDate.day.toString()}/${startDate.month.toString()}/${startDate.year.toString()}",
+              "/api/leave/getLeaveSettingInfo/${id.toString()}/${startDate.day.toString()}/${startDate.month.toString()}/${startDate.year.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
-            'Authorization': '$username:$password',
-            'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
           });
       if (response.statusCode == 200) {
         LeaveInfoModel item =
@@ -485,11 +482,11 @@ class Project {
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
           Statics.BaseUrl +
-              "/api/leave/accept/${wfId.toString()}/${leaveId.toString()}/${note.toString()}",
+              "/api/leave/accept/${wfId.toString()}/${leaveId.toString()}/${note.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
-            'Authorization': '$username:$password',
-            'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
           });
       if (response.statusCode == 200) {
         return "successfully";
@@ -515,11 +512,11 @@ class Project {
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
           Statics.BaseUrl +
-              "/api/leave/reject/${wfId.toString()}/${leaveId.toString()}/${note.toString()}",
+              "/api/leave/reject/${wfId.toString()}/${leaveId.toString()}/${note.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
-            'Authorization': '$username:$password',
-            'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
           });
       if (response.statusCode == 200) {
         return "successfully";
@@ -545,11 +542,11 @@ class Project {
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
           Statics.BaseUrl +
-              "/api/leave/pending/${wfId.toString()}/${leaveId.toString()}/${note.toString()}",
+              "/api/leave/pending/${wfId.toString()}/${leaveId.toString()}/${note.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
-            'Authorization': '$username:$password',
-            'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
           });
       if (response.statusCode == 200) {
         return "successfully";
@@ -576,11 +573,11 @@ class Project {
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
           Statics.BaseUrl +
-              "/api/mission/accept/${wfId.toString()}/${missionId.toString()}/${note??"null"}/${hourly.toString()}",
+              "/api/mission/accept/${wfId.toString()}/${missionId.toString()}/${note??"null"}/${hourly.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
-            'Authorization': '$username:$password',
-            'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
           });
       if (response.statusCode == 200) {
         return "successfully";
@@ -607,11 +604,11 @@ class Project {
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
           Statics.BaseUrl +
-              "/api/mission/reject/${wfId.toString()}/${missionId.toString()}/${note??"null"}/${hourly.toString()}",
+              "/api/mission/reject/${wfId.toString()}/${missionId.toString()}/${note??"null"}/${hourly.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
-            'Authorization': '$username:$password',
-            'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
           });
       if (response.statusCode == 200) {
         return "successfully";
@@ -638,11 +635,11 @@ class Project {
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
           Statics.BaseUrl +
-              "/api/mission/pending/${wfId.toString()}/${missionId.toString()}/${note??"null"}/${hourly.toString()}",
+              "/api/mission/pending/${wfId.toString()}/${missionId.toString()}/${note??"null"}/${hourly.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
-            'Authorization': '$username:$password',
-            'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
           });
       if (response.statusCode == 200) {
         return "successfully";
@@ -669,11 +666,11 @@ class Project {
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
           Statics.BaseUrl +
-              "/api/entranceExit/accept/${wfId.toString()}/${recordId.toString()}/${note.toString()}",
+              "/api/entranceExit/accept/${wfId.toString()}/${recordId.toString()}/${note.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
-            'Authorization': '$username:$password',
-            'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
           });
       if (response.statusCode == 200) {
         return "successfully";
@@ -700,11 +697,11 @@ class Project {
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
           Statics.BaseUrl +
-              "/api/entranceExit/reject/${wfId.toString()}/${recordId.toString()}/${note.toString()}",
+              "/api/entranceExit/reject/${wfId.toString()}/${recordId.toString()}/${note.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
-            'Authorization': '$username:$password',
-            'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
           });
       if (response.statusCode == 200) {
         return "successfully";
@@ -731,11 +728,11 @@ class Project {
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
           Statics.BaseUrl +
-              "/api/entranceExit/pending/${wfId.toString()}/${recordId.toString()}/${note.toString()}",
+              "/api/entranceExit/pending/${wfId.toString()}/${recordId.toString()}/${note.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
-            'Authorization': '$username:$password',
-            'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
           });
       if (response.statusCode == 200) {
         return "successfully";
@@ -760,12 +757,12 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
-          Statics.BaseUrl + "/api/leave/getSpentDays",
+          Statics.BaseUrl + "/api/leave/getSpentDays?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
           body: jsonEncode(leave.toJson()),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
-            'Authorization': '$username:$password',
-            'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
           });
       if (response.statusCode == 200) {
         double item = (jsonDecode(response.body))["SpentDays"];
@@ -791,11 +788,11 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
-          Statics.BaseUrl + "/api/leave/postRequest",
+          Statics.BaseUrl + "/api/leave/postRequest?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
-            'Authorization': '$username:$password',
-            'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
           },
           body: jsonEncode(item.toJson()));
       if (response.statusCode == 200) {
@@ -821,11 +818,11 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
-          Statics.BaseUrl + "/api/mission/postRequest",
+          Statics.BaseUrl + "/api/mission/postRequest?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
-            'Authorization': '$username:$password',
-            'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
           },
           body: jsonEncode(item.toJson()));
       if (response.statusCode == 200) {
@@ -851,11 +848,11 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
-          Statics.BaseUrl + "/api/entranceExit/postRequest",
+          Statics.BaseUrl + "/api/entranceExit/postRequest?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
-            'Authorization': '$username:$password',
-            'locale': await SharedPref.pref.getLocale() == "en" ? "49" : "14"
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
           },
           body: jsonEncode(item.toJson()));
       if (response.statusCode == 200) {

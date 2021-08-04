@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -293,23 +294,34 @@ class _ApprovePageState extends State<ApprovePage> {
                           left: MediaQuery.of(context).size.width / 2 - 17,
                         ),
                         Container(
-                            padding: EdgeInsets.all(10),
+                            padding:EdgeInsets.all(
+                                MediaQuery.of(context).size.width * 2 / 100),
                             width: MediaQuery.of(context).size.width,
                             color: Color.fromRGBO(243, 119, 55, 0.5),
                             height: 175,
                             child: Padding(
-                                padding: EdgeInsets.all(20),
+                                padding: EdgeInsets.all(
+                                    MediaQuery.of(context).size.width *
+                                        4 /
+                                        100),
                                 child: Row(
                                   children: <Widget>[
                                     Row(children: <Widget>[
-                                      Text(Localization.of(context).getTranslatedValue("Note")),
+                                      Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                             10/
+                                              100,
+                                          child:  AutoSizeText(Localization.of(context).getTranslatedValue("Note"))),
                                       SizedBox(
-                                        width: 10,
+                                        width:  MediaQuery.of(context).size.width *
+                                                2 /
+                                                100,
                                       ),
                                       Container(
                                         width:
-                                            MediaQuery.of(context).size.width /
-                                                    2 -
+                                               MediaQuery.of(context).size.width* 53/100-
                                                 20,
                                         child: textFormField((value) {
                                           setState(() {
@@ -329,11 +341,14 @@ class _ApprovePageState extends State<ApprovePage> {
                                       height: 10,
                                     ),
                                     SizedBox(
-                                      width: 10,
+                                      width:  MediaQuery.of(context).size.width *
+                                          3 /
+                                          100,
                                     ),
                                     Container(
-                                      width: MediaQuery.of(context).size.width /
-                                          3.8,
+                                      width: MediaQuery.of(context).size.width *
+                                          22 /
+                                          100,
                                       child: Column(
                                         children: <Widget>[
                                           DelayedAnimation(
@@ -352,12 +367,18 @@ class _ApprovePageState extends State<ApprovePage> {
                                                           .shrinkWrap,
                                                   color: Color.fromRGBO(
                                                       243, 119, 55, 0.7),
-                                                  child: Text(
+                                                  child:Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            20 /
+                                                            100,
+                                                    child: AutoSizeText(
                                                     Localization.of(context).getTranslatedValue("Accept"),
                                                     style: TextStyle(
-                                                        fontSize: 18,
                                                         color: Colors.white),
-                                                  ),
+                                                  )),
                                                   onPressed: () {
                                                     bloc.add(AcceptMissionRequest(
                                                         mission.workflowItemId,
@@ -386,12 +407,18 @@ class _ApprovePageState extends State<ApprovePage> {
                                                           .shrinkWrap,
                                                   color: Color.fromRGBO(
                                                       243, 119, 55, 0.7),
-                                                  child: Text(
+                                                  child:Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            20 /
+                                                            100,
+                                                    child: AutoSizeText(
                                                     Localization.of(context).getTranslatedValue("Reject"),
                                                     style: TextStyle(
-                                                        fontSize: 18,
                                                         color: Colors.white),
-                                                  ),
+                                                  ),),
                                                   onPressed: () {
                                                     bloc.add(RejectMissionRequest(
                                                         mission.workflowItemId,
@@ -420,12 +447,18 @@ class _ApprovePageState extends State<ApprovePage> {
                                                           .shrinkWrap,
                                                   color: Color.fromRGBO(
                                                       243, 119, 55, 0.7),
-                                                  child: Text(
+                                                  child:Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            20 /
+                                                            100,
+                                                    child: AutoSizeText(
                                                     Localization.of(context).getTranslatedValue("Pending"),
                                                     style: TextStyle(
-                                                        fontSize: 18,
                                                         color: Colors.white),
-                                                  ),
+                                                  ),),
                                                   onPressed: () {
                                                     bloc.add(
                                                         PendingMissionRequest(
