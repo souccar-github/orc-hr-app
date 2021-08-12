@@ -20,7 +20,7 @@ dependencies:
   connectivity: 0.4.5+3
   bloc: any
   flutter_bloc: any
-  syncfusion_flutter_charts: ^18.2.46+1
+  syncfusion_flutter_charts: ^18.4.46
   intl: any
   equatable: any
   auto_size_text: ^2.1.0
@@ -37,7 +37,6 @@ dependencies:
   flutter_login: ^1.0.10+1
   table_calendar: ^2.2.3
   cupertino_icons: ^0.1.3
-  syncfusion_flutter_calendar: ^18.2.46+1
 
 dev_dependencies:
   flutter_test:

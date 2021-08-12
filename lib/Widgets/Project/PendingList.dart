@@ -22,8 +22,10 @@ Widget pendingRequests(List<WorkflowInfo> list) {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10, top: 5),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            list[index].type == 3
+                            list[index].type == "3"
                                 ? Row(
                                     children: <Widget>[
                                       Text(
@@ -43,31 +45,109 @@ Widget pendingRequests(List<WorkflowInfo> list) {
                                   )
                                 : list[index].type == "12"
                                     ? Row(
-                                    children: <Widget>[
-                                      Text(
-                                        Localization.of(context)
-                                            .getTranslatedValue("RequestDate:"),
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        list[index]
-                                                .date
-                                                .toIso8601String()
-                                                .substring(0, 10) ??
-                                            "",
+                                        children: <Widget>[
+                                          Text(
+                                            Localization.of(context)
+                                                .getTranslatedValue(
+                                                    "RequestDate:"),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            list[index]
+                                                    .date
+                                                    .toIso8601String()
+                                                    .substring(0, 10) ??
+                                                "",
+                                          )
+                                        ],
                                       )
-                                    ],
-                                  )
-                                    : Text(
-                                        list[index]
-                                                .date
-                                                .toIso8601String()
-                                                .substring(0, 10) ??
-                                            "",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
+                                    : Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                            Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Row(
+                                                    children: <Widget>[
+                                                      Text(
+                                                        Localization.of(context)
+                                                            .getTranslatedValue(
+                                                                "Record Date:"),
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      Text(
+                                                        list[index]
+                                                                .date
+                                                                .toIso8601String()
+                                                                .substring(
+                                                                    0, 10) ??
+                                                            "",
+                                                        style: TextStyle(),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    children: <Widget>[
+                                                      Text(
+                                                        Localization.of(context)
+                                                            .getTranslatedValue(
+                                                                "Record Time:"),
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      Text(
+                                                        list[index]
+                                                                .date
+                                                                .toIso8601String()
+                                                                .substring(
+                                                                    11, 16) ??
+                                                            "",
+                                                        style: TextStyle(),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ]),
+                                            SizedBox(
+                                              width: 30,
+                                            ),
+                                            Row(
+                                              children: <Widget>[
+                                                Text(
+                                                  Localization.of(context)
+                                                      .getTranslatedValue(
+                                                          "Type:"),
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text(
+                                                  list[index].logType == 0
+                                                      ? Localization.of(context)
+                                                          .getTranslatedValue(
+                                                              "Entrance")
+                                                      : list[index].logType == 1
+                                                          ? Localization.of(
+                                                                  context)
+                                                              .getTranslatedValue(
+                                                                  "Exit")
+                                                          : "",
+                                                  style: TextStyle(),
+                                                ),
+                                              ],
+                                            ),
+                                          ]),
                             SizedBox(
                               height: 10,
                             ),

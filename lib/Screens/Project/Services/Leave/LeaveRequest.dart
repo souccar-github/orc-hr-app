@@ -253,7 +253,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                 backgroundColor: Colors.green,
               ));
               Future.delayed(Duration(milliseconds: 1000), () {
-                if (widget.bloc != null){
+                if (widget.bloc != null) {
                   widget.bloc.add(InitMainLeavesBalancePage());
                 }
                 Navigator.of(context).pop();
@@ -533,9 +533,10 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                       onChanged: (bool value) {
                                         setState(() {
                                           hourly = value;
-                                          _controller.text =
-                                              DateTime.now().toString();
                                           endDate = startDate;
+                                          _controller.text = DateTime.parse(
+                                                  endDate.substring(0, 10))
+                                              .toIso8601String();
                                           if (!hourly) {
                                             fromTime =
                                                 DateTime.now().toString();

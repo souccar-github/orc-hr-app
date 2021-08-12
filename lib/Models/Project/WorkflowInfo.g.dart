@@ -12,7 +12,7 @@ WorkflowInfo _$WorkflowInfosFromJson(Map<String, dynamic> json) {
     json['PendingStep'] as String,
     json['WaitingApprove'] as bool,
     json['Date'] == null ? null : DateTime.parse(json['Date'] as String),
-
+    json['LogType'] as int,
   );
 }
 
@@ -22,4 +22,5 @@ Map<String, dynamic> _$WorkflowInfosToJson(WorkflowInfo instance) =>
       'type': instance.type,
       'waitingApprove': instance.waitingApprove,
       'date': instance.date?.toIso8601String(),
+      'logType': instance.logType
     };
