@@ -227,6 +227,10 @@ class _ApprovePageState extends State<ApprovePage> {
                                       ),
                                     ])
                                   : Container(),
+                                  mission.isHourlyMission
+                                  ?  SizedBox(
+                                height: 10,
+                              ): Container(),
                               mission.isHourlyMission
                                   ? Row(children: <Widget>[
                                       Text(Localization.of(context).getTranslatedValue("ToTime")),
@@ -333,7 +337,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                             TextInputType.multiline,
                                             false,
                                             5,
-                                            "",
+                                            mission.note??"",
                                             false,context),
                                       ),
                                     ]),

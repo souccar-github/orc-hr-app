@@ -33,7 +33,7 @@ class _LeavesBalanceState extends State<LeavesBalance> {
     Future.delayed(Duration(milliseconds: 0), () async {
       var _locale = await SharedPref.pref.getLocale();
       setState(() {
-        locale = _locale;
+        locale = _locale ?? Localizations.localeOf(context).languageCode;
       });
     });
     return Scaffold(
@@ -81,6 +81,14 @@ class _LeavesBalanceState extends State<LeavesBalance> {
               );
             }
             if (state is MainLeavesBalanceInitSuccessfully) {
+              if (state.infos.length == 0) {
+                return Container(
+                  child: Center(
+                    child: Text(
+                        Localization.of(context).getTranslatedValue("ThereAreNoLeaveRequestsBefore")),
+                  ),
+                );
+              }
               List<ChartData> firstChartData = [
                 ChartData(
                     Localization.of(context).getTranslatedValue("Granted"),
@@ -116,7 +124,7 @@ class _LeavesBalanceState extends State<LeavesBalance> {
                               child: Column(children: <Widget>[
                                 SfCircularChart(
                                   legend: Legend(
-                                      overflowMode: LegendItemOverflowMode.none,
+                                      overflowMode: LegendItemOverflowMode.wrap,
                                       isVisible: true,
                                       position: LegendPosition.bottom),
                                   series: <CircularSeries>[
@@ -200,7 +208,7 @@ class _LeavesBalanceState extends State<LeavesBalance> {
                                       SfCircularChart(
                                         legend: Legend(
                                             overflowMode:
-                                                LegendItemOverflowMode.none,
+                                                LegendItemOverflowMode.wrap,
                                             isVisible: true,
                                             position: LegendPosition.bottom),
                                         series: <CircularSeries>[

@@ -3,7 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:orc_hr/Localization/Localization.dart';
 import 'package:orc_hr/Models/Project/WorkflowInfo.dart';
 
-Widget pendingRequests(List<WorkflowInfo> list) {
+Widget pendingRequests(List<WorkflowInfo> list, BuildContext _context) {
+  if (list.length == 0) {
+    return Padding(
+        padding: EdgeInsets.all(7),
+        child: Center(
+          child: Text(
+            Localization.of(_context).getTranslatedValue("NoItemsToShow"),
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ));
+  }
   return Padding(
     padding: EdgeInsets.all(7),
     child: ListView.builder(
@@ -79,7 +89,7 @@ Widget pendingRequests(List<WorkflowInfo> list) {
                                                       Text(
                                                         Localization.of(context)
                                                             .getTranslatedValue(
-                                                                "Record Date:"),
+                                                                "RecordDate:"),
                                                         style: TextStyle(
                                                             fontWeight:
                                                                 FontWeight
@@ -101,7 +111,7 @@ Widget pendingRequests(List<WorkflowInfo> list) {
                                                       Text(
                                                         Localization.of(context)
                                                             .getTranslatedValue(
-                                                                "Record Time:"),
+                                                                "RecordTime:"),
                                                         style: TextStyle(
                                                             fontWeight:
                                                                 FontWeight
@@ -162,15 +172,22 @@ Widget pendingRequests(List<WorkflowInfo> list) {
                 ),
               ),
               Align(
-                alignment: Alignment.centerRight,
-                child: Stack(
+                alignment: Localizations.localeOf(context).languageCode == 'en'
+                    ? Alignment.centerRight
+                    : Alignment.centerLeft,
+                child: Column(
                   children: <Widget>[
+                    SizedBox(
+                      height: 47,
+                    ),
                     list[index].waitingApprove
                         ? Text(
                             Localization.of(context)
                                 .getTranslatedValue("WaitingforApprove"),
-                            style:
-                                TextStyle(fontSize: 14, color: Colors.black54))
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontStyle: FontStyle.italic,
+                                color: Colors.black54))
                         : Container()
                   ],
                 ),

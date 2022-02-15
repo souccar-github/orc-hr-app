@@ -34,20 +34,6 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
     super.initState();
     recordDateTime = DateTime.now().toString();
     _controller = new TextEditingController(text: DateTime.now().toString());
-    List<DropdownMenuItem<int>> items = List();
-    items.add(
-      DropdownMenuItem(
-        value: 0,
-        child: Text(Localization.of(context).getTranslatedValue("Entrance")),
-      ),
-    );
-    items.add(
-      DropdownMenuItem(
-        value: 1,
-        child: Text(Localization.of(context).getTranslatedValue("Exit")),
-      ),
-    );
-    _dropdownMenuItems = items;
 
     bloc = new EntranceexitBloc();
   }
@@ -66,6 +52,24 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
 
   @override
   Widget build(BuildContext context) {
+    List<DropdownMenuItem<int>> items = List();
+    Future.delayed(Duration(milliseconds: 100), () {
+      items.add(
+        DropdownMenuItem(
+          value: 0,
+          child: Text(Localization.of(context).getTranslatedValue("Entrance")),
+        ),
+      );
+      items.add(
+        DropdownMenuItem(
+          value: 1,
+          child: Text(Localization.of(context).getTranslatedValue("Exit")),
+        ),
+      );
+      setState(() {
+        _dropdownMenuItems = items;
+      });
+    });
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -94,7 +98,8 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
             if (state is PostEntranceExitRequestSuccessfully) {
               Scaffold.of(context).showSnackBar(SnackBar(
                 content: Text(
-                  Localization.of(context).getTranslatedValue("EntranceExitRequestedSuccessfully"),
+                  Localization.of(context)
+                      .getTranslatedValue("EntranceExitRequestedSuccessfully"),
                   style: TextStyle(color: Colors.white),
                 ),
                 backgroundColor: Colors.green,
@@ -124,7 +129,8 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
                           Row(children: <Widget>[
                             RichText(
                               text: TextSpan(
-                                  text: Localization.of(context).getTranslatedValue("RecordDate"),
+                                  text: Localization.of(context)
+                                      .getTranslatedValue("RecordDate"),
                                   style: TextStyle(color: Colors.black),
                                   children: [
                                     TextSpan(
@@ -138,15 +144,19 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
                             Container(
                               width: MediaQuery.of(context).size.width / 2,
                               child: DateTimePicker(
-                                type: DateTimePickerType.dateTime,
-                                dateMask: 'dd /MM /yyyy , hh:mm',
-                                initialValue: DateTime.now().toString(),
+                                type: DateTimePickerType.dateTimeSeparate,
+                                dateMask: 'dd /MM /yyyy',
+                                initialValue: recordDateTime??DateTime.now(),
                                 firstDate: DateTime(2000),
+                                timeFieldWidth: 45,
                                 lastDate: DateTime(2100),
                                 icon: Icon(Icons.event),
-                                dateLabelText: Localization.of(context).getTranslatedValue("Date"),
+                                dateLabelText: Localization.of(context)
+                                    .getTranslatedValue("Date"),
                                 onChanged: (val) {
-                                  recordDateTime = val;
+                                  setState(() {
+                                    recordDateTime = val;
+                                  });
                                 },
                               ),
                             ),
@@ -157,7 +167,8 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
                           Row(children: <Widget>[
                             RichText(
                               text: TextSpan(
-                                  text: Localization.of(context).getTranslatedValue("RecordType"),
+                                  text: Localization.of(context)
+                                      .getTranslatedValue("RecordType"),
                                   style: TextStyle(color: Colors.black),
                                   children: [
                                     TextSpan(
@@ -192,7 +203,8 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
                                 ),
                               ),
                               hint: Text(
-                                Localization.of(context).getTranslatedValue("RecordType"),
+                                Localization.of(context)
+                                    .getTranslatedValue("RecordType"),
                                 style: TextStyle(fontSize: 16),
                               ), // Not necessary for Option 1
                               value: _selectedType,
@@ -204,7 +216,8 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
                             height: 10,
                           ),
                           Row(children: <Widget>[
-                            Text(Localization.of(context).getTranslatedValue("Note")),
+                            Text(Localization.of(context)
+                                .getTranslatedValue("Note")),
                             SizedBox(
                               width: 20,
                             ),
@@ -212,13 +225,15 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
                               width: MediaQuery.of(context).size.width / 2,
                               child: textFormField(
                                   onChangeTextField,
-                                  Localization.of(context).getTranslatedValue("Typeanote"),
+                                  Localization.of(context)
+                                      .getTranslatedValue("Typeanote"),
                                   false,
                                   TextInputType.multiline,
                                   false,
                                   5,
                                   "",
-                                  false,context),
+                                  false,
+                                  context),
                             ),
                           ]),
                           SizedBox(
@@ -236,7 +251,8 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
                                     MaterialTapTargetSize.shrinkWrap,
                                 color: Color.fromRGBO(243, 119, 55, 1),
                                 child: Text(
-                                  Localization.of(context).getTranslatedValue("Apply"),
+                                  Localization.of(context)
+                                      .getTranslatedValue("Apply"),
                                   style: TextStyle(
                                       fontSize: 18, color: Colors.white),
                                 ),
@@ -246,9 +262,10 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
                                       0,
                                       DateTime.parse(recordDateTime),
                                       _selectedType,
-                                      note??"",
+                                      note ?? "",
                                       "",
-                                      0);
+                                      0,
+                                      "");
                                   bloc.add(PostEntranceExitRequest(model));
                                 },
                               )),

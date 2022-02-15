@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:orc_hr/API/Project/Project.dart';
 import 'package:orc_hr/Models/Project/LeaveRequest.dart';
 import 'package:orc_hr/Models/Project/EntranceExitRequest.dart';
+import 'package:orc_hr/Models/Project/MissionRequest.dart';
 import 'package:orc_hr/Models/Project/Notify.dart';
 import 'package:bloc/bloc.dart';
 
@@ -58,6 +59,38 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       });
       if (error == null) {
         yield GetEntranceExitRecordByWorkflowIdSuccessfully(leave);
+      } else {
+        yield NotificationError(error);
+      }
+    }
+
+    if (event is GetTravelMissionByWorkflowId){
+      yield NotificationLoading();
+      String error = null;
+      MissionRequest mission;
+      await Project.apiClient.getTravelMissionByWorkflow(event.id).then((onValue) {
+        mission = onValue;
+      }).catchError((onError) {
+        error = onError;
+      });
+      if (error == null) {
+        yield GetTravelMissionByWorkflowIdSuccessfully(mission);
+      } else {
+        yield NotificationError(error);
+      }
+    }
+
+    if (event is GetHourlyMissionByWorkflowId){
+      yield NotificationLoading();
+      String error = null;
+      MissionRequest mission;
+      await Project.apiClient.getHourlyMissionByWorkflow(event.id).then((onValue) {
+        mission = onValue;
+      }).catchError((onError) {
+        error = onError;
+      });
+      if (error == null) {
+        yield GetHourlyMissionByWorkflowIdSuccessfully(mission);
       } else {
         yield NotificationError(error);
       }

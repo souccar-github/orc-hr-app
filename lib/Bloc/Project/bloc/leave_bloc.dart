@@ -106,7 +106,7 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
       if (event.leave.leaveSettingId == 0 || event.leave.leaveReasonId == 0) {
         error = "Required Message";
         yield LeaveError(error);
-      } else {
+      } else {  
         
       if (event.info.isIndivisible){
         var end = new DateTime(event.leave.startDate.year);

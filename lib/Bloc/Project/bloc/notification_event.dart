@@ -12,6 +12,18 @@ class GetLeaveByWorkflowId extends NotificationEvent{
   GetLeaveByWorkflowId(this.id);
 }
 
+class GetHourlyMissionByWorkflowId extends NotificationEvent{
+  final int id;
+
+  GetHourlyMissionByWorkflowId(this.id);
+}
+
+class GetTravelMissionByWorkflowId extends NotificationEvent{
+  final int id;
+
+  GetTravelMissionByWorkflowId(this.id);
+}
+
 class GetEntranceExitRecordByWorkflowId extends NotificationEvent{
   final int id;
 

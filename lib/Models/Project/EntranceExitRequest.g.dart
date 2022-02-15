@@ -15,6 +15,7 @@ EntranceExitRequest _$EntranceExitRequestFromJson(Map<String, dynamic> json) {
     json['Note'] as String,
     json['LogTypeString'] as String,
     json['WorkflowItemId'] as int,
+    json['Desc'] as String,
   );
 }
 
@@ -27,4 +28,5 @@ Map<String, dynamic> _$EntranceExitRequestToJson(EntranceExitRequest instance) =
       'note': instance.note,
       'logTypeString': instance.logTypeString,
       'workflowItemId': instance.workflowItemId,
+      'desc': instance.desc,
     };

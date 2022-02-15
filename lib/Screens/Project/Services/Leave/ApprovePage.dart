@@ -447,7 +447,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                             TextInputType.multiline,
                                             false,
                                             5,
-                                            "",
+                                            leave.note??"",
                                             false,
                                             context),
                                       ),

@@ -230,7 +230,69 @@ class Project {
     }
   }
 
-  Future<EntranceExitRequest> getEntranceExitRecordByWorkflow(int id) async {
+  Future<MissionRequest> getTravelMissionByWorkflow(int id) async {
+    String error;
+    try {
+      var username = await SharedPref.pref.getUserName();
+      var password = await SharedPref.pref.getPassword();
+      final response = await Statics.httpClient
+          .get(Statics.BaseUrl + "/api/mission/getTravelMissionByWorkflow/$id?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}", headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.authorizationHeader: '$username:$password',
+        
+      });
+      if (response.statusCode == 200) {
+        MissionRequest item = MissionRequest.fromJson(json.decode(response.body));
+        if (item != null) {
+          return item;
+        }
+      } else if (response.statusCode == 401) {
+        return Future.error("You are unauthorized !");
+      } else {
+        error = (jsonDecode(response.body))["Message"] as String;
+        return Future.error(error ?? "Unknown Error");
+      }
+    } on SocketException {
+      return Future.error("check your internet connection");
+    } on ClientException {
+      return Future.error("check your internet connection");
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  Future<MissionRequest> getHourlyMissionByWorkflow(int id) async {
+    String error;
+    try {
+      var username = await SharedPref.pref.getUserName();
+      var password = await SharedPref.pref.getPassword();
+      final response = await Statics.httpClient
+          .get(Statics.BaseUrl + "/api/mission/getHourlyMissionByWorkflow/$id?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}", headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.authorizationHeader: '$username:$password',
+        
+      });
+      if (response.statusCode == 200) {
+        MissionRequest item = MissionRequest.fromJson(json.decode(response.body));
+        if (item != null) {
+          return item;
+        }
+      } else if (response.statusCode == 401) {
+        return Future.error("You are unauthorized !");
+      } else {
+        error = (jsonDecode(response.body))["Message"] as String;
+        return Future.error(error ?? "Unknown Error");
+      }
+    } on SocketException {
+      return Future.error("check your internet connection");
+    } on ClientException {
+      return Future.error("check your internet connection");
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+    Future<EntranceExitRequest> getEntranceExitRecordByWorkflow(int id) async {
     String error;
     try {
       var username = await SharedPref.pref.getUserName();

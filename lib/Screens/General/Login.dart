@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orc_hr/Bloc/General/bloc/auth_bloc.dart' as bloc;
 import 'package:orc_hr/Screens/Project/MainPage.dart';
@@ -36,12 +37,12 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
           }
           if (state is bloc.LoginError) {
             Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text(
-                  state.error,
-                  style: TextStyle(color: Colors.white),
-                ),
-                backgroundColor: Colors.red,
-              ));
+              content: Text(
+                state.error,
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.red,
+            ));
           }
         },
         child: Container(
@@ -72,13 +73,17 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                             name = text;
                           });
                         },
-                        keyboardType: TextInputType.emailAddress,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          WhitelistingTextInputFormatter.digitsOnly
+                        ],
                         decoration: new InputDecoration(
                           contentPadding:
                               EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                           filled: true,
                           fillColor: Colors.white,
-                          hintText: Localization.of(context).getTranslatedValue("Username"),
+                          hintText: Localization.of(context)
+                              .getTranslatedValue("Username"),
                           labelStyle:
                               TextStyle(color: Color.fromRGBO(243, 119, 55, 1)),
                           enabledBorder: new OutlineInputBorder(
@@ -129,7 +134,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                               EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                           filled: true,
                           fillColor: Colors.white,
-                          hintText: Localization.of(context).getTranslatedValue("Password"),
+                          hintText: Localization.of(context)
+                              .getTranslatedValue("Password"),
                           labelStyle:
                               TextStyle(color: Color.fromRGBO(243, 119, 55, 1)),
                           enabledBorder: new OutlineInputBorder(
@@ -189,7 +195,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                         MaterialTapTargetSize.shrinkWrap,
                                     color: Color.fromRGBO(243, 119, 55, 1),
                                     child: Text(
-                                      Localization.of(context).getTranslatedValue("Login"),
+                                      Localization.of(context)
+                                          .getTranslatedValue("Login"),
                                       style: TextStyle(
                                           fontSize: 20, color: Colors.white),
                                     ),

@@ -225,9 +225,9 @@ class _AppDrawerState extends State<AppDrawer> {
             color: Color.fromRGBO(243, 119, 55, 1),
           ),
           trailing: Icon(
-              Icons.arrow_right,
-              color: Color.fromRGBO(243, 119, 55, 1),
-            ),
+            Icons.arrow_right,
+            color: Color.fromRGBO(243, 119, 55, 1),
+          ),
           content: Text(Localization.of(context).getTranslatedValue("Setting")),
           subMenuItems: [
             MLSubmenu(
@@ -267,7 +267,7 @@ class _AppDrawerState extends State<AppDrawer> {
             Navigator.of(context)
                 .pushNamedAndRemoveUntil('/', ModalRoute.withName('/'));
           },
-        )
+        ),
       ],
     );
   }

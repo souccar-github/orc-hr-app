@@ -219,7 +219,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                 Text(Localization.of(context)
                                     .getTranslatedValue("Note")),
                                 SizedBox(
-                                  width: 20,
+                                  width: 50,
                                 ),
                                 Container(
                                   width: MediaQuery.of(context).size.width / 2,
@@ -303,7 +303,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                             TextInputType.multiline,
                                             false,
                                             5,
-                                            "",
+                                            record.desc??"",
                                             false,
                                             context),
                                       ),

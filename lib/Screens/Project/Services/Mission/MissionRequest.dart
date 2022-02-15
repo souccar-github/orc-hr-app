@@ -220,7 +220,7 @@ class _MissionRequestState extends State<MissionRequestPage> {
                                         ]),
                                   ),
                                   SizedBox(
-                                    width: 20,
+                                    width: 10,
                                   ),
                                   Container(
                                     width:
@@ -260,7 +260,7 @@ class _MissionRequestState extends State<MissionRequestPage> {
                                         ]),
                                   ),
                                   SizedBox(
-                                    width: 20,
+                                    width: 25,
                                   ),
                                   Container(
                                     width:
@@ -349,7 +349,7 @@ class _MissionRequestState extends State<MissionRequestPage> {
                                       toTime == null
                                           ? new DateTime.now()
                                           : DateTime.parse(toTime),
-                                      0);
+                                      0,"");
                                   bloc.add(PostMissionRequest(model));
                                 },
                               )),
