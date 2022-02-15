@@ -23,6 +23,7 @@ class LeaveRequest {
 
   final double spentDays;
   final String leaveReason;
+  final String note;
   final int leaveReasonId;
   final DateTime requestDate;
   final String description;
@@ -51,7 +52,8 @@ class LeaveRequest {
       this.startDate,
       this.toDateTime,
       this.toTime,
-      this.workflowItemId);
+      this.workflowItemId,
+      this.note);
 
   factory LeaveRequest.fromJson(Map<String, dynamic> json) =>
       _$LeaveRequestFromJson(json);

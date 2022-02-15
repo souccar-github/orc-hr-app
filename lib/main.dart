@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -60,36 +63,38 @@ class _MyAppState extends State<MyApp> {
       shadeValue(color.green, factor),
       shadeValue(color.blue, factor),
       1);
+  String lo;
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      initialRoute: "/",
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: [
-        Localization.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      localeResolutionCallback: (deviceLocale, supportedLoacales) {
-        for (var locale in supportedLoacales) {
-          if (locale.languageCode == deviceLocale.languageCode)
-            return deviceLocale;
-        }
-        return supportedLoacales.first;
-      },
-      locale: _locale,
-      supportedLocales: [
-        const Locale('en'),
-        const Locale('ar'),
-      ],
-      theme: ThemeData(
-        iconTheme: IconThemeData(color: Colors.white, size: 25),
-        textTheme: TextTheme(headline6: TextStyle(color: Colors.white)),
-        primarySwatch: generateMaterialColor(Color.fromRGBO(243, 119, 55, 1)),
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: SplashScreen(),
-    );
-  }
+      return MaterialApp(
+        initialRoute: "/",
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: [
+          Localization.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        localeResolutionCallback: (deviceLocale, supportedLoacales) {
+          for (var locale in supportedLoacales) {
+            if (locale.languageCode == deviceLocale.languageCode)
+              return deviceLocale;
+          }
+          return supportedLoacales.first;
+        },
+        locale: _locale,
+        supportedLocales: [
+          const Locale('en'),
+          const Locale('ar'),
+        ],
+        theme: ThemeData(
+          iconTheme: IconThemeData(color: Colors.white, size: 25),
+          textTheme: TextTheme(headline6: TextStyle(color: Colors.white)),
+          primarySwatch: generateMaterialColor(Color.fromRGBO(243, 119, 55, 1)),
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: SplashScreen(),
+      );
+    }
+  
 }

@@ -22,6 +22,18 @@ class GetLeaveByWorkflowIdSuccessfully extends NotificationState{
   GetLeaveByWorkflowIdSuccessfully(this.item);
 }
 
+class GetTravelMissionByWorkflowIdSuccessfully extends NotificationState{
+  final MissionRequest item;
+
+  GetTravelMissionByWorkflowIdSuccessfully(this.item);
+}
+
+class GetHourlyMissionByWorkflowIdSuccessfully extends NotificationState{
+  final MissionRequest item;
+
+  GetHourlyMissionByWorkflowIdSuccessfully(this.item);
+}
+
 class GetEntranceExitRecordByWorkflowIdSuccessfully extends NotificationState{
   final EntranceExitRequest item;
 

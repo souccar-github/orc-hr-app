@@ -5,6 +5,8 @@ import 'package:orc_hr/Localization/Localization.dart';
 import 'package:orc_hr/Screens/Project/Services/Leave/ApprovePage.dart';
 import 'package:orc_hr/Screens/Project/Services/entranceExit/ApprovePage.dart'
     as record;
+import 'package:orc_hr/Screens/Project/Services/Mission/ApprovePage.dart'
+    as mission;
 import 'package:orc_hr/Bloc/Project/bloc/notification_bloc.dart';
 import 'package:orc_hr/Widgets/General/Animation/delayed_animation.dart';
 
@@ -63,6 +65,22 @@ class _NotificationPageState extends State<NotificationPage> {
                       record: state.item,
                     )));
           }
+
+          if (state is GetHourlyMissionByWorkflowIdSuccessfully) {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) => mission.ApprovePage(
+                      bloc: null,
+                      mission: state.item,
+                    )));
+          }
+
+          if (state is GetTravelMissionByWorkflowIdSuccessfully) {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) => mission.ApprovePage(
+                      bloc: null,
+                      mission: state.item,
+                    )));
+          }
         },
         child: BlocBuilder<NotificationBloc, NotificationState>(
           cubit: bloc,
@@ -89,6 +107,14 @@ class _NotificationPageState extends State<NotificationPage> {
                               break;
                             case "EmployeeLeaveRequest":
                               bloc.add(GetLeaveByWorkflowId(
+                                  state.items[index].workflowItemId));
+                              break;
+                            case "TravelMission":
+                              bloc.add(GetTravelMissionByWorkflowId(
+                                  state.items[index].workflowItemId));
+                              break;
+                            case "HourlyMission":
+                              bloc.add(GetHourlyMissionByWorkflowId(
                                   state.items[index].workflowItemId));
                               break;
                           }

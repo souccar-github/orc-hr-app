@@ -58,7 +58,7 @@ class _MyPendingRequestsState extends State<MyPendingRequests> {
                   );
                 }
                 if (state is GetMyPendingRequestsSuccessfully){
-                  return pendingRequests(state.list);
+                  return pendingRequests(state.list,context);
                 }
                 return Container();
               },

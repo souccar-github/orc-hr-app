@@ -67,9 +67,8 @@ class _MultiLevelDrawerState extends State<MultiLevelDrawer> {
   @override
   Widget build(BuildContext context) {
     setState(() {
-    _locale =Localizations.localeOf(context).languageCode;
-          
-        });
+      _locale = Localizations.localeOf(context).languageCode;
+    });
     Size size = MediaQuery.of(context).size;
     return Container(
       width: size.width,
@@ -126,7 +125,7 @@ class _MultiLevelDrawerState extends State<MultiLevelDrawer> {
                     ))
                 : AnimatedPositioned(
                     duration: Duration(milliseconds: 200),
-                    right: selectedPosition == -1 ? 0 : size.width/2,
+                    right: selectedPosition == -1 ? 0 : size.width / 2,
                     top: selectedPosition != -1
                         ? positions[selectedPosition]
                         : positions[lastPosition],
@@ -180,35 +179,39 @@ class _MultiLevelDrawerState extends State<MultiLevelDrawer> {
             child: Column(
               children: <Widget>[
                 widget.header,
-                Container(
-                  key: globalKey,
-                  child: ListView.builder(
-                    itemCount: drawerItems.length,
-                    shrinkWrap: true,
-                    itemBuilder: (BuildContext context, int index) {
-                      MLMenuItem item = drawerItems[index];
-                      return _MLChoiceItem(
-                        leading: item.leading,
-                        trailing: item.trailing,
-                        width: size.width / 2,
-                        divisionColor: widget.divisionColor,
-                        color: widget.gradient == null
-                            ? widget.backgroundColor
-                            : Colors.transparent,
-                        rippleColor: widget.rippleColor,
-                        child: item.content,
-                        onTap: () {
-                          if (item.subMenuItems != null) {
-                            openSubDrawer(index);
-                          } else {
-                            item.onClick();
-                            openSubDrawer(selectedPosition);
-                          }
-                        },
-                      );
-                    },
+                SingleChildScrollView(
+                  child: Container(
+                    height: size.height-260,
+                    key: globalKey,
+                    child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: drawerItems.length,
+                      shrinkWrap: true,
+                      itemBuilder: (BuildContext context, int index) {
+                        MLMenuItem item = drawerItems[index];
+                        return _MLChoiceItem(
+                          leading: item.leading,
+                          trailing: item.trailing,
+                          width: size.width / 2,
+                          divisionColor: widget.divisionColor,
+                          color: widget.gradient == null
+                              ? widget.backgroundColor
+                              : Colors.transparent,
+                          rippleColor: widget.rippleColor,
+                          child: item.content,
+                          onTap: () {
+                            if (item.subMenuItems != null) {
+                              openSubDrawer(index);
+                            } else {
+                              item.onClick();
+                              openSubDrawer(selectedPosition);
+                            }
+                          },
+                        );
+                      },
+                    ),
                   ),
-                ),
+                )
               ],
             ),
           ),

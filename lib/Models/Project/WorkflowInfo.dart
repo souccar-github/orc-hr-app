@@ -8,12 +8,14 @@ class WorkflowInfo {
   final String type;
   final bool waitingApprove;
   final DateTime date;
+  final int logType;
 
   WorkflowInfo(
       this.type,
       this.pendingStep,
       this.waitingApprove,
-      this.date
+      this.date,
+      this.logType
       );
 
   factory WorkflowInfo.fromJson(Map<String, dynamic> json) =>

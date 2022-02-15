@@ -18,8 +18,10 @@ class EntranceExitRequest {
   final String logTypeString;
   @JsonKey(nullable: true)
   final int workflowItemId;
+  @JsonKey(nullable: true)
+  final String desc;
 
-  EntranceExitRequest(this.fullName,this.recordId,this.recordDate,this.logType,this.note,this.logTypeString ,this.workflowItemId);
+  EntranceExitRequest(this.fullName,this.recordId,this.recordDate,this.logType,this.note,this.logTypeString ,this.workflowItemId,this.desc);
 
   factory EntranceExitRequest.fromJson(Map<String, dynamic> json) =>
       _$EntranceExitRequestFromJson(json);

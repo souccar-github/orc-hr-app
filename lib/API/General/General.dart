@@ -17,7 +17,7 @@ class General {
           body: jsonEncode(authModel.toJson()),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
-            'Authorization': '${authModel.username}:${authModel.password}',
+            HttpHeaders.authorizationHeader: '${authModel.username}:${authModel.password}',
           });
       if (response.statusCode == 200) {
         return response.body ;

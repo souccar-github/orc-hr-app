@@ -8,6 +8,7 @@ import 'package:orc_hr/Localization/Localization.dart';
 import 'package:orc_hr/Models/Project/LeaveSetting.dart';
 import 'package:orc_hr/Models/Project/LeaveReason.dart';
 import 'package:orc_hr/Models/Project/LeaveInfoModel.dart';
+import 'package:orc_hr/SharedPref/SharedPref.dart';
 import 'package:orc_hr/Widgets/General/Drawer.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 
@@ -27,12 +28,15 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
   int id;
   double duration;
   bool isDivisibleToHours;
+  String locale;
+
   bool isIndivisible;
   DropDownListItem _selectedSetting;
   DropDownListItem _selectedReason;
   LeaveBloc bloc;
   List<ChartData> chartData;
-  TextEditingController _controller, _textController;
+  TextEditingController _controller = new TextEditingController();
+  TextEditingController _textController;
   String requestDate, startDate, endDate, fromTime, toTime, note;
   bool hourly;
   List<DropdownMenuItem<DropDownListItem>> _dropdownMenuItems =
@@ -87,7 +91,8 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
         DateTime.parse(startDate.substring(0, 10)),
         DateTime.parse(endDate.substring(0, 10)),
         toTime == null ? new DateTime.now() : DateTime.parse(toTime),
-        0);
+        0,
+        "");
     bloc.add(GetSpentDays(model));
   }
 
@@ -154,7 +159,8 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
         DateTime.parse(startDate.substring(0, 10)),
         DateTime.parse(endDate.substring(0, 10)),
         toTime == null ? new DateTime.now() : DateTime.parse(toTime),
-        0);
+        0,
+        "");
     bloc.add(GetSpentDays(model));
   }
 
@@ -166,6 +172,12 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration(milliseconds: 0), () async {
+      var _locale = await SharedPref.pref.getLocale();
+      setState(() {
+        locale = _locale ?? Localizations.localeOf(context).languageCode;
+      });
+    });
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -229,7 +241,8 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                     toTime == null
                         ? new DateTime.now()
                         : DateTime.parse(toTime),
-                    0);
+                    0,
+                    "");
                 bloc.add(GetSpentDays(model));
                 chartData = [
                   ChartData(
@@ -253,7 +266,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                 backgroundColor: Colors.green,
               ));
               Future.delayed(Duration(milliseconds: 1000), () {
-                if (widget.bloc != null){
+                if (widget.bloc != null) {
                   widget.bloc.add(InitMainLeavesBalancePage());
                 }
                 Navigator.of(context).pop();
@@ -364,7 +377,9 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                   dateLabelText: Localization.of(context)
                                       .getTranslatedValue("Date"),
                                   onChanged: (val) {
-                                    requestDate = val;
+                                    setState(() {
+                                      requestDate = val;
+                                    });
                                   },
                                 ),
                               ),
@@ -392,7 +407,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                 child: DateTimePicker(
                                   type: DateTimePickerType.date,
                                   dateMask: 'dd MMM, yyyy',
-                                  initialValue: DateTime.now().toString(),
+                                  initialValue: startDate,
                                   firstDate: DateTime(2000),
                                   lastDate: DateTime(2100),
                                   icon: Icon(Icons.event),
@@ -400,7 +415,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                       .getTranslatedValue("Date"),
                                   onChanged: (val) {
                                     setState(() {
-                                      startDate = val + "  00:00:00";
+                                      startDate = val + " 00:00:00";
                                       var model = new LeaveRequest(
                                           "",
                                           0,
@@ -435,7 +450,8 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                           toTime == null
                                               ? new DateTime.now()
                                               : DateTime.parse(toTime),
-                                          0);
+                                          0,
+                                          "");
                                       bloc.add(GetSpentDays(model));
                                     });
                                   },
@@ -467,7 +483,7 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                           MediaQuery.of(context).size.width / 2,
                                       child: DateTimePicker(
                                         readOnly: hourly,
-                                        controller: _controller,
+                                        initialValue: endDate,
                                         enabled: !hourly,
                                         type: DateTimePickerType.date,
                                         dateMask: 'dd MMM, yyyy',
@@ -510,7 +526,8 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                                 toTime == null
                                                     ? new DateTime.now()
                                                     : DateTime.parse(toTime),
-                                                0);
+                                                0,
+                                                "");
                                             bloc.add(GetSpentDays(model));
                                           });
                                         },
@@ -533,9 +550,10 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                       onChanged: (bool value) {
                                         setState(() {
                                           hourly = value;
-                                          _controller.text =
-                                              DateTime.now().toString();
                                           endDate = startDate;
+                                          _controller.text = DateTime.parse(
+                                                  endDate.substring(0, 10))
+                                              .toIso8601String();
                                           if (!hourly) {
                                             fromTime =
                                                 DateTime.now().toString();
@@ -574,7 +592,8 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                               toTime == null
                                                   ? new DateTime.now()
                                                   : DateTime.parse(toTime),
-                                              0);
+                                              0,
+                                              "");
                                           bloc.add(GetSpentDays(model));
                                         });
                                       },
@@ -648,7 +667,8 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                                 toTime == null
                                                     ? new DateTime.now()
                                                     : DateTime.parse(toTime),
-                                                0);
+                                                0,
+                                                "");
                                             bloc.add(GetSpentDays(model));
                                           });
                                         },
@@ -723,7 +743,8 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                                 toTime == null
                                                     ? new DateTime.now()
                                                     : DateTime.parse(toTime),
-                                                0);
+                                                0,
+                                                "");
                                             bloc.add(GetSpentDays(model));
                                           });
                                         },
@@ -914,7 +935,8 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                         toTime == null
                                             ? new DateTime.now()
                                             : DateTime.parse(toTime),
-                                        0);
+                                        0,
+                                        "");
                                     bloc.add(PostLeaveRequest(
                                         model, info, duration));
                                   },
@@ -947,27 +969,75 @@ class _LeaveRequestState extends State<LeaveRequestPage> {
                                       SizedBox(
                                         height: 60,
                                       ),
-                                      SfCircularChart(
-                                          legend: Legend(
-                                              isVisible: true,
-                                              position: LegendPosition.bottom),
-                                          series: <CircularSeries>[
-                                            DoughnutSeries<ChartData, String>(
-                                                dataSource: chartData,
-                                                pointColorMapper:
-                                                    (ChartData data, _) =>
-                                                        data.color,
-                                                xValueMapper:
-                                                    (ChartData data, _) =>
-                                                        data.x,
-                                                yValueMapper:
-                                                    (ChartData data, _) =>
-                                                        data.y,
-                                                name: info.title,
-                                                dataLabelSettings:
-                                                    DataLabelSettings(
-                                                        isVisible: true))
-                                          ]),
+                                      Row(
+                                        children: <Widget>[
+                                          SfCircularChart(
+                                              legend: Legend(
+                                                          overflowMode:
+                                                              LegendItemOverflowMode
+                                                                  .wrap,
+                                                          isVisible: false,
+                                                          position:
+                                                              LegendPosition
+                                                                  .top),
+                                              series: <CircularSeries>[
+                                                DoughnutSeries<ChartData,
+                                                        String>(
+                                                    dataSource: chartData,
+                                                    pointColorMapper:
+                                                        (ChartData data, _) =>
+                                                            data.color,
+                                                    xValueMapper:
+                                                        (ChartData data, _) =>
+                                                            data.x,
+                                                    yValueMapper:
+                                                        (ChartData data, _) =>
+                                                            data.y,
+                                                    name: info.title,
+                                                    dataLabelSettings:
+                                                        DataLabelSettings(
+                                                            isVisible: true))
+                                              ]),
+                                          locale == "en"
+                                              ? Container()
+                                              : Container(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      2,
+                                                  child:
+                                                      Column(children: <Widget>[
+                                                    SfCircularChart(
+                                                      legend: Legend(
+                                                          overflowMode:
+                                                              LegendItemOverflowMode
+                                                                  .wrap,
+                                                          isVisible: false,
+                                                          position:
+                                                              LegendPosition
+                                                                  .bottom),
+                                                      series: <CircularSeries>[
+                                                        DoughnutSeries<ChartData,
+                                                        String>(
+                                                    dataSource: chartData,
+                                                    pointColorMapper:
+                                                        (ChartData data, _) =>
+                                                            data.color,
+                                                    xValueMapper:
+                                                        (ChartData data, _) =>
+                                                            data.x,
+                                                    yValueMapper:
+                                                        (ChartData data, _) =>
+                                                            data.y,
+                                                    name: info.title,
+                                                    dataLabelSettings:
+                                                        DataLabelSettings(
+                                                            isVisible: true))
+                                                      ],
+                                                    ),
+                                                      ]),),
+                                        ],
+                                      ),
                                       Text(
                                         info.title,
                                         style: TextStyle(
