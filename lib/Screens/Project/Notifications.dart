@@ -91,6 +91,14 @@ class _NotificationPageState extends State<NotificationPage> {
               );
             }
             if (state is GetNotificationsSuccessfully) {
+              if (state.items.length == 0){
+                return Container(
+                  child: Center(
+                    child: Text(
+                        Localization.of(context).getTranslatedValue("ThereAreNoNotificationsToShow")),
+                  ),
+                );
+              }
               return Padding(
                 padding: EdgeInsets.all(7),
                 child: ListView.builder(

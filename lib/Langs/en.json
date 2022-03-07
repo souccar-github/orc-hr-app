@@ -72,5 +72,6 @@
 	"Type:":"Type :",
 	"Setting":"Setting",
 	"ThereAreNoLeaveRequestsBefore":"There Are No Leave Requests Before",
-	"NoItemsToShow":"No Items To Show"
+	"NoItemsToShow":"No Items To Show",
+    "AdvanceRequest":"Advance Request"
 }

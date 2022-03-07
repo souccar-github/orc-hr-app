@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:orc_hr/Localization/Localization.dart';
-
+import 'package:firebase_core/firebase_core.dart';
 import 'Screens/General/SplashScreen.dart';
 import 'SharedPref/SharedPref.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -17,7 +19,7 @@ class MyApp extends StatefulWidget {
   static void setLocale(BuildContext context, Locale locale) {
     _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
     Future.delayed(Duration(milliseconds: 0), () async {
-      state.setLocale(locale);
+      state.setLocale(locale);  
     });
   }
 

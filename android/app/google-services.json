@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "630081678947",
+    "project_id": "orc-hr-hamwi",
+    "storage_bucket": "orc-hr-hamwi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:630081678947:android:84d2423eda0af3572e9256",
+        "android_client_info": {
+          "package_name": "com.hamwi.orc_hr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "630081678947-5mp3f4t70ai2iq39oa8h5fscnoru4uc0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD713HklIV2tyd50zsqgPXsCE1bzGCVjx0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "630081678947-5mp3f4t70ai2iq39oa8h5fscnoru4uc0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

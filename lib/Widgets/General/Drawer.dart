@@ -4,11 +4,15 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:orc_hr/Bloc/Project/bloc/entranceexit_bloc.dart';
 import 'package:orc_hr/Localization/Localization.dart';
 import 'package:orc_hr/Models/Project/LeaveRequest.dart';
+import 'package:orc_hr/Screens/Project/Services/Advance/AdvanceRequest.dart';
+import 'package:orc_hr/Screens/Project/Services/Advance/PendingAdvanceRequests.dart';
 import 'package:orc_hr/Screens/Project/Services/EntranceExit/MyPendingRequests.dart';
 import 'package:orc_hr/Screens/Project/Services/Leave/MyPendingRequests.dart'
     as leave;
 import 'package:orc_hr/Screens/Project/Services/Mission/MyPendingRequests.dart'
     as mission;
+import 'package:orc_hr/Screens/Project/Services/Advance/MyPendingRequests.dart'
+    as advance;
 import 'package:orc_hr/SharedPref/SharedPref.dart';
 import 'package:orc_hr/Screens/Project/Services/Leave/LeavesBalance.dart';
 import 'package:orc_hr/main.dart';
@@ -219,6 +223,48 @@ class _AppDrawerState extends State<AppDrawer> {
                       .getTranslatedValue("MyPendingRequests"))),
             ],
             onClick: () {}),
+        // MLMenuItem(
+        //     leading: Icon(
+        //       Icons.time_to_leave,
+        //       color: Color.fromRGBO(243, 119, 55, 1),
+        //     ),
+        //     trailing: Icon(
+        //       Icons.arrow_right,
+        //       color: Color.fromRGBO(243, 119, 55, 1),
+        //     ),
+        //     content: Text(
+        //       Localization.of(context).getTranslatedValue("AdvanceServices"),
+        //     ),
+        //     subMenuItems: [
+        //       MLSubmenu(
+        //           onClick: () {
+        //             Navigator.of(context).push(
+        //               MaterialPageRoute(
+        //                   builder: (context) => AdvanceRequestPage()),
+        //             );
+        //           },
+        //           submenuContent: Text(Localization.of(context)
+        //               .getTranslatedValue("AdvanceRequest"))),
+        //       MLSubmenu(
+        //           onClick: () {
+        //             Navigator.of(context).push(
+        //               MaterialPageRoute(
+        //                   builder: (context) => PendingAdvances()),
+        //             );
+        //           },
+        //           submenuContent: Text(Localization.of(context)
+        //               .getTranslatedValue("PendingAdvanceRequests"))),
+        //       MLSubmenu(
+        //           onClick: () {
+        //             Navigator.of(context).push(
+        //               MaterialPageRoute(
+        //                   builder: (context) => advance.MyPendingRequests()),
+        //             );
+        //           },
+        //           submenuContent: Text(Localization.of(context)
+        //               .getTranslatedValue("MyPendingRequests"))),
+        //     ],
+        //     onClick: () {}),
         MLMenuItem(
           leading: Icon(
             Icons.settings,

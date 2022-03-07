@@ -19,6 +19,8 @@ dependencies:
   font_awesome_flutter: ^8.8.1
   connectivity: 0.4.5+3
   bloc: any
+  firebase_core: any
+  firebase_messaging: any
   flutter_bloc: any
   syncfusion_flutter_charts: ^18.4.46
   intl: any

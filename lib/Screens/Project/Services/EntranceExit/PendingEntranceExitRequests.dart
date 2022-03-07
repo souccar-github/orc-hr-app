@@ -73,6 +73,14 @@ class _PendingEntranceExitRequestsState extends State<PendingEntranceExitRequest
               );
             }
             if (state is GetPendingEntranceexitRequestsSuccessfully) {
+              if (state.items.length == 0){
+                return Container(
+                  child: Center(
+                    child: Text(
+                        Localization.of(context).getTranslatedValue("ThereAreNoItemsToShow")),
+                  ),
+                );
+              }
               return Padding(
                 padding: EdgeInsets.all(7),
                 child: ListView.builder(

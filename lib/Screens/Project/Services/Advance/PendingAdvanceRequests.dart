@@ -2,24 +2,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orc_hr/Localization/Localization.dart';
-import 'package:orc_hr/Bloc/Project/bloc/mission_bloc.dart';
-import 'package:orc_hr/Screens/Project/Services/Mission/ApprovePage.dart';
+import 'package:orc_hr/Bloc/Project/bloc/advance_bloc.dart';
+import 'package:orc_hr/Screens/Project/Services/Advance/ApprovePage.dart';
 import 'package:orc_hr/Widgets/General/Animation/delayed_animation.dart';
 
 import '../../Notifications.dart';
 
-class PendingMissions extends StatefulWidget {
+class PendingAdvances extends StatefulWidget {
   @override
-  _PendingMissionsState createState() => _PendingMissionsState();
+  _PendingAdvancesState createState() => _PendingAdvancesState();
 }
 
-class _PendingMissionsState extends State<PendingMissions> {
-  MissionBloc bloc;
+class _PendingAdvancesState extends State<PendingAdvances> {
+  AdvanceBloc bloc;
   @override
   void initState() {
     super.initState();
-    bloc = new MissionBloc();
-    bloc.add(GetPendingMissionRequests());
+    bloc = new AdvanceBloc();
+    bloc.add(GetPendingAdvanceRequests());
   }
 
   @override
@@ -44,16 +44,16 @@ class _PendingMissionsState extends State<PendingMissions> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          Localization.of(context).getTranslatedValue("PendingMissionRequests"),
+          Localization.of(context).getTranslatedValue("PendingAdvanceRequests"),
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headline6,
         ),
       ),
       backgroundColor: Colors.white,
-      body: BlocListener<MissionBloc, MissionState>(
+      body: BlocListener<AdvanceBloc, AdvanceState>(
         cubit: bloc,
         listener: (context, state) {
-          if (state is MissionError) {
+          if (state is AdvanceError) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(
                 state.error,
@@ -63,15 +63,15 @@ class _PendingMissionsState extends State<PendingMissions> {
             ));
           }
         },
-        child: BlocBuilder<MissionBloc, MissionState>(
+        child: BlocBuilder<AdvanceBloc, AdvanceState>(
           cubit: bloc,
           builder: (context, state) {
-            if (state is MissionLoading) {
+            if (state is AdvanceLoading) {
               return Center(
                 child: CircularProgressIndicator(),
               );
             }
-            if (state is GetPendingMissionRequestsSuccessfully) {
+            if (state is GetPendingAdvanceRequestsSuccessfully) {
               if (state.items.length == 0){
                 return Container(
                   child: Center(
@@ -108,14 +108,9 @@ class _PendingMissionsState extends State<PendingMissions> {
                                         SizedBox(
                                           height: 10,
                                         ),
-                                        Text(
-                                            state.items[index].isHourlyMission
-                                                ? Localization.of(context)
+                                        Text( Localization.of(context)
                                                     .getTranslatedValue(
-                                                        "HourlyMission")
-                                                : Localization.of(context)
-                                                    .getTranslatedValue(
-                                                        "TravilMission"),
+                                                        "AdvanceRequest"),
                                             style: TextStyle(
                                                 fontSize: 14,
                                                 color: Colors.black54)),
@@ -164,7 +159,7 @@ class _PendingMissionsState extends State<PendingMissions> {
                                                       builder: (context) =>
                                                           ApprovePage(
                                                               bloc: bloc,
-                                                              mission:
+                                                              advance:
                                                                   state.items[
                                                                       index])),
                                                 );
