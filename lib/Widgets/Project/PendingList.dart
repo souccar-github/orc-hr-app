@@ -53,7 +53,7 @@ Widget pendingRequests(List<WorkflowInfo> list, BuildContext _context) {
                                       )
                                     ],
                                   )
-                                : list[index].type == "12"
+                                : list[index].type == "12" || list[index].type == "13"
                                     ? Row(
                                         children: <Widget>[
                                           Text(

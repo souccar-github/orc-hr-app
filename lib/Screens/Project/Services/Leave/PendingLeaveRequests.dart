@@ -72,6 +72,14 @@ class _PendingLeavesState extends State<PendingLeaves> {
               );
             }
             if (state is GetPendingLeaveRequestsSuccessfully) {
+              if (state.items.length == 0){
+                return Container(
+                  child: Center(
+                    child: Text(
+                        Localization.of(context).getTranslatedValue("ThereAreNoItemsToShow")),
+                  ),
+                );
+              }
               return Padding(
                 padding: EdgeInsets.all(7),
                 child: ListView.builder(

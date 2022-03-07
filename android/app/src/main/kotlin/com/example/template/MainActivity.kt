@@ -1,4 +1,4 @@
-package com.example.orc_hr
+package com.hamwi.orc_hr
 
 import io.flutter.embedding.android.FlutterActivity
 

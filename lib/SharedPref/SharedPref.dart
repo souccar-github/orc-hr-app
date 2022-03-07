@@ -26,11 +26,22 @@ class SharedPref {
     p.setString("empName", empName.substring(1,empName.length-1));
   }
 
+  Future<Void> setFCMToken(String token) async {
+    final SharedPreferences p = await _getSharedPref;
+    p.setString("token", token);
+  }
+
 
   Future<String> getUserName() async {
     final SharedPreferences p = await _getSharedPref;
     String username = p.getString("username");
     return username;
+  }
+
+  Future<String> getFCMToken() async {
+    final SharedPreferences p = await _getSharedPref;
+    String token = p.getString("token");
+    return token;
   }
 
   Future<String> getEmployeeName() async {
