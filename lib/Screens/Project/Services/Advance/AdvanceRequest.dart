@@ -19,19 +19,18 @@ class AdvanceRequestPage extends StatefulWidget {
 }
 
 class _AdvanceRequestState extends State<AdvanceRequestPage> {
-  double amount, desAmount;
-  AdvanceBloc bloc;
-  TextEditingController _controller, _textController;
-  String operationDate, note;
+  double? amount, desAmount;
+  AdvanceBloc? bloc;
+  TextEditingController? _controller, _textController;
+  String? operationDate, note;
 
-  _AdvanceRequestState();
   @override
   void initState() {
     super.initState();
     operationDate = DateTime.now().toString();
     _controller = new TextEditingController(text: "0");
     bloc = new AdvanceBloc();
-    bloc.add(GetDesAmount());
+    bloc!.add(GetDesAmount());
   }
 
   onChangeTextField(String value) {
@@ -56,7 +55,7 @@ class _AdvanceRequestState extends State<AdvanceRequestPage> {
       ),
       backgroundColor: Colors.white,
       body: BlocListener<AdvanceBloc, AdvanceState>(
-          cubit: bloc,
+          bloc: bloc,
           listener: (context, state) {
             if (state is AdvanceError) {
               Scaffold.of(context).showSnackBar(SnackBar(
@@ -90,7 +89,7 @@ class _AdvanceRequestState extends State<AdvanceRequestPage> {
             }
           },
           child: BlocBuilder<AdvanceBloc, AdvanceState>(
-            cubit: bloc,
+            bloc: bloc,
             builder: (context, state) {
               if (state is AdvanceLoading) {
                 return Center(
@@ -108,17 +107,19 @@ class _AdvanceRequestState extends State<AdvanceRequestPage> {
                       child: Column(
                         children: <Widget>[
                           Row(children: <Widget>[
-                            RichText(
-                              text: TextSpan(
-                                  text: Localization.of(context)
-                                      .getTranslatedValue(
-                                          "DeservableAmount"),
-                                  style: TextStyle(color: Colors.black),
-                                  children: [
-                                    TextSpan(
-                                        text: '',
-                                        style: TextStyle(color: Colors.red))
-                                  ]),
+                            Container(
+                              width: 90,
+                              child: RichText(
+                                text: TextSpan(
+                                    text: Localization.of(context)
+                                        .getTranslatedValue("DeservableAmount"),
+                                    style: TextStyle(color: Colors.black),
+                                    children: [
+                                      TextSpan(
+                                          text: '',
+                                          style: TextStyle(color: Colors.red))
+                                    ]),
+                              ),
                             ),
                             SizedBox(
                               width: 20,
@@ -135,8 +136,7 @@ class _AdvanceRequestState extends State<AdvanceRequestPage> {
                                     filled: true,
                                     fillColor: Colors.white,
                                     hintText: Localization.of(context)
-                                        .getTranslatedValue(
-                                            "DeservableAmount"),
+                                        .getTranslatedValue("DeservableAmount"),
                                     labelStyle: TextStyle(
                                         color: Color.fromRGBO(243, 119, 55, 1)),
                                     enabledBorder: new OutlineInputBorder(
@@ -160,17 +160,17 @@ class _AdvanceRequestState extends State<AdvanceRequestPage> {
                                           new BorderRadius.circular(20.0),
                                       borderSide: new BorderSide(
                                           style: BorderStyle.solid,
-                                          color: Colors.red[200]),
+                                          color: Colors.red[200]??Color(0x000000)),
                                     ),
                                     errorBorder: new OutlineInputBorder(
                                       borderRadius:
                                           new BorderRadius.circular(20.0),
                                       borderSide: new BorderSide(
                                           style: BorderStyle.solid,
-                                          color: Colors.red[200]),
+                                          color: Colors.red[200]??Color(0x000000)),
                                     ),
                                     errorStyle: TextStyle(
-                                      color: Colors.red[200],
+                                      color: Colors.red[200]??Color(0x000000),
                                     ),
                                   ),
                                 )),
@@ -179,16 +179,19 @@ class _AdvanceRequestState extends State<AdvanceRequestPage> {
                             height: 10,
                           ),
                           Row(children: <Widget>[
-                            RichText(
-                              text: TextSpan(
-                                  text: Localization.of(context)
-                                      .getTranslatedValue("Amount"),
-                                  style: TextStyle(color: Colors.black),
-                                  children: [
-                                    TextSpan(
-                                        text: ' *',
-                                        style: TextStyle(color: Colors.red))
-                                  ]),
+                            Container(
+                              width: 90,
+                              child: RichText(
+                                text: TextSpan(
+                                    text: Localization.of(context)
+                                        .getTranslatedValue("Amount"),
+                                    style: TextStyle(color: Colors.black),
+                                    children: [
+                                      TextSpan(
+                                          text: ' *',
+                                          style: TextStyle(color: Colors.red))
+                                    ]),
+                              ),
                             ),
                             SizedBox(
                               width: 20,
@@ -233,17 +236,17 @@ class _AdvanceRequestState extends State<AdvanceRequestPage> {
                                           new BorderRadius.circular(20.0),
                                       borderSide: new BorderSide(
                                           style: BorderStyle.solid,
-                                          color: Colors.red[200]),
+                                          color: Colors.red[200]??Color(0x000000)),
                                     ),
                                     errorBorder: new OutlineInputBorder(
                                       borderRadius:
                                           new BorderRadius.circular(20.0),
                                       borderSide: new BorderSide(
                                           style: BorderStyle.solid,
-                                          color: Colors.red[200]),
+                                          color: Colors.red[200]??Color(0x000000)),
                                     ),
                                     errorStyle: TextStyle(
-                                      color: Colors.red[200],
+                                      color: Colors.red[200]??Color(0x000000),
                                     ),
                                   ),
                                 )),
@@ -252,8 +255,11 @@ class _AdvanceRequestState extends State<AdvanceRequestPage> {
                             height: 10,
                           ),
                           Row(children: <Widget>[
-                            Text(Localization.of(context)
-                                .getTranslatedValue("Note")),
+                            Container(
+                              width: 90,
+                              child: Text(Localization.of(context)
+                                  .getTranslatedValue("Note")),
+                            ),
                             SizedBox(
                               width: 20,
                             ),
@@ -297,8 +303,8 @@ class _AdvanceRequestState extends State<AdvanceRequestPage> {
                                       0,
                                       "",
                                       0,
-                                      amount,
-                                      desAmount,
+                                      amount!,
+                                      desAmount!,
                                       0,
                                       0,
                                       "",
@@ -307,7 +313,7 @@ class _AdvanceRequestState extends State<AdvanceRequestPage> {
                                       0,
                                       note ?? "",
                                       "");
-                                  bloc.add(PostAdvanceRequest(model));
+                                  bloc!.add(PostAdvanceRequest(model));
                                 },
                               )),
                         ],

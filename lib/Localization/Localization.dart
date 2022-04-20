@@ -11,10 +11,10 @@ class Localization {
   Localization(this.locale);
 
   static Localization of(BuildContext context){
-    return Localizations.of<Localization>(context,Localization);
+    return Localizations.of(context,Localization);
   }
 
-  Map<String,String> _localizedValues;
+  Map<String,String>? _localizedValues;
 
   Future load() async{
     String jsonStringValues = await rootBundle.loadString('lib/Langs/${locale.languageCode}.json');
@@ -25,7 +25,7 @@ class Localization {
   }
 
   String getTranslatedValue(String key){
-    return _localizedValues[key]??key;
+    return _localizedValues![key]??key;
   }
 
   static const LocalizationsDelegate<Localization> delegate =_LocalizationDelegate();

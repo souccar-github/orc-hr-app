@@ -18,11 +18,11 @@ class MissionRequestPage extends StatefulWidget {
 }
 
 class _MissionRequestState extends State<MissionRequestPage> {
-  double duration;
-  MissionBloc bloc;
-  TextEditingController _controller, _textController;
-  String requestDate, startDate, endDate, fromTime, toTime, note;
-  bool hourly;
+  double ?duration;
+  MissionBloc? bloc;
+  TextEditingController? _controller, _textController;
+  String? requestDate, startDate, endDate, fromTime, toTime, note;
+  bool? hourly;
 
   _MissionRequestState();
   @override
@@ -59,7 +59,7 @@ class _MissionRequestState extends State<MissionRequestPage> {
       ),
       backgroundColor: Colors.white,
       body: BlocListener<MissionBloc, MissionState>(
-          cubit: bloc,
+          bloc: bloc,
           listener: (context, state) {
             if (state is MissionError) {
               Scaffold.of(context).showSnackBar(SnackBar(
@@ -85,13 +85,13 @@ class _MissionRequestState extends State<MissionRequestPage> {
             }
             if (state is GetSpentDaysSuccessfully) {
               setState(() {
-                _textController.text = state.days.toString();
+                _textController!.text = state.days.toString();
                 duration = double.parse(state.days);
               });
             }
           },
           child: BlocBuilder<MissionBloc, MissionState>(
-            cubit: bloc,
+            bloc: bloc,
             builder: (context, state) {
               if (state is MissionLoading) {
                 return Center(
@@ -109,16 +109,19 @@ class _MissionRequestState extends State<MissionRequestPage> {
                       child: Column(
                         children: <Widget>[
                           Row(children: <Widget>[
-                            RichText(
-                              text: TextSpan(
-                                  text: Localization.of(context)
-                                      .getTranslatedValue("StartDate"),
-                                  style: TextStyle(color: Colors.black),
-                                  children: [
-                                    TextSpan(
-                                        text: ' *',
-                                        style: TextStyle(color: Colors.red))
-                                  ]),
+                            Container(
+                              width: 90,
+                              child: RichText(
+                                text: TextSpan(
+                                    text: Localization.of(context)
+                                        .getTranslatedValue("StartDate"),
+                                    style: TextStyle(color: Colors.black),
+                                    children: [
+                                      TextSpan(
+                                          text: ' *',
+                                          style: TextStyle(color: Colors.red))
+                                    ]),
+                              ),
                             ),
                             SizedBox(
                               width: 20,
@@ -146,16 +149,19 @@ class _MissionRequestState extends State<MissionRequestPage> {
                             height: 10,
                           ),
                           Row(children: <Widget>[
-                            RichText(
-                              text: TextSpan(
-                                  text: Localization.of(context)
-                                      .getTranslatedValue("EndDate"),
-                                  style: TextStyle(color: Colors.black),
-                                  children: [
-                                    TextSpan(
-                                        text: ' *',
-                                        style: TextStyle(color: Colors.red))
-                                  ]),
+                            Container(
+                              width: 90,
+                              child: RichText(
+                                text: TextSpan(
+                                    text: Localization.of(context)
+                                        .getTranslatedValue("EndDate"),
+                                    style: TextStyle(color: Colors.black),
+                                    children: [
+                                      TextSpan(
+                                          text: ' *',
+                                          style: TextStyle(color: Colors.red))
+                                    ]),
+                              ),
                             ),
                             SizedBox(
                               width: 20,
@@ -163,9 +169,9 @@ class _MissionRequestState extends State<MissionRequestPage> {
                             Container(
                               width: MediaQuery.of(context).size.width / 2,
                               child: DateTimePicker(
-                                readOnly: hourly,
+                                readOnly: hourly!,
                                 controller: _controller,
-                                enabled: !hourly,
+                                enabled: !hourly!,
                                 type: DateTimePickerType.date,
                                 dateMask: 'dd MMM, yyyy',
                                 firstDate: DateTime(2000),
@@ -184,19 +190,22 @@ class _MissionRequestState extends State<MissionRequestPage> {
                             height: 10,
                           ),
                           Row(children: <Widget>[
-                            Text(Localization.of(context)
-                                .getTranslatedValue("HourlyMission")),
+                            Container(
+                              width: 90,
+                              child: Text(Localization.of(context)
+                                  .getTranslatedValue("HourlyMission")),
+                            ),
                             SizedBox(
                               width: 20,
                             ),
                             Checkbox(
                               value: hourly,
-                              onChanged: (bool value) {
+                              onChanged: (bool? value) {
                                 setState(() {
-                                  hourly = value;
-                                  _controller.text = DateTime.now().toString();
+                                  hourly = value??false;
+                                  _controller!.text = DateTime.now().toString();
                                   endDate = startDate;
-                                  if (!hourly) {
+                                  if (!hourly!) {
                                     fromTime = DateTime.now().toString();
 
                                     toTime = DateTime.now().toString();
@@ -205,19 +214,22 @@ class _MissionRequestState extends State<MissionRequestPage> {
                               },
                             ),
                           ]),
-                          hourly
+                          hourly!
                               ? Row(children: <Widget>[
-                                  RichText(
-                                    text: TextSpan(
-                                        text: Localization.of(context)
-                                            .getTranslatedValue("FromTime"),
-                                        style: TextStyle(color: Colors.black),
-                                        children: [
-                                          TextSpan(
-                                              text: ' *',
-                                              style:
-                                                  TextStyle(color: Colors.red))
-                                        ]),
+                                  Container(
+                                    width: 90,
+                                    child: RichText(
+                                      text: TextSpan(
+                                          text: Localization.of(context)
+                                              .getTranslatedValue("FromTime"),
+                                          style: TextStyle(color: Colors.black),
+                                          children: [
+                                            TextSpan(
+                                                text: ' *',
+                                                style: TextStyle(
+                                                    color: Colors.red))
+                                          ]),
+                                    ),
                                   ),
                                   SizedBox(
                                     width: 10,
@@ -238,26 +250,29 @@ class _MissionRequestState extends State<MissionRequestPage> {
                                       onChanged: (val) {
                                         setState(() {
                                           fromTime =
-                                              startDate.substring(0, 11) + val;
+                                              startDate!.substring(0, 11) + val;
                                         });
                                       },
                                     ),
                                   ),
                                 ])
                               : Container(),
-                          hourly
+                          hourly!
                               ? Row(children: <Widget>[
-                                  RichText(
-                                    text: TextSpan(
-                                        text: Localization.of(context)
-                                            .getTranslatedValue("ToTime"),
-                                        style: TextStyle(color: Colors.black),
-                                        children: [
-                                          TextSpan(
-                                              text: ' *',
-                                              style:
-                                                  TextStyle(color: Colors.red))
-                                        ]),
+                                  Container(
+                                    width: 90,
+                                    child: RichText(
+                                      text: TextSpan(
+                                          text: Localization.of(context)
+                                              .getTranslatedValue("ToTime"),
+                                          style: TextStyle(color: Colors.black),
+                                          children: [
+                                            TextSpan(
+                                                text: ' *',
+                                                style: TextStyle(
+                                                    color: Colors.red))
+                                          ]),
+                                    ),
                                   ),
                                   SizedBox(
                                     width: 25,
@@ -278,7 +293,7 @@ class _MissionRequestState extends State<MissionRequestPage> {
                                       onChanged: (val) {
                                         setState(() {
                                           toTime =
-                                              startDate.substring(0, 11) + val;
+                                              startDate!.substring(0, 11) + val;
                                         });
                                       },
                                     ),
@@ -289,8 +304,11 @@ class _MissionRequestState extends State<MissionRequestPage> {
                             height: 10,
                           ),
                           Row(children: <Widget>[
-                            Text(Localization.of(context)
-                                .getTranslatedValue("Description")),
+                            Container(
+                              width: 90,
+                              child: Text(Localization.of(context)
+                                  .getTranslatedValue("Description")),
+                            ),
                             SizedBox(
                               width: 20,
                             ),
@@ -330,27 +348,32 @@ class _MissionRequestState extends State<MissionRequestPage> {
                                       fontSize: 18, color: Colors.white),
                                 ),
                                 onPressed: () {
+                                  setState(() {
+                                    fromTime = startDate.toString().substring(0,11)+fromTime.toString().substring(11);
+                                    toTime = startDate.toString().substring(0,11)+toTime.toString().substring(11);
+                                  });
                                   var model = new MissionRequest(
                                       note ?? "",
                                       0,
-                                      DateTime.parse(endDate.substring(0, 10)),
+                                      DateTime.parse(endDate!.substring(0, 10)),
                                       fromTime == null
                                           ? new DateTime.now()
-                                          : DateTime.parse(fromTime),
+                                          : DateTime.parse(fromTime!),
                                       "",
-                                      hourly,
+                                      hourly!,
                                       0,
                                       0,
                                       0,
                                       "",
                                       new DateTime.now(),
                                       DateTime.parse(
-                                          startDate.substring(0, 10)),
+                                          startDate!.substring(0, 10)),
                                       toTime == null
                                           ? new DateTime.now()
-                                          : DateTime.parse(toTime),
-                                      0,"");
-                                  bloc.add(PostMissionRequest(model));
+                                          : DateTime.parse(toTime!),
+                                      0,
+                                      "");
+                                  bloc!.add(PostMissionRequest(model));
                                 },
                               )),
                         ],

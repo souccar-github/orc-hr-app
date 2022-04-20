@@ -4,22 +4,15 @@ part 'EntranceExitRequest.g.dart';
 
 @JsonSerializable()
 class EntranceExitRequest {
-  @JsonKey(nullable: true)
-  final String fullName;
-  @JsonKey(nullable: true)
+  final String? fullName;
   final int recordId;
-  @JsonKey(nullable: true)
   final DateTime recordDate;
-  @JsonKey(nullable: true)
+  
   final int logType;
-  @JsonKey(nullable: true)
-  final String note;
-  @JsonKey(nullable: true)
-  final String logTypeString;
-  @JsonKey(nullable: true)
+  final String? note;
+  final String? logTypeString;
   final int workflowItemId;
-  @JsonKey(nullable: true)
-  final String desc;
+  final String? desc;
 
   EntranceExitRequest(this.fullName,this.recordId,this.recordDate,this.logType,this.note,this.logTypeString ,this.workflowItemId,this.desc);
 

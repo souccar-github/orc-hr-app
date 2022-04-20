@@ -14,7 +14,7 @@ class General {
     String error;
 
     try {
-      final response = await Statics.httpClient.post(Statics.BaseUrl + "/api/auth/login",
+      final response = await Statics.httpClient.post(Uri.parse(Statics.BaseUrl + "/api/auth/login"),
           body: jsonEncode(authModel.toJson()),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
@@ -26,7 +26,37 @@ class General {
         return Future.error("username or password is not correct");
       }  else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error"); 
+        return Future.error(error ); 
+      }
+    } on SocketException  {
+      return Future.error("check your internet connection");
+    } on http.ClientException {
+      return Future.error("check your internet connection");
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  Future<String> logout() async {
+    String error;
+    try {
+      var username = await SharedPref.pref.getUserName();
+      var password = await SharedPref.pref.getPassword();
+      final response = await Statics.httpClient.post(
+          Uri.parse(Statics.BaseUrl +
+              "/api/auth/logout"),
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
+          });
+      if (response.statusCode == 200) {
+        return "successfully";
+      } else if (response.statusCode == 401) {
+        return Future.error("You are unauthorized !");
+      } else {
+        error = (jsonDecode(response.body))["Message"] as String;
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -43,7 +73,7 @@ class General {
     try {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
-      final response = await Statics.httpClient.post(Statics.BaseUrl + "/api/auth/setToken?token=$token",
+      final response = await Statics.httpClient.post(Uri.parse(Statics.BaseUrl + "/api/auth/setToken?token=$token"),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: '${username}:${password}',
@@ -54,7 +84,7 @@ class General {
         return Future.error("username or password is not correct");
       }  else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error"); 
+        return Future.error(error ); 
       }
     } on SocketException {
       return Future.error("check your internet connection");

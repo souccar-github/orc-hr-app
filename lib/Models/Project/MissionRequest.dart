@@ -6,17 +6,17 @@ part 'MissionRequest.g.dart';
 class MissionRequest {
   final int employeeId;
   final int positionId;
-  final String fullName;
-  final String positionName;
+  final String? fullName;
+  final String ?positionName;
   final int missionId;
   final DateTime startDate;
   DateTime endDate;
   final bool isHourlyMission;
-  final DateTime fromTime;
-  final DateTime toTime;
+  final DateTime? fromTime;
+  final DateTime? toTime;
   final DateTime requestDate;
-  final String description;
-  final String note;
+  final String ?description;
+  final String ?note;
   final int workflowItemId;
   final int pendingType;
 

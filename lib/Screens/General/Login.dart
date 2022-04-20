@@ -12,9 +12,9 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
-  bloc.AuthBloc authBloc;
+  bloc.AuthBloc? authBloc;
 
-  String name, password;
+  String? name, password;
   final int delayedAmount = 500;
   @override
   void initState() {
@@ -27,9 +27,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     final Size sizeAware = MediaQuery.of(context).size;
     return Scaffold(
       body: BlocListener<bloc.AuthBloc, bloc.AuthState>(
-        cubit: authBloc,
-        listenWhen: (prev, cur) =>
-            cur is bloc.LoginSuccessfully || cur is bloc.LoginError,
+        bloc:authBloc,
         listener: (context, state) {
           if (state is bloc.LoginSuccessfully) {
             Navigator.pushReplacement(
@@ -75,7 +73,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                         },
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
-                          WhitelistingTextInputFormatter.digitsOnly
+                          FilteringTextInputFormatter.digitsOnly
                         ],
                         decoration: new InputDecoration(
                           contentPadding:
@@ -102,16 +100,16 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                             borderRadius: new BorderRadius.circular(20.0),
                             borderSide: new BorderSide(
                                 style: BorderStyle.solid,
-                                color: Colors.red[200]),
+                                color: Colors.red[200]??Color(0x000000)),
                           ),
                           errorBorder: new OutlineInputBorder(
                             borderRadius: new BorderRadius.circular(20.0),
                             borderSide: new BorderSide(
                                 style: BorderStyle.solid,
-                                color: Colors.red[200]),
+                                color: Colors.red[200]??Color(0x000000)),
                           ),
                           errorStyle: TextStyle(
-                            color: Colors.red[200],
+                            color: Colors.red[200]??Color(0x000000),
                           ),
                         ),
                       ),
@@ -154,16 +152,16 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                             borderRadius: new BorderRadius.circular(20.0),
                             borderSide: new BorderSide(
                                 style: BorderStyle.solid,
-                                color: Colors.red[200]),
+                                color: Colors.red[200]??Color(0x000000)),
                           ),
                           errorBorder: new OutlineInputBorder(
                             borderRadius: new BorderRadius.circular(20.0),
                             borderSide: new BorderSide(
                                 style: BorderStyle.solid,
-                                color: Colors.red[200]),
+                                color: Colors.red[200]??Color(0x000000)),
                           ),
                           errorStyle: TextStyle(
-                            color: Colors.red[200],
+                            color: Colors.red[200]??Color(0x000000),
                           ),
                         ),
                       ),
@@ -173,7 +171,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                       height: 50.0,
                     ),
                     BlocBuilder<bloc.AuthBloc, bloc.AuthState>(
-                        cubit: authBloc,
+                        bloc: authBloc,
                         buildWhen: (prev, cur) =>
                             cur is bloc.Loading || cur is bloc.LoginError,
                         builder: (context, state) {
@@ -201,7 +199,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                           fontSize: 20, color: Colors.white),
                                     ),
                                     onPressed: () {
-                                      authBloc.add(bloc.Login(name, password));
+                                      authBloc!.add(bloc.Login(name!, password!));
                                     },
                                   )),
                               delay: delayedAmount + 800,

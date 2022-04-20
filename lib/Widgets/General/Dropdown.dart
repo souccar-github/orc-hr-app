@@ -4,13 +4,13 @@ import 'package:orc_hr/Models/Project/DropdownItemModel.dart';
 
 Widget dropdown(
     BuildContext context,
-    DropDownListItem _value,
+    DropDownListItem? _value,
     String _hint,
     List<DropdownMenuItem<DropDownListItem>> _dropdownMenuItems,
-    dynamic Function(DropDownListItem)  onChangeDropdownItem  ) {
+    dynamic Function(DropDownListItem?)  onChangeDropdownItem  ) {
   return DropdownButton(
     underline: Container(
-      width: MediaQuery.of(context).size.width - 60,
+      width: MediaQuery.of(context).size.width - 120,
       decoration: BoxDecoration(
         color: Color.fromRGBO(243, 119, 55, 1),
         boxShadow: [

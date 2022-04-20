@@ -8,9 +8,9 @@ part of 'Notify.dart';
 
 Notify _$NotifysFromJson(Map<String, dynamic> json) {
   return Notify(
-    json['WorkflowItemId'] as int,
-    json['Body'] as String,
-    json['Type'] as String,
+    json['WorkflowItemId'] as int?,
+    json['Body'] as String?,
+    json['Type'] as String?,
   );
 }
 

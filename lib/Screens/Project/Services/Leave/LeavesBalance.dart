@@ -19,13 +19,13 @@ class LeavesBalance extends StatefulWidget {
 }
 
 class _LeavesBalanceState extends State<LeavesBalance> {
-  LeaveBloc bloc;
-  String locale;
+  LeaveBloc? bloc;
+  String? locale;
   @override
   void initState() {
     super.initState();
     bloc = new LeaveBloc();
-    bloc.add(InitMainLeavesBalancePage());
+    bloc!.add(InitMainLeavesBalancePage());
   }
 
   @override
@@ -33,12 +33,15 @@ class _LeavesBalanceState extends State<LeavesBalance> {
     Future.delayed(Duration(milliseconds: 0), () async {
       var _locale = await SharedPref.pref.getLocale();
       setState(() {
-        locale = _locale ?? Localizations.localeOf(context).languageCode;
+        locale = _locale;
       });
     });
     return Scaffold(
-      drawer: AppDrawer(),
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -60,7 +63,7 @@ class _LeavesBalanceState extends State<LeavesBalance> {
       ),
       backgroundColor: Colors.white,
       body: BlocListener<LeaveBloc, LeaveState>(
-        cubit: bloc,
+        bloc: bloc,
         listener: (context, state) {
           if (state is LeaveError) {
             Scaffold.of(context).showSnackBar(SnackBar(
@@ -73,7 +76,7 @@ class _LeavesBalanceState extends State<LeavesBalance> {
           }
         },
         child: BlocBuilder<LeaveBloc, LeaveState>(
-          cubit: bloc,
+          bloc: bloc,
           builder: (context, state) {
             if (state is LeaveLoading) {
               return Center(
@@ -84,8 +87,8 @@ class _LeavesBalanceState extends State<LeavesBalance> {
               if (state.infos.length == 0) {
                 return Container(
                   child: Center(
-                    child: Text(
-                        Localization.of(context).getTranslatedValue("ThereAreNoLeaveRequestsBefore")),
+                    child: Text(Localization.of(context)
+                        .getTranslatedValue("ThereAreNoLeaveRequestsBefore")),
                   ),
                 );
               }
@@ -97,14 +100,20 @@ class _LeavesBalanceState extends State<LeavesBalance> {
                 ChartData(Localization.of(context).getTranslatedValue("Remain"),
                     state.infos[0].remain, Colors.green)
               ];
-              List<ChartData> secChartData = [
-                ChartData(
-                    Localization.of(context).getTranslatedValue("Granted"),
-                    state.infos[1].granted,
-                    Colors.red),
-                ChartData(Localization.of(context).getTranslatedValue("Remain"),
-                    state.infos[1].remain, Colors.green)
-              ];
+
+              List<ChartData> secChartData = [];
+              if (state.infos.length == 2) {
+                secChartData = [
+                  ChartData(
+                      Localization.of(context).getTranslatedValue("Granted"),
+                      state.infos[1].granted,
+                      Colors.red),
+                  ChartData(
+                      Localization.of(context).getTranslatedValue("Remain"),
+                      state.infos[1].remain,
+                      Colors.green)
+                ];
+              }
               return SingleChildScrollView(
                 child: Container(
                   decoration: BoxDecoration(
@@ -120,7 +129,7 @@ class _LeavesBalanceState extends State<LeavesBalance> {
                         child: Row(
                           children: <Widget>[
                             Container(
-                              width: MediaQuery.of(context).size.width / 2,
+                              width:state.infos.length==2? MediaQuery.of(context).size.width / 2:MediaQuery.of(context).size.width,
                               child: Column(children: <Widget>[
                                 SfCircularChart(
                                   legend: Legend(
@@ -199,9 +208,7 @@ class _LeavesBalanceState extends State<LeavesBalance> {
                                 )
                               ]),
                             ),
-                            locale == "en"
-                                ? Container()
-                                : Container(
+                            state.infos.length == 2?Container(
                                     width:
                                         MediaQuery.of(context).size.width / 2,
                                     child: Column(children: <Widget>[
@@ -213,7 +220,7 @@ class _LeavesBalanceState extends State<LeavesBalance> {
                                             position: LegendPosition.bottom),
                                         series: <CircularSeries>[
                                           DoughnutSeries<ChartData, String>(
-                                              dataSource: firstChartData,
+                                              dataSource: secChartData,
                                               pointColorMapper:
                                                   (ChartData data, _) =>
                                                       data.color,
@@ -221,7 +228,7 @@ class _LeavesBalanceState extends State<LeavesBalance> {
                                                   (ChartData data, _) => data.x,
                                               yValueMapper:
                                                   (ChartData data, _) => data.y,
-                                              name: state.infos[0].title,
+                                              name: state.infos[1].title,
                                               dataLabelSettings:
                                                   DataLabelSettings(
                                                       isVisible: true))
@@ -289,93 +296,185 @@ class _LeavesBalanceState extends State<LeavesBalance> {
                                         delay: 200,
                                       )
                                     ]),
-                                  ),
-                            Container(
-                              width: MediaQuery.of(context).size.width / 2,
-                              child: Column(
-                                children: <Widget>[
-                                  SfCircularChart(
-                                    legend: Legend(
-                                        overflowMode:
-                                            LegendItemOverflowMode.wrap,
-                                        isVisible: true,
-                                        position: LegendPosition.bottom),
-                                    series: <CircularSeries>[
-                                      DoughnutSeries<ChartData, String>(
-                                          dataSource: secChartData,
-                                          pointColorMapper:
-                                              (ChartData data, _) => data.color,
-                                          xValueMapper: (ChartData data, _) =>
-                                              data.x,
-                                          yValueMapper: (ChartData data, _) =>
-                                              data.y,
-                                          name: state.infos[1].title,
-                                          dataLabelSettings: DataLabelSettings(
-                                              isVisible: true))
-                                    ],
-                                  ),
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width / 2 -
-                                            20,
-                                    height: 30,
-                                    child: Center(
-                                      child: AutoSizeText(
-                                        state.infos[1].title,
-                                        maxLines: 1,
-                                        style: TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    Localization.of(context)
-                                        .getTranslatedValue("Balance:"),
-                                    style: TextStyle(fontSize: 15),
-                                  ),
-                                  Text(state.infos[1].balance.toString()),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  DelayedAnimation(
-                                    child: ButtonTheme(
-                                        minWidth: 100.0,
-                                        height: 30.0,
-                                        child: RaisedButton(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  new BorderRadius.circular(
-                                                      15.0),
-                                              side: BorderSide(
-                                                  color: Colors.white)),
-                                          materialTapTargetSize:
-                                              MaterialTapTargetSize.shrinkWrap,
-                                          color:
-                                              Color.fromRGBO(243, 119, 55, 1),
-                                          child: Text(
-                                            Localization.of(context)
-                                                .getTranslatedValue(
-                                                    "RequestLeave"),
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                color: Colors.white),
-                                          ),
-                                          onPressed: () {
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      LeaveRequestPage(
-                                                          state.infos[1].id,
-                                                          bloc)),
-                                            );
-                                          },
-                                        )),
-                                    delay: 200,
-                                  )
-                                ],
-                              ),
-                            ),
+                                  ):Container(),
+                          //   locale == "en"
+                          //       ? Container()
+                          //       : Container(
+                          //           width:
+                          //               MediaQuery.of(context).size.width / 2,
+                          //           child: Column(children: <Widget>[
+                          //             SfCircularChart(
+                          //               legend: Legend(
+                          //                   overflowMode:
+                          //                       LegendItemOverflowMode.wrap,
+                          //                   isVisible: true,
+                          //                   position: LegendPosition.bottom),
+                          //               series: <CircularSeries>[
+                          //                 DoughnutSeries<ChartData, String>(
+                          //                     dataSource: secChartData,
+                          //                     pointColorMapper:
+                          //                         (ChartData data, _) =>
+                          //                             data.color,
+                          //                     xValueMapper:
+                          //                         (ChartData data, _) => data.x,
+                          //                     yValueMapper:
+                          //                         (ChartData data, _) => data.y,
+                          //                     name: state.infos[1].title,
+                          //                     dataLabelSettings:
+                          //                         DataLabelSettings(
+                          //                             isVisible: true))
+                          //               ],
+                          //             ),
+                          //             Container(
+                          //               width:
+                          //                   MediaQuery.of(context).size.width /
+                          //                           2 -
+                          //                       20,
+                          //               height: 30,
+                          //               child: Center(
+                          //                 child: AutoSizeText(
+                          //                   state.infos[1].title,
+                          //                   maxLines: 1,
+                          //                   style: TextStyle(
+                          //                       fontSize: 17,
+                          //                       fontWeight: FontWeight.bold),
+                          //                 ),
+                          //               ),
+                          //             ),
+                          //             Text(
+                          //               Localization.of(context)
+                          //                   .getTranslatedValue("Balance:"),
+                          //               style: TextStyle(fontSize: 15),
+                          //             ),
+                          //             Text(state.infos[1].balance.toString()),
+                          //             SizedBox(
+                          //               height: 20,
+                          //             ),
+                          //             DelayedAnimation(
+                          //               child: ButtonTheme(
+                          //                   minWidth: 100.0,
+                          //                   height: 30.0,
+                          //                   child: RaisedButton(
+                          //                     shape: RoundedRectangleBorder(
+                          //                         borderRadius:
+                          //                             new BorderRadius.circular(
+                          //                                 15.0),
+                          //                         side: BorderSide(
+                          //                             color: Colors.white)),
+                          //                     materialTapTargetSize:
+                          //                         MaterialTapTargetSize
+                          //                             .shrinkWrap,
+                          //                     color: Color.fromRGBO(
+                          //                         243, 119, 55, 1),
+                          //                     child: Text(
+                          //                       Localization.of(context)
+                          //                           .getTranslatedValue(
+                          //                               "RequestLeave"),
+                          //                       style: TextStyle(
+                          //                           fontSize: 18,
+                          //                           color: Colors.white),
+                          //                     ),
+                          //                     onPressed: () {
+                          //                       Navigator.of(context).push(
+                          //                         MaterialPageRoute(
+                          //                             builder: (context) =>
+                          //                                 LeaveRequestPage(
+                          //                                     state.infos[1].id,
+                          //                                     bloc)),
+                          //                       );
+                          //                     },
+                          //                   )),
+                          //               delay: 200,
+                          //             )
+                          //           ]),
+                          //         ),
+                          //   state.infos.length == 2?Container(
+                          //     width: MediaQuery.of(context).size.width / 2,
+                          //     child: Column(
+                          //       children: <Widget>[
+                                  
+                          //         SfCircularChart(
+                          //           legend: Legend(
+                          //               overflowMode:
+                          //                   LegendItemOverflowMode.wrap,
+                          //               isVisible: true,
+                          //               position: LegendPosition.bottom),
+                          //           series: <CircularSeries>[
+                          //             DoughnutSeries<ChartData, String>(
+                          //                 dataSource: secChartData,
+                          //                 pointColorMapper:
+                          //                     (ChartData data, _) => data.color,
+                          //                 xValueMapper: (ChartData data, _) =>
+                          //                     data.x,
+                          //                 yValueMapper: (ChartData data, _) =>
+                          //                     data.y,
+                          //                 name: state.infos[1].title,
+                          //                 dataLabelSettings: DataLabelSettings(
+                          //                     isVisible: true))
+                          //           ],
+                          //         ),
+                          //         Container(
+                          //           width:
+                          //               MediaQuery.of(context).size.width / 2 -
+                          //                   20,
+                          //           height: 30,
+                          //           child: Center(
+                          //             child: AutoSizeText(
+                          //               state.infos[1].title,
+                          //               maxLines: 1,
+                          //               style: TextStyle(
+                          //                   fontSize: 17,
+                          //                   fontWeight: FontWeight.bold),
+                          //             ),
+                          //           ),
+                          //         ),
+                          //         Text(
+                          //           Localization.of(context)
+                          //               .getTranslatedValue("Balance:"),
+                          //           style: TextStyle(fontSize: 15),
+                          //         ),
+                          //         Text(state.infos[1].balance.toString()),
+                          //         SizedBox(
+                          //           height: 20,
+                          //         ),
+                          //         DelayedAnimation(
+                          //           child: ButtonTheme(
+                          //               minWidth: 100.0,
+                          //               height: 30.0,
+                          //               child: RaisedButton(
+                          //                 shape: RoundedRectangleBorder(
+                          //                     borderRadius:
+                          //                         new BorderRadius.circular(
+                          //                             15.0),
+                          //                     side: BorderSide(
+                          //                         color: Colors.white)),
+                          //                 materialTapTargetSize:
+                          //                     MaterialTapTargetSize.shrinkWrap,
+                          //                 color:
+                          //                     Color.fromRGBO(243, 119, 55, 1),
+                          //                 child: Text(
+                          //                   Localization.of(context)
+                          //                       .getTranslatedValue(
+                          //                           "RequestLeave"),
+                          //                   style: TextStyle(
+                          //                       fontSize: 18,
+                          //                       color: Colors.white),
+                          //                 ),
+                          //                 onPressed: () {
+                          //                   Navigator.of(context).push(
+                          //                     MaterialPageRoute(
+                          //                         builder: (context) =>
+                          //                             LeaveRequestPage(
+                          //                                 state.infos[1].id,
+                          //                                 bloc!)),
+                          //                   );
+                          //                 },
+                          //               )),
+                          //           delay: 200,
+                          //         )
+                          //       ],
+                          //     ),
+                          //   ):Container(),
                           ],
                         ),
                       ),
@@ -393,7 +492,7 @@ class _LeavesBalanceState extends State<LeavesBalance> {
 }
 
 class ChartData {
-  ChartData(this.x, this.y, [this.color]);
+  ChartData(this.x, this.y, this.color);
   final String x;
   final double y;
   final Color color;

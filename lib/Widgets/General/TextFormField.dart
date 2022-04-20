@@ -30,15 +30,15 @@ Widget textFormField(Function(String) _onChanged, String _hint, bool isReq,
       focusedErrorBorder: new OutlineInputBorder(
         borderRadius: new BorderRadius.circular(20.0),
         borderSide:
-            new BorderSide(style: BorderStyle.solid, color: Colors.red[200]),
+            new BorderSide(style: BorderStyle.solid, color: Colors.red[200]??Color(0x000000)),
       ),
       errorBorder: new OutlineInputBorder(
         borderRadius: new BorderRadius.circular(20.0),
         borderSide:
-            new BorderSide(style: BorderStyle.solid, color: Colors.red[200]),
+            new BorderSide(style: BorderStyle.solid, color: Colors.red[200]??Color(0x000000)),
       ),
       errorStyle: TextStyle(
-        color: Colors.red[200],
+        color: Colors.red[200]??Color(0x000000),
       ),
     ),
     validator: (text) {

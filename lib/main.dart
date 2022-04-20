@@ -1,25 +1,36 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:orc_hr/Localization/Localization.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:orc_hr/NavigationService.dart';
+import 'package:orc_hr/PushNotification.dart';
+import 'package:orc_hr/Router.dart';
+import 'package:orc_hr/Screens/Project/Notifications.dart';
+import 'firebase_options.dart';
 import 'Screens/General/SplashScreen.dart';
 import 'SharedPref/SharedPref.dart';
+import 'locator.dart';
 
-void main() async{
+void main() async {
+  setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
   static void setLocale(BuildContext context, Locale locale) {
-    _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
     Future.delayed(Duration(milliseconds: 0), () async {
-      state.setLocale(locale);  
+      state?.setLocale(locale);
     });
   }
 
@@ -28,7 +39,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Locale _locale;
+  Locale? _locale;
   void setLocale(Locale locale) {
     setState(() {
       _locale = locale;
@@ -65,38 +76,39 @@ class _MyAppState extends State<MyApp> {
       shadeValue(color.green, factor),
       shadeValue(color.blue, factor),
       1);
-  String lo;
+  String? lo;
   @override
   Widget build(BuildContext context) {
-      return MaterialApp(
-        initialRoute: "/",
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: [
-          Localization.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        localeResolutionCallback: (deviceLocale, supportedLoacales) {
-          for (var locale in supportedLoacales) {
-            if (locale.languageCode == deviceLocale.languageCode)
-              return deviceLocale;
-          }
-          return supportedLoacales.first;
-        },
-        locale: _locale,
-        supportedLocales: [
-          const Locale('en'),
-          const Locale('ar'),
-        ],
-        theme: ThemeData(
-          iconTheme: IconThemeData(color: Colors.white, size: 25),
-          textTheme: TextTheme(headline6: TextStyle(color: Colors.white)),
-          primarySwatch: generateMaterialColor(Color.fromRGBO(243, 119, 55, 1)),
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: SplashScreen(),
-      );
-    }
-  
+    return MaterialApp(
+      navigatorKey: locator<NavigationService>().navigationKey,
+      initialRoute: "/",
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: [
+        Localization.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      localeResolutionCallback: (deviceLocale, supportedLoacales) {
+        for (var locale in supportedLoacales) {
+          if (locale.languageCode == deviceLocale?.languageCode)
+            return deviceLocale;
+        }
+        return supportedLoacales.first;
+      },
+      locale: _locale,
+      onGenerateRoute: generateRoute,
+      supportedLocales: [
+        const Locale('en'),
+        const Locale('ar'),
+      ],
+      theme: ThemeData(
+        iconTheme: IconThemeData(color: Colors.white, size: 25),
+        textTheme: TextTheme(headline6: TextStyle(color: Colors.white)),
+        primarySwatch: generateMaterialColor(Color.fromRGBO(243, 119, 55, 1)),
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: SplashScreen(),
+    );
+  }
 }

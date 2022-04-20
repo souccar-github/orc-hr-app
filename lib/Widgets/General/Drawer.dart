@@ -1,14 +1,20 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:orc_hr/API/General/General.dart';
+import 'package:orc_hr/API/Project/Project.dart';
 import 'package:orc_hr/Bloc/Project/bloc/entranceexit_bloc.dart';
 import 'package:orc_hr/Localization/Localization.dart';
 import 'package:orc_hr/Models/Project/LeaveRequest.dart';
+import 'package:orc_hr/Screens/Project/Reports/EntranceExitReport.dart';
 import 'package:orc_hr/Screens/Project/Services/Advance/AdvanceRequest.dart';
 import 'package:orc_hr/Screens/Project/Services/Advance/PendingAdvanceRequests.dart';
 import 'package:orc_hr/Screens/Project/Services/EntranceExit/MyPendingRequests.dart';
 import 'package:orc_hr/Screens/Project/Services/Leave/MyPendingRequests.dart'
     as leave;
+import 'package:orc_hr/Screens/Project/Services/Loan/LoanRequest.dart';
+import 'package:orc_hr/Screens/Project/Services/Loan/PendingLoanRequests.dart';
 import 'package:orc_hr/Screens/Project/Services/Mission/MyPendingRequests.dart'
     as mission;
 import 'package:orc_hr/Screens/Project/Services/Advance/MyPendingRequests.dart'
@@ -31,7 +37,7 @@ class AppDrawer extends StatefulWidget {
 
 class _AppDrawerState extends State<AppDrawer> {
   var locale = null;
-  String username;
+  String? username;
   @override
   void initState() {
     super.initState();
@@ -61,7 +67,7 @@ class _AppDrawerState extends State<AppDrawer> {
             fit: BoxFit.fill,
           ),
         ),
-        height: MediaQuery.of(context).size.height * 0.35,
+        height: MediaQuery.of(context).size.height * 0.40,
         child: Center(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -74,8 +80,9 @@ class _AppDrawerState extends State<AppDrawer> {
             SizedBox(
               height: 10,
             ),
-            Text(
+            AutoSizeText(
               "$username",
+              maxLines: 2,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -97,36 +104,36 @@ class _AppDrawerState extends State<AppDrawer> {
               Icons.arrow_right,
               color: Color.fromRGBO(243, 119, 55, 1),
             ),
-            content: Text(
-              Localization.of(context).getTranslatedValue("LeaveServices"),
+            content: AutoSizeText(
+              Localization.of(context).getTranslatedValue("LeaveServices"),maxLines: 2,
             ),
             subMenuItems: [
               MLSubmenu(
                   onClick: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => LeavesBalance()));
                   },
-                  submenuContent: Text(Localization.of(context)
-                      .getTranslatedValue("LeaveBalances"))),
+                  submenuContent: AutoSizeText(Localization.of(context)
+                      .getTranslatedValue("LeaveBalances"),maxLines: 2)),
               MLSubmenu(
                   onClick: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (context) => LeaveRequestPage(0, null)),
+                          builder: (context) => LeaveRequestPage(0,null)),
                     );
                   },
-                  submenuContent: Text(Localization.of(context)
-                      .getTranslatedValue("LeaveRequest"))),
+                  submenuContent: AutoSizeText(Localization.of(context)
+                      .getTranslatedValue("LeaveRequest"),maxLines: 2)),
               MLSubmenu(
                   onClick: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => PendingLeaves()),
                     );
                   },
-                  submenuContent: Text(Localization.of(context)
-                      .getTranslatedValue("PendingLeaveRequests"))),
+                  submenuContent: AutoSizeText(Localization.of(context)
+                      .getTranslatedValue("PendingLeaveRequests"),maxLines: 2)),
               MLSubmenu(
                   onClick: () {
                     Navigator.of(context).push(
@@ -134,8 +141,8 @@ class _AppDrawerState extends State<AppDrawer> {
                           builder: (context) => leave.MyPendingRequests()),
                     );
                   },
-                  submenuContent: Text(Localization.of(context)
-                      .getTranslatedValue("MyPendingRequests"))),
+                  submenuContent: AutoSizeText(Localization.of(context)
+                      .getTranslatedValue("MyPendingRequests"),maxLines: 2)),
             ],
             onClick: () {}),
         MLMenuItem(
@@ -147,9 +154,9 @@ class _AppDrawerState extends State<AppDrawer> {
               Icons.arrow_right,
               color: Color.fromRGBO(243, 119, 55, 1),
             ),
-            content: Text(
+            content: AutoSizeText(
               Localization.of(context)
-                  .getTranslatedValue("EnteranceExitServices"),
+                  .getTranslatedValue("EnteranceExitServices"),maxLines: 2,
             ),
             subMenuItems: [
               MLSubmenu(
@@ -159,8 +166,8 @@ class _AppDrawerState extends State<AppDrawer> {
                           builder: (context) => EntranceExitRequestPage()),
                     );
                   },
-                  submenuContent: Text(Localization.of(context)
-                      .getTranslatedValue("EntranceExitRequest"))),
+                  submenuContent: AutoSizeText(Localization.of(context)
+                      .getTranslatedValue("EntranceExitRequest"),maxLines: 2)),
               MLSubmenu(
                   onClick: () {
                     Navigator.of(context).push(
@@ -168,8 +175,8 @@ class _AppDrawerState extends State<AppDrawer> {
                           builder: (context) => PendingEntranceExitRequests()),
                     );
                   },
-                  submenuContent: Text(Localization.of(context)
-                      .getTranslatedValue("PendingEntranceExitRequests"))),
+                  submenuContent: AutoSizeText(Localization.of(context)
+                      .getTranslatedValue("PendingEntranceExitRequests"),maxLines: 2)),
               MLSubmenu(
                   onClick: () {
                     Navigator.of(context).push(
@@ -177,8 +184,17 @@ class _AppDrawerState extends State<AppDrawer> {
                           builder: (context) => MyPendingRequests()),
                     );
                   },
-                  submenuContent: Text(Localization.of(context)
-                      .getTranslatedValue("MyPendingRequests"))),
+                  submenuContent: AutoSizeText(Localization.of(context)
+                      .getTranslatedValue("MyPendingRequests"),maxLines: 2)),
+              MLSubmenu(
+                  onClick: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => EntranceExitReport()),
+                    );
+                  },
+                  submenuContent: AutoSizeText(Localization.of(context)
+                      .getTranslatedValue("EntranceExitReport"),maxLines: 2)),
             ],
             onClick: () {}),
         MLMenuItem(
@@ -190,8 +206,8 @@ class _AppDrawerState extends State<AppDrawer> {
               Icons.arrow_right,
               color: Color.fromRGBO(243, 119, 55, 1),
             ),
-            content: Text(
-              Localization.of(context).getTranslatedValue("MissionServices"),
+            content: AutoSizeText(
+              Localization.of(context).getTranslatedValue("MissionServices"),maxLines: 2,
             ),
             subMenuItems: [
               MLSubmenu(
@@ -201,8 +217,8 @@ class _AppDrawerState extends State<AppDrawer> {
                           builder: (context) => MissionRequestPage()),
                     );
                   },
-                  submenuContent: Text(Localization.of(context)
-                      .getTranslatedValue("MissionRequest"))),
+                  submenuContent: AutoSizeText(Localization.of(context)
+                      .getTranslatedValue("MissionRequest"),maxLines: 2)),
               MLSubmenu(
                   onClick: () {
                     Navigator.of(context).push(
@@ -210,8 +226,8 @@ class _AppDrawerState extends State<AppDrawer> {
                           builder: (context) => PendingMissions()),
                     );
                   },
-                  submenuContent: Text(Localization.of(context)
-                      .getTranslatedValue("PendingMissionRequests"))),
+                  submenuContent: AutoSizeText(Localization.of(context)
+                      .getTranslatedValue("PendingMissionRequests"),maxLines: 2)),
               MLSubmenu(
                   onClick: () {
                     Navigator.of(context).push(
@@ -219,10 +235,12 @@ class _AppDrawerState extends State<AppDrawer> {
                           builder: (context) => mission.MyPendingRequests()),
                     );
                   },
-                  submenuContent: Text(Localization.of(context)
-                      .getTranslatedValue("MyPendingRequests"))),
+                  submenuContent: AutoSizeText(Localization.of(context)
+                      .getTranslatedValue("MyPendingRequests"),maxLines: 2)),
             ],
             onClick: () {}),
+
+        //     //
         // MLMenuItem(
         //     leading: Icon(
         //       Icons.time_to_leave,
@@ -232,8 +250,8 @@ class _AppDrawerState extends State<AppDrawer> {
         //       Icons.arrow_right,
         //       color: Color.fromRGBO(243, 119, 55, 1),
         //     ),
-        //     content: Text(
-        //       Localization.of(context).getTranslatedValue("AdvanceServices"),
+        //     content: AutoSizeText(
+        //       Localization.of(context).getTranslatedValue("AdvanceServices"),maxLines: 2,
         //     ),
         //     subMenuItems: [
         //       MLSubmenu(
@@ -243,8 +261,8 @@ class _AppDrawerState extends State<AppDrawer> {
         //                   builder: (context) => AdvanceRequestPage()),
         //             );
         //           },
-        //           submenuContent: Text(Localization.of(context)
-        //               .getTranslatedValue("AdvanceRequest"))),
+        //           submenuContent: AutoSizeText(Localization.of(context)
+        //               .getTranslatedValue("AdvanceRequest"),maxLines: 2)),
         //       MLSubmenu(
         //           onClick: () {
         //             Navigator.of(context).push(
@@ -252,8 +270,8 @@ class _AppDrawerState extends State<AppDrawer> {
         //                   builder: (context) => PendingAdvances()),
         //             );
         //           },
-        //           submenuContent: Text(Localization.of(context)
-        //               .getTranslatedValue("PendingAdvanceRequests"))),
+        //           submenuContent: AutoSizeText(Localization.of(context)
+        //               .getTranslatedValue("PendingAdvanceRequests"),maxLines: 2)),
         //       MLSubmenu(
         //           onClick: () {
         //             Navigator.of(context).push(
@@ -261,8 +279,50 @@ class _AppDrawerState extends State<AppDrawer> {
         //                   builder: (context) => advance.MyPendingRequests()),
         //             );
         //           },
-        //           submenuContent: Text(Localization.of(context)
-        //               .getTranslatedValue("MyPendingRequests"))),
+        //           submenuContent: AutoSizeText(Localization.of(context)
+        //               .getTranslatedValue("MyPendingRequests"),maxLines: 2)),
+        //     ],
+        //     onClick: () {}),
+        //  MLMenuItem(
+        //     leading: Icon(
+        //       Icons.time_to_leave,
+        //       color: Color.fromRGBO(243, 119, 55, 1),
+        //     ),
+        //     trailing: Icon(
+        //       Icons.arrow_right,
+        //       color: Color.fromRGBO(243, 119, 55, 1),
+        //     ),
+        //     content: AutoSizeText(
+        //       Localization.of(context).getTranslatedValue("LoanServices"),maxLines: 2,
+        //     ),
+        //     subMenuItems: [
+        //       MLSubmenu(
+        //           onClick: () {
+        //             Navigator.of(context).push(
+        //               MaterialPageRoute(
+        //                   builder: (context) => LoanRequestPage()),
+        //             );
+        //           },
+        //           submenuContent: AutoSizeText(Localization.of(context)
+        //               .getTranslatedValue("LoanRequest"),maxLines: 2)),
+        //       MLSubmenu(
+        //           onClick: () {
+        //             Navigator.of(context).push(
+        //               MaterialPageRoute(
+        //                   builder: (context) => PendingLoans()),
+        //             );
+        //           },
+        //           submenuContent: AutoSizeText(Localization.of(context)
+        //               .getTranslatedValue("PendingLoanRequests"),maxLines: 2)),
+        //       MLSubmenu(
+        //           onClick: () {
+        //             Navigator.of(context).push(
+        //               MaterialPageRoute(
+        //                   builder: (context) => advance.MyPendingRequests()),
+        //             );
+        //           },
+        //           submenuContent: AutoSizeText(Localization.of(context)
+        //               .getTranslatedValue("MyPendingRequests"),maxLines: 2)),
         //     ],
         //     onClick: () {}),
         MLMenuItem(
@@ -274,7 +334,7 @@ class _AppDrawerState extends State<AppDrawer> {
             Icons.arrow_right,
             color: Color.fromRGBO(243, 119, 55, 1),
           ),
-          content: Text(Localization.of(context).getTranslatedValue("Setting")),
+          content: AutoSizeText(Localization.of(context).getTranslatedValue("Setting"),maxLines: 2),
           subMenuItems: [
             MLSubmenu(
                 onClick: () {
@@ -290,11 +350,11 @@ class _AppDrawerState extends State<AppDrawer> {
                     Navigator.of(context).pop();
                   }
                 },
-                submenuContent: Text(locale == 'en'
+                submenuContent: AutoSizeText(locale == 'en'
                     ? Localization.of(context)
                         .getTranslatedValue("ArabicLanguage")
                     : Localization.of(context)
-                        .getTranslatedValue("EnglishLanguage"))),
+                        .getTranslatedValue("EnglishLanguage"),maxLines: 2)),
           ],
           onClick: () async {
             await SharedPref.pref.setUserName(null);
@@ -304,11 +364,12 @@ class _AppDrawerState extends State<AppDrawer> {
         ),
         MLMenuItem(
           leading: Icon(
-            FontAwesomeIcons.signOutAlt,
+            Icons.logout,
             color: Color.fromRGBO(243, 119, 55, 1),
           ),
-          content: Text(Localization.of(context).getTranslatedValue("SignOut")),
+          content: AutoSizeText(Localization.of(context).getTranslatedValue("SignOut"),maxLines: 2),
           onClick: () async {
+            await General.apiClient.logout();
             await SharedPref.pref.setUserName(null);
             Navigator.of(context)
                 .pushNamedAndRemoveUntil('/', ModalRoute.withName('/'));

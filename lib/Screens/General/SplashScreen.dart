@@ -1,10 +1,14 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:orc_hr/Localization/Localization.dart';
+import 'package:orc_hr/PushNotification.dart';
 import 'package:orc_hr/Screens/General/Login.dart';
 import 'package:orc_hr/Screens/Project/MainPage.dart';
 import 'package:orc_hr/SharedPref/SharedPref.dart';
+import 'package:orc_hr/firebase_options.dart';
+import 'package:orc_hr/locator.dart';
 import 'package:orc_hr/main.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,42 +19,44 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    
 
-    if (DateTime.now().isBefore(DateTime(2022, 4, 1))) {
+    if (DateTime.now().isBefore(DateTime(2022, 5, 1))) {
       checkUser(context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (DateTime.now().isAfter(DateTime(2022, 4, 1))) {
+    if (DateTime.now().isAfter(DateTime(2022, 5, 1))) {
       Future.delayed(Duration.zero, () {
         showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
               title: Text(
-                Localization.of(context)
-                    .getTranslatedValue('YourTrialExpired'),style: TextStyle(color: Colors.black),),
+                Localization.of(context).getTranslatedValue('YourTrialExpired'),
+                style: TextStyle(color: Colors.black),
+              ),
               actions: <Widget>[
                 ButtonTheme(
-                    minWidth: 100.0,
-                    height: 50.0,
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(15.0),
-                          side: BorderSide(color: Colors.white)),
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      color: Color.fromRGBO(243, 119, 55, 1),
-                      child: Text(
-                        Localization.of(context).getTranslatedValue("Ok"),
-                        style: TextStyle(fontSize: 18, color: Colors.white),
-                      ),
-                      onPressed: () {
-                        exit(0);
-                      },
-                      
-                    ),),
+                  minWidth: 100.0,
+                  height: 50.0,
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(15.0),
+                        side: BorderSide(color: Colors.white)),
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    color: Color.fromRGBO(243, 119, 55, 1),
+                    child: Text(
+                      Localization.of(context).getTranslatedValue("Ok"),
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                    onPressed: () {
+                      exit(0);
+                    },
+                  ),
+                ),
               ],
             );
           },
@@ -85,6 +91,7 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
       );
     }
+    return Container();
   }
 
   checkUser(BuildContext context) async {
@@ -96,7 +103,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (locale == 'ar') {
       MyApp.setLocale(context, Locale.fromSubtags(languageCode: 'ar'));
     }
-    if (user != null) {
+    if (user != "") {
       Timer(Duration(seconds: 1), () {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => MainPage()));

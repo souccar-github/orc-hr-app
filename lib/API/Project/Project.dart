@@ -7,6 +7,8 @@ import 'package:orc_hr/Bloc/Project/bloc/advance_bloc.dart';
 import 'package:orc_hr/Models/Project/AdvanceRequest.dart';
 import 'package:orc_hr/Models/Project/LeaveSetting.dart';
 import 'package:orc_hr/Models/Project/LeaveReason.dart';
+import 'package:orc_hr/Models/Project/ListItem.dart';
+import 'package:orc_hr/Models/Project/LoanRequest.dart';
 import 'package:orc_hr/Models/Project/MissionRequest.dart';
 import 'package:orc_hr/Models/Project/WorkflowInfo.dart';
 import 'package:orc_hr/SharedPref/SharedPref.dart';
@@ -25,11 +27,11 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient
-          .get(Statics.BaseUrl + "/api/leave/getInit?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",headers: {
+          .get(Uri.parse(Statics.BaseUrl + "/api/leave/getInit?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),headers: {
         HttpHeaders.authorizationHeader: '$username:$password',
       });
       if (response.statusCode == 200) {
-        List<LeaveInfoModel> items = new List<LeaveInfoModel>();
+        List<LeaveInfoModel> items = [];
         List itemListModel = json.decode(response.body);
         for (var i = 0; i < itemListModel.length; i++) {
           LeaveInfoModel h = LeaveInfoModel.fromJson(itemListModel[i]);
@@ -42,7 +44,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -51,6 +53,8 @@ class Project {
     } catch (e) {
       return Future.error(e.toString());
     }
+return [];
+    return [];
   }
 
   Future<List<LeaveSetting>> getLeaveSettings() async {
@@ -59,13 +63,13 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient
-          .get(Statics.BaseUrl + "/api/leave/getLeaveSettings?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}", headers: {
+          .get(Uri.parse(Statics.BaseUrl + "/api/leave/getLeaveSettings?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"), headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.authorizationHeader: '$username:$password',
         
       });
       if (response.statusCode == 200) {
-        List<LeaveSetting> items = new List<LeaveSetting>();
+        List<LeaveSetting> items = [];
         List itemListModel = json.decode(response.body);
         for (var i = 0; i < itemListModel.length; i++) {
           LeaveSetting h = LeaveSetting.fromJson(itemListModel[i]);
@@ -78,7 +82,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -87,6 +91,7 @@ class Project {
     } catch (e) {
       return Future.error(e.toString());
     }
+return [];
   }
 
   Future<List<LeaveRequest>> getPendingLeaveRequests() async {
@@ -95,14 +100,14 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.get(
-          Statics.BaseUrl + "/api/leave/getPendingLeaveRequests?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
+          Uri.parse(Statics.BaseUrl + "/api/leave/getPendingLeaveRequests?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: '$username:$password',
             
           });
       if (response.statusCode == 200) {
-        List<LeaveRequest> items = new List<LeaveRequest>();
+        List<LeaveRequest> items = [];
         List itemListModel = json.decode(response.body);
         for (var i = 0; i < itemListModel.length; i++) {
           LeaveRequest h = LeaveRequest.fromJson(itemListModel[i]);
@@ -115,7 +120,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -124,6 +129,7 @@ class Project {
     } catch (e) {
       return Future.error(e.toString());
     }
+return [];
   }
 
   Future<List<MissionRequest>> getPendingMissionRequests() async {
@@ -132,14 +138,14 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.get(
-          Statics.BaseUrl + "/api/mission/getPendingMissionRequests?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
+          Uri.parse(Statics.BaseUrl + "/api/mission/getPendingMissionRequests?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: '$username:$password',
             
           });
       if (response.statusCode == 200) {
-        List<MissionRequest> items = new List<MissionRequest>();
+        List<MissionRequest> items = [];
         List itemListModel = json.decode(response.body);
         for (var i = 0; i < itemListModel.length; i++) {
           MissionRequest h = MissionRequest.fromJson(itemListModel[i]);
@@ -152,7 +158,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -161,6 +167,7 @@ class Project {
     } catch (e) {
       return Future.error(e.toString());
     }
+return [];
   }
 
   Future<List<AdvanceRequest>> getPendingAdvanceRequests() async {
@@ -169,14 +176,14 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.get(
-          Statics.BaseUrl + "/api/advance/getPendingAdvanceRequests?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
+          Uri.parse(Statics.BaseUrl + "/api/advance/getPendingAdvanceRequests?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: '$username:$password',
             
           });
       if (response.statusCode == 200) {
-        List<AdvanceRequest> items = new List<AdvanceRequest>();
+        List<AdvanceRequest> items = [];
         List itemListModel = json.decode(response.body);
         for (var i = 0; i < itemListModel.length; i++) {
           AdvanceRequest h = AdvanceRequest.fromJson(itemListModel[i]);
@@ -189,7 +196,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -198,6 +205,45 @@ class Project {
     } catch (e) {
       return Future.error(e.toString());
     }
+return [];
+  }
+
+  Future<List<LoanRequest>> getPendingLoanRequests() async {
+    String error;
+    try {
+      var username = await SharedPref.pref.getUserName();
+      var password = await SharedPref.pref.getPassword();
+      final response = await Statics.httpClient.get(
+          Uri.parse(Statics.BaseUrl + "/api/loan/getPendingLoanRequests?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
+          });
+      if (response.statusCode == 200) {
+        List<LoanRequest> items = [];
+        List itemListModel = json.decode(response.body);
+        for (var i = 0; i < itemListModel.length; i++) {
+          LoanRequest h = LoanRequest.fromJson(itemListModel[i]);
+          items.add(h);
+        }
+        if (items != null) {
+          return items;
+        }
+      } else if (response.statusCode == 401) {
+        return Future.error("You are unauthorized !");
+      } else {
+        error = (jsonDecode(response.body))["Message"] as String;
+        return Future.error(error );
+      }
+    } on SocketException {
+      return Future.error("check your internet connection");
+    } on ClientException {
+      return Future.error("check your internet connection");
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+return [];
   }
 
   Future<List<EntranceExitRequest>> getPendingEntranceExitRequests() async {
@@ -206,14 +252,14 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.get(
-          Statics.BaseUrl + "/api/entranceExit/getPendingEntranceExitRequests?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
+          Uri.parse(Statics.BaseUrl + "/api/entranceExit/getPendingEntranceExitRequests?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: '$username:$password',
             
           });
       if (response.statusCode == 200) {
-        List<EntranceExitRequest> items = new List<EntranceExitRequest>();
+        List<EntranceExitRequest> items = [];
         List itemListModel = json.decode(response.body);
         for (var i = 0; i < itemListModel.length; i++) {
           EntranceExitRequest h =
@@ -227,7 +273,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -236,15 +282,55 @@ class Project {
     } catch (e) {
       return Future.error(e.toString());
     }
+return [];
   }
 
-  Future<LeaveRequest> getLeaveByWorkflow(int id) async {
+  Future<List<EntranceExitRequest>> getEntranceExitReport(DateTime from, DateTime to) async {
+    String error;
+    try {
+      var username = await SharedPref.pref.getUserName();
+      var password = await SharedPref.pref.getPassword();
+      final response = await Statics.httpClient.get(
+          Uri.parse(Statics.BaseUrl + "/api/entranceExit/getEntranceExitReport?fromDate=${from.toIso8601String()}&toDate=${to.toIso8601String()}&loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
+          });
+      if (response.statusCode == 200) {
+        List<EntranceExitRequest> items = [];
+        List itemListModel = json.decode(response.body);
+        for (var i = 0; i < itemListModel.length; i++) {
+          EntranceExitRequest h =
+              EntranceExitRequest.fromJson(itemListModel[i]);
+          items.add(h);
+        }
+        if (items != null) {
+          return items;
+        }
+      } else if (response.statusCode == 401) {
+        return Future.error("You are unauthorized !");
+      } else {
+        error = (jsonDecode(response.body))["Message"] as String;
+        return Future.error(error );
+      }
+    } on SocketException {
+      return Future.error("check your internet connection");
+    } on ClientException {
+      return Future.error("check your internet connection");
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+return [];
+  }
+
+  Future<LeaveRequest?> getLeaveByWorkflow(int id) async {
     String error;
     try {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient
-          .get(Statics.BaseUrl + "/api/leave/getLeaveByWorkflow/$id?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}", headers: {
+          .get(Uri.parse(Statics.BaseUrl + "/api/leave/getLeaveByWorkflow/$id?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"), headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.authorizationHeader: '$username:$password',
         
@@ -254,11 +340,13 @@ class Project {
         if (item != null) {
           return item;
         }
+      } else if (response.statusCode == 400) {
+        return Future.error("400");
       } else if (response.statusCode == 401) {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -269,13 +357,13 @@ class Project {
     }
   }
 
-  Future<MissionRequest> getTravelMissionByWorkflow(int id) async {
+  Future<MissionRequest?> getTravelMissionByWorkflow(int id) async {
     String error;
     try {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient
-          .get(Statics.BaseUrl + "/api/mission/getTravelMissionByWorkflow/$id?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}", headers: {
+          .get(Uri.parse(Statics.BaseUrl + "/api/mission/getTravelMissionByWorkflow/$id?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"), headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.authorizationHeader: '$username:$password',
         
@@ -285,11 +373,13 @@ class Project {
         if (item != null) {
           return item;
         }
+      } else if (response.statusCode == 400) {
+        return Future.error("400");
       } else if (response.statusCode == 401) {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -300,13 +390,13 @@ class Project {
     }
   }
 
-  Future<MissionRequest> getHourlyMissionByWorkflow(int id) async {
+  Future<MissionRequest?> getHourlyMissionByWorkflow(int id) async {
     String error;
     try {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient
-          .get(Statics.BaseUrl + "/api/mission/getHourlyMissionByWorkflow/$id?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}", headers: {
+          .get(Uri.parse(Statics.BaseUrl + "/api/mission/getHourlyMissionByWorkflow/$id?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"), headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.authorizationHeader: '$username:$password',
         
@@ -316,11 +406,13 @@ class Project {
         if (item != null) {
           return item;
         }
+      } else if (response.statusCode == 400) {
+        return Future.error("400");
       } else if (response.statusCode == 401) {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -331,14 +423,14 @@ class Project {
     }
   }
 
-    Future<EntranceExitRequest> getEntranceExitRecordByWorkflow(int id) async {
+    Future<EntranceExitRequest?> getEntranceExitRecordByWorkflow(int id) async {
     String error;
     try {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.get(
-          Statics.BaseUrl +
-              "/api/entranceExit/getEntranceExitRecordByWorkflow/$id?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
+          Uri.parse(Statics.BaseUrl +
+              "/api/entranceExit/getEntranceExitRecordByWorkflow/$id?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: '$username:$password',
@@ -350,11 +442,13 @@ class Project {
         if (item != null) {
           return item;
         }
+      } else if (response.statusCode == 400) {
+        return Future.error("400");
       } else if (response.statusCode == 401) {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -371,13 +465,13 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient
-          .get(Statics.BaseUrl + "/api/notify/checkUnRead?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}", headers: {
+          .get(Uri.parse(Statics.BaseUrl + "/api/notify/checkUnRead?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"), headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.authorizationHeader: '$username:$password',
         
       });
       if (response.statusCode == 200) {
-        List<Notify> items = new List<Notify>();
+        List<Notify> items = [];
         List itemListModel = json.decode(response.body);
         for (var i = 0; i < itemListModel.length; i++) {
           Notify h = Notify.fromJson(itemListModel[i]);
@@ -390,7 +484,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -399,6 +493,7 @@ class Project {
     } catch (e) {
       return Future.error(e.toString());
     }
+return [];
   }
 
   Future<List<LeaveReason>> getLeaveReasons() async {
@@ -407,13 +502,13 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient
-          .get(Statics.BaseUrl + "/api/leave/getLeaveReasons?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}", headers: {
+          .get(Uri.parse(Statics.BaseUrl + "/api/leave/getLeaveReasons?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"), headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.authorizationHeader: '$username:$password',
         
       });
       if (response.statusCode == 200) {
-        List<LeaveReason> items = new List<LeaveReason>();
+        List<LeaveReason> items = [];
         List itemListModel = json.decode(response.body);
         for (var i = 0; i < itemListModel.length; i++) {
           LeaveReason h = LeaveReason.fromJson(itemListModel[i]);
@@ -426,7 +521,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -435,6 +530,44 @@ class Project {
     } catch (e) {
       return Future.error(e.toString());
     }
+return [];
+  }
+
+  Future<List<ListItem>> getLoanEmps() async {
+    String error;
+    try {
+      var username = await SharedPref.pref.getUserName();
+      var password = await SharedPref.pref.getPassword();
+      final response = await Statics.httpClient
+          .get(Uri.parse(Statics.BaseUrl + "/api/loan/getLoanEmps?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"), headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.authorizationHeader: '$username:$password',
+        
+      });
+      if (response.statusCode == 200) {
+        List<ListItem> items = [];
+        List itemListModel = json.decode(response.body);
+        for (var i = 0; i < itemListModel.length; i++) {
+          ListItem h = ListItem.fromJson(itemListModel[i]);
+          items.add(h);
+        }
+        if (items != null) {
+          return items;
+        }
+      } else if (response.statusCode == 401) {
+        return Future.error("You are unauthorized !");
+      } else {
+        error = (jsonDecode(response.body))["Message"] as String;
+        return Future.error(error );
+      }
+    } on SocketException {
+      return Future.error("check your internet connection");
+    } on ClientException {
+      return Future.error("check your internet connection");
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+return [];
   }
 
   Future<List<WorkflowInfo>> getMyPendingLeaveRequests() async {
@@ -443,12 +576,12 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient
-          .get(Statics.BaseUrl + "/api/leave/getMyPending/${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}", headers: {
+          .get(Uri.parse(Statics.BaseUrl + "/api/leave/getMyPending/${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"), headers: {
         HttpHeaders.authorizationHeader: '$username:$password',
         
       });
       if (response.statusCode == 200) {
-        List<WorkflowInfo> items = new List<WorkflowInfo>();
+        List<WorkflowInfo> items = [];
         List itemListModel = json.decode(response.body);
         for (var i = 0; i < itemListModel.length; i++) {
           WorkflowInfo h = WorkflowInfo.fromJson(itemListModel[i]);
@@ -461,7 +594,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -470,6 +603,8 @@ class Project {
     } catch (e) {
       return Future.error(e.toString());
     }
+return [];
+    return [];
   }
 
   Future<List<WorkflowInfo>> getMyPendingMissionRequests() async {
@@ -478,13 +613,13 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient
-          .get(Statics.BaseUrl + "/api/mission/getMyPending?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}", headers: {
+          .get(Uri.parse(Statics.BaseUrl + "/api/mission/getMyPending?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"), headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.authorizationHeader: '$username:$password',
         
       });
       if (response.statusCode == 200) {
-        List<WorkflowInfo> items = new List<WorkflowInfo>();
+        List<WorkflowInfo> items = [];
         List itemListModel = json.decode(response.body);
         for (var i = 0; i < itemListModel.length; i++) {
           WorkflowInfo h = WorkflowInfo.fromJson(itemListModel[i]);
@@ -497,7 +632,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -506,6 +641,7 @@ class Project {
     } catch (e) {
       return Future.error(e.toString());
     }
+return [];
   }
 
   Future<List<WorkflowInfo>> getMyPendingAdvanceRequests() async {
@@ -514,13 +650,13 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient
-          .get(Statics.BaseUrl + "/api/advance/getMyPending?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}", headers: {
+          .get(Uri.parse(Statics.BaseUrl + "/api/advance/getMyPending?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"), headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.authorizationHeader: '$username:$password',
         
       });
       if (response.statusCode == 200) {
-        List<WorkflowInfo> items = new List<WorkflowInfo>();
+        List<WorkflowInfo> items = [];
         List itemListModel = json.decode(response.body);
         for (var i = 0; i < itemListModel.length; i++) {
           WorkflowInfo h = WorkflowInfo.fromJson(itemListModel[i]);
@@ -533,7 +669,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -542,6 +678,45 @@ class Project {
     } catch (e) {
       return Future.error(e.toString());
     }
+return [];
+    return [];
+  }
+
+  Future<List<WorkflowInfo>> getMyPendingLoanRequests() async {
+    String error;
+    try {
+      var username = await SharedPref.pref.getUserName();
+      var password = await SharedPref.pref.getPassword();
+      final response = await Statics.httpClient
+          .get(Uri.parse(Statics.BaseUrl + "/api/loan/getMyPending?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"), headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.authorizationHeader: '$username:$password',
+        
+      });
+      if (response.statusCode == 200) {
+        List<WorkflowInfo> items = [];
+        List itemListModel = json.decode(response.body);
+        for (var i = 0; i < itemListModel.length; i++) {
+          WorkflowInfo h = WorkflowInfo.fromJson(itemListModel[i]);
+          items.add(h);
+        }
+        if (items != null) {
+          return items;
+        }
+      } else if (response.statusCode == 401) {
+        return Future.error("You are unauthorized !");
+      } else {
+        error = (jsonDecode(response.body))["Message"] as String;
+        return Future.error(error );
+      }
+    } on SocketException {
+      return Future.error("check your internet connection");
+    } on ClientException {
+      return Future.error("check your internet connection");
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+return [];
   }
 
   Future<List<WorkflowInfo>> getMyPendingEntranceExitRequests() async {
@@ -550,13 +725,13 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient
-          .get(Statics.BaseUrl + "/api/entranceExit/getMyPending?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}", headers: {
+          .get(Uri.parse(Statics.BaseUrl + "/api/entranceExit/getMyPending?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"), headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.authorizationHeader: '$username:$password',
         
       });
       if (response.statusCode == 200) {
-        List<WorkflowInfo> items = new List<WorkflowInfo>();
+        List<WorkflowInfo> items = [];
         List itemListModel = json.decode(response.body);
         for (var i = 0; i < itemListModel.length; i++) {
           WorkflowInfo h = WorkflowInfo.fromJson(itemListModel[i]);
@@ -569,7 +744,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -578,6 +753,7 @@ class Project {
     } catch (e) {
       return Future.error(e.toString());
     }
+return [];
   }
 
   Future<LeaveInfoModel> getLeaveSettingInfo(int id, DateTime startDate) async {
@@ -586,8 +762,8 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.get(
-          Statics.BaseUrl +
-              "/api/leave/getLeaveSettingInfo/${id.toString()}/${startDate.day.toString()}/${startDate.month.toString()}/${startDate.year.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
+          Uri.parse(Statics.BaseUrl +
+              "/api/leave/getLeaveSettingInfo/${id.toString()}/${startDate.day.toString()}/${startDate.month.toString()}/${startDate.year.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: '$username:$password',
@@ -601,7 +777,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -618,8 +794,8 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
-          Statics.BaseUrl +
-              "/api/leave/accept/${wfId.toString()}/${leaveId.toString()}/${note.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
+          Uri.parse(Statics.BaseUrl +
+              "/api/leave/accept/${wfId.toString()}/${leaveId.toString()}/${note == "" ? "null" :note.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: '$username:$password',
@@ -631,7 +807,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -642,14 +818,16 @@ class Project {
     }
   }
 
+  
+
   Future<double> getDesAmount() async {
     String error;
     try {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.get(
-          Statics.BaseUrl +
-              "/api/advance/getDesAmount?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
+          Uri.parse(Statics.BaseUrl +
+              "/api/advance/getDesAmount?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: '$username:$password',
@@ -661,7 +839,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -678,8 +856,8 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
-          Statics.BaseUrl +
-              "/api/leave/reject/${wfId.toString()}/${leaveId.toString()}/${note.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
+          Uri.parse(Statics.BaseUrl +
+              "/api/leave/reject/${wfId.toString()}/${leaveId.toString()}/${note == "" ? "null" :note.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: '$username:$password',
@@ -691,7 +869,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -708,8 +886,8 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
-          Statics.BaseUrl +
-              "/api/leave/pending/${wfId.toString()}/${leaveId.toString()}/${note.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
+          Uri.parse(Statics.BaseUrl +
+              "/api/leave/pending/${wfId.toString()}/${leaveId.toString()}/${note == "" ? "null" :note.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: '$username:$password',
@@ -721,7 +899,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -739,8 +917,8 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
-          Statics.BaseUrl +
-              "/api/mission/accept/${wfId.toString()}/${missionId.toString()}/${note??"null"}/${hourly.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
+          Uri.parse(Statics.BaseUrl +
+              "/api/mission/accept/${wfId.toString()}/${missionId.toString()}/${note == "" ? "null" :note}/${hourly.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: '$username:$password',
@@ -752,7 +930,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -770,8 +948,8 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
-          Statics.BaseUrl +
-              "/api/advance/accept/${wfId.toString()}/${advanceId.toString()}/${note??"null"}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
+          Uri.parse(Statics.BaseUrl +
+              "/api/advance/accept/${wfId.toString()}/${advanceId.toString()}/${note == "" ? "null" :note}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: '$username:$password',
@@ -783,7 +961,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -801,8 +979,8 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
-          Statics.BaseUrl +
-              "/api/advance/reject/${wfId.toString()}/${advanceId.toString()}/${note??"null"}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
+          Uri.parse(Statics.BaseUrl +
+              "/api/advance/reject/${wfId.toString()}/${advanceId.toString()}/${note == "" ? "null" :note}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: '$username:$password',
@@ -814,7 +992,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -832,8 +1010,8 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
-          Statics.BaseUrl +
-              "/api/advance/pending/${wfId.toString()}/${advanceId.toString()}/${note??"null"}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
+          Uri.parse(Statics.BaseUrl +
+              "/api/advance/pending/${wfId.toString()}/${advanceId.toString()}/${note == "" ? "null" :note}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: '$username:$password',
@@ -845,7 +1023,100 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
+      }
+    } on SocketException {
+      return Future.error("check your internet connection");
+    } on ClientException {
+      return Future.error("check your internet connection");
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  Future<String> acceptLoanRequest(
+      int wfId, int loanId, String note) async {
+    String error;
+    try {
+      var username = await SharedPref.pref.getUserName();
+      var password = await SharedPref.pref.getPassword();
+      final response = await Statics.httpClient.post(
+          Uri.parse(Statics.BaseUrl +
+              "/api/loan/accept/${wfId.toString()}/${loanId.toString()}/${note == "" ? "null" :note}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
+          });
+      if (response.statusCode == 200) {
+        return "successfully";
+      } else if (response.statusCode == 401) {
+        return Future.error("You are unauthorized !");
+      } else {
+        error = (jsonDecode(response.body))["Message"] as String;
+        return Future.error(error );
+      }
+    } on SocketException {
+      return Future.error("check your internet connection");
+    } on ClientException {
+      return Future.error("check your internet connection");
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  Future<String> rejectLoanRequest(
+      int wfId, int loanId, String note) async {
+    String error;
+    try {
+      var username = await SharedPref.pref.getUserName();
+      var password = await SharedPref.pref.getPassword();
+      final response = await Statics.httpClient.post(
+          Uri.parse(Statics.BaseUrl +
+              "/api/loan/reject/${wfId.toString()}/${loanId.toString()}/${note == "" ? "null" :note}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
+          });
+      if (response.statusCode == 200) {
+        return "successfully";
+      } else if (response.statusCode == 401) {
+        return Future.error("You are unauthorized !");
+      } else {
+        error = (jsonDecode(response.body))["Message"] as String;
+        return Future.error(error );
+      }
+    } on SocketException {
+      return Future.error("check your internet connection");
+    } on ClientException {
+      return Future.error("check your internet connection");
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  Future<String> pendingLoanRequest(
+      int wfId, int loanId, String note) async {
+    String error;
+    try {
+      var username = await SharedPref.pref.getUserName();
+      var password = await SharedPref.pref.getPassword();
+      final response = await Statics.httpClient.post(
+          Uri.parse(Statics.BaseUrl +
+              "/api/loan/pending/${wfId.toString()}/${loanId.toString()}/${note == "" ? "null" :note}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
+          });
+      if (response.statusCode == 200) {
+        return "successfully";
+      } else if (response.statusCode == 401) {
+        return Future.error("You are unauthorized !");
+      } else {
+        error = (jsonDecode(response.body))["Message"] as String;
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -863,8 +1134,8 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
-          Statics.BaseUrl +
-              "/api/mission/reject/${wfId.toString()}/${missionId.toString()}/${note??"null"}/${hourly.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
+          Uri.parse(Statics.BaseUrl +
+              "/api/mission/reject/${wfId.toString()}/${missionId.toString()}/${note == "" ? "null" :note}/${hourly.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: '$username:$password',
@@ -876,7 +1147,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -894,8 +1165,8 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
-          Statics.BaseUrl +
-              "/api/mission/pending/${wfId.toString()}/${missionId.toString()}/${note??"null"}/${hourly.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
+          Uri.parse(Statics.BaseUrl +
+              "/api/mission/pending/${wfId.toString()}/${missionId.toString()}/${note == "" ? "null" :note}/${hourly.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: '$username:$password',
@@ -907,7 +1178,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -925,8 +1196,8 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
-          Statics.BaseUrl +
-              "/api/entranceExit/accept/${wfId.toString()}/${recordId.toString()}/${note.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
+          Uri.parse(Statics.BaseUrl +
+              "/api/entranceExit/accept/${wfId.toString()}/${recordId.toString()}/${note == "" ? "null" :note.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: '$username:$password',
@@ -938,7 +1209,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -956,8 +1227,8 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
-          Statics.BaseUrl +
-              "/api/entranceExit/reject/${wfId.toString()}/${recordId.toString()}/${note.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
+          Uri.parse(Statics.BaseUrl +
+              "/api/entranceExit/reject/${wfId.toString()}/${recordId.toString()}/${note == "" ? "null" :note.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: '$username:$password',
@@ -969,7 +1240,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -987,8 +1258,8 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
-          Statics.BaseUrl +
-              "/api/entranceExit/pending/${wfId.toString()}/${recordId.toString()}/${note.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
+          Uri.parse(Statics.BaseUrl +
+              "/api/entranceExit/pending/${wfId.toString()}/${recordId.toString()}/${note == "" ? "null" :note.toString()}?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: '$username:$password',
@@ -1000,7 +1271,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -1017,7 +1288,7 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
-          Statics.BaseUrl + "/api/leave/getSpentDays?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
+          Uri.parse(Statics.BaseUrl + "/api/leave/getSpentDays?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
           body: jsonEncode(leave.toJson()),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
@@ -1031,7 +1302,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -1048,7 +1319,7 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
-          Statics.BaseUrl + "/api/leave/postRequest?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
+         Uri.parse( Statics.BaseUrl + "/api/leave/postRequest?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: '$username:$password',
@@ -1061,7 +1332,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -1078,7 +1349,7 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
-          Statics.BaseUrl + "/api/mission/postRequest?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
+          Uri.parse(Statics.BaseUrl + "/api/mission/postRequest?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: '$username:$password',
@@ -1091,7 +1362,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -1100,6 +1371,7 @@ class Project {
     } catch (e) {
       return Future.error(e.toString());
     }
+return [];
   }
 
   Future addAdvanceRequest(AdvanceRequest item) async {
@@ -1108,7 +1380,7 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
-          Statics.BaseUrl + "/api/advance/postRequest?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
+          Uri.parse(Statics.BaseUrl + "/api/advance/postRequest?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: '$username:$password',
@@ -1121,7 +1393,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -1130,6 +1402,38 @@ class Project {
     } catch (e) {
       return Future.error(e.toString());
     }
+return [];
+  }
+
+  Future addLoanRequest(LoanRequest item) async {
+    String error;
+    try {
+      var username = await SharedPref.pref.getUserName();
+      var password = await SharedPref.pref.getPassword();
+      final response = await Statics.httpClient.post(
+          Uri.parse(Statics.BaseUrl + "/api/loan/postRequest?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+            HttpHeaders.authorizationHeader: '$username:$password',
+            
+          },
+          body: jsonEncode(item.toJson()));
+      if (response.statusCode == 200) {
+        return "success";
+      } else if (response.statusCode == 401) {
+        return Future.error("You are unauthorized !");
+      } else {
+        error = (jsonDecode(response.body))["Message"] as String;
+        return Future.error(error );
+      }
+    } on SocketException {
+      return Future.error("check your internet connection");
+    } on ClientException {
+      return Future.error("check your internet connection");
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+return [];
   }
 
   Future addEntranceExitRequest(EntranceExitRequest item) async {
@@ -1138,7 +1442,7 @@ class Project {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
       final response = await Statics.httpClient.post(
-          Statics.BaseUrl + "/api/entranceExit/postRequest?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}",
+          Uri.parse(Statics.BaseUrl + "/api/entranceExit/postRequest?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
             HttpHeaders.authorizationHeader: '$username:$password',
@@ -1151,7 +1455,7 @@ class Project {
         return Future.error("You are unauthorized !");
       } else {
         error = (jsonDecode(response.body))["Message"] as String;
-        return Future.error(error ?? "Unknown Error");
+        return Future.error(error );
       }
     } on SocketException {
       return Future.error("check your internet connection");
@@ -1160,5 +1464,6 @@ class Project {
     } catch (e) {
       return Future.error(e.toString());
     }
+return [];
   }
 }

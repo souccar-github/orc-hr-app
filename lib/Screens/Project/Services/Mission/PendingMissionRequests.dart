@@ -14,12 +14,12 @@ class PendingMissions extends StatefulWidget {
 }
 
 class _PendingMissionsState extends State<PendingMissions> {
-  MissionBloc bloc;
+  MissionBloc? bloc;
   @override
   void initState() {
     super.initState();
     bloc = new MissionBloc();
-    bloc.add(GetPendingMissionRequests());
+    bloc!.add(GetPendingMissionRequests());
   }
 
   @override
@@ -51,7 +51,7 @@ class _PendingMissionsState extends State<PendingMissions> {
       ),
       backgroundColor: Colors.white,
       body: BlocListener<MissionBloc, MissionState>(
-        cubit: bloc,
+        bloc: bloc,
         listener: (context, state) {
           if (state is MissionError) {
             Scaffold.of(context).showSnackBar(SnackBar(
@@ -64,7 +64,7 @@ class _PendingMissionsState extends State<PendingMissions> {
           }
         },
         child: BlocBuilder<MissionBloc, MissionState>(
-          cubit: bloc,
+          bloc: bloc,
           builder: (context, state) {
             if (state is MissionLoading) {
               return Center(
@@ -101,7 +101,7 @@ class _PendingMissionsState extends State<PendingMissions> {
                                     child: Column(
                                       children: <Widget>[
                                         Text(
-                                          state.items[index].fullName ?? "",
+                                          state.items[index].fullName! ,
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold),
                                         ),
