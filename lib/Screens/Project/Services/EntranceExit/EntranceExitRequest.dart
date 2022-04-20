@@ -20,13 +20,13 @@ class EntranceExitRequestPage extends StatefulWidget {
 }
 
 class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
-  EntranceexitBloc bloc;
-  TextEditingController _controller;
-  String recordDateTime, note;
-  int _selectedType;
-  int recordType;
+  EntranceexitBloc? bloc;
+  TextEditingController? _controller;
+  String? recordDateTime, note;
+  int? _selectedType;
+  int? recordType;
   List<DropdownMenuItem<int>> _dropdownMenuItems =
-      new List<DropdownMenuItem<int>>();
+      [];
 
   _EntranceExitRequestState();
   @override
@@ -44,15 +44,15 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
     });
   }
 
-  onChangeDropdownItem(int selectedItem) {
+  onChangeDropdownItem(int? selectedItem) {
     setState(() {
-      _selectedType = selectedItem;
+      _selectedType = selectedItem??0;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    List<DropdownMenuItem<int>> items = List();
+    List<DropdownMenuItem<int>> items = [];
     Future.delayed(Duration(milliseconds: 100), () {
       items.add(
         DropdownMenuItem(
@@ -84,7 +84,7 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
       ),
       backgroundColor: Colors.white,
       body: BlocListener<EntranceexitBloc, EntranceexitState>(
-          cubit: bloc,
+          bloc: bloc,
           listener: (context, state) {
             if (state is EntranceExitError) {
               Scaffold.of(context).showSnackBar(SnackBar(
@@ -109,7 +109,7 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
             }
           },
           child: BlocBuilder<EntranceexitBloc, EntranceexitState>(
-            cubit: bloc,
+            bloc: bloc,
             builder: (context, state) {
               if (state is EntranceExitLoading) {
                 return Center(
@@ -127,26 +127,30 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
                       child: Column(
                         children: <Widget>[
                           Row(children: <Widget>[
-                            RichText(
-                              text: TextSpan(
-                                  text: Localization.of(context)
-                                      .getTranslatedValue("RecordDate"),
-                                  style: TextStyle(color: Colors.black),
-                                  children: [
-                                    TextSpan(
-                                        text: ' *',
-                                        style: TextStyle(color: Colors.red))
-                                  ]),
+                            Container(
+                              width: 90,
+                              child: RichText(
+                                text: TextSpan(
+                                    text: Localization.of(context)
+                                        .getTranslatedValue("RecordDate"),
+                                    style: TextStyle(color: Colors.black),
+                                    children: [
+                                      TextSpan(
+                                          text: ' *',
+                                          style: TextStyle(color: Colors.red))
+                                    ]),
+                              ),
                             ),
                             SizedBox(
-                              width: 20,
+                              width: 10,
                             ),
                             Container(
-                              width: MediaQuery.of(context).size.width / 2,
+                              width: MediaQuery.of(context).size.width /1.8,
                               child: DateTimePicker(
                                 type: DateTimePickerType.dateTimeSeparate,
                                 dateMask: 'dd /MM /yyyy',
-                                initialValue: recordDateTime??DateTime.now(),
+                                style: TextStyle(fontSize: 13),
+                                initialValue: recordDateTime ,
                                 firstDate: DateTime(2000),
                                 timeFieldWidth: 45,
                                 lastDate: DateTime(2100),
@@ -165,16 +169,19 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
                             height: 10,
                           ),
                           Row(children: <Widget>[
-                            RichText(
-                              text: TextSpan(
-                                  text: Localization.of(context)
-                                      .getTranslatedValue("RecordType"),
-                                  style: TextStyle(color: Colors.black),
-                                  children: [
-                                    TextSpan(
-                                        text: ' *',
-                                        style: TextStyle(color: Colors.red))
-                                  ]),
+                            Container(
+                              width: 90,
+                              child: RichText(
+                                text: TextSpan(
+                                    text: Localization.of(context)
+                                        .getTranslatedValue("RecordType"),
+                                    style: TextStyle(color: Colors.black),
+                                    children: [
+                                      TextSpan(
+                                          text: ' *',
+                                          style: TextStyle(color: Colors.red))
+                                    ]),
+                              ),
                             ),
                             SizedBox(
                               width: 20,
@@ -216,8 +223,11 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
                             height: 10,
                           ),
                           Row(children: <Widget>[
-                            Text(Localization.of(context)
-                                .getTranslatedValue("Note")),
+                            Container(
+                              width: 90,
+                              child: Text(Localization.of(context)
+                                  .getTranslatedValue("Note")),
+                            ),
                             SizedBox(
                               width: 20,
                             ),
@@ -260,13 +270,13 @@ class _EntranceExitRequestState extends State<EntranceExitRequestPage> {
                                   var model = new EntranceExitRequest(
                                       "",
                                       0,
-                                      DateTime.parse(recordDateTime),
-                                      _selectedType,
+                                      DateTime.parse(recordDateTime!),
+                                      _selectedType!,
                                       note ?? "",
                                       "",
                                       0,
                                       "");
-                                  bloc.add(PostEntranceExitRequest(model));
+                                  bloc!.add(PostEntranceExitRequest(model));
                                 },
                               )),
                         ],

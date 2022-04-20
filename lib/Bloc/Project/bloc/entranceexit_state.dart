@@ -17,6 +17,12 @@ class GetMyPendingRequestsSuccessfully extends EntranceexitState{
   GetMyPendingRequestsSuccessfully(this.list);
 }
 
+class GetEntranceExitReportSuccessfully extends EntranceexitState{
+  final List<EntranceExitRequest> items;
+
+  GetEntranceExitReportSuccessfully(this.items);
+}
+
 class EntranceExitLoading extends EntranceexitState{}
 
 class PostEntranceExitRequestSuccessfully extends EntranceexitState{}

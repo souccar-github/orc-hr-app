@@ -15,12 +15,12 @@ class PendingEntranceExitRequests extends StatefulWidget {
 }
 
 class _PendingEntranceExitRequestsState extends State<PendingEntranceExitRequests> {
-  EntranceexitBloc bloc;
+  EntranceexitBloc? bloc;
   @override
   void initState() {
     super.initState();
     bloc = new EntranceexitBloc();
-    bloc.add(GetPendingEntranceexitRequests());
+    bloc!.add(GetPendingEntranceexitRequests());
   }
 
   @override
@@ -52,7 +52,7 @@ class _PendingEntranceExitRequestsState extends State<PendingEntranceExitRequest
       ),
       backgroundColor: Colors.white,
       body: BlocListener<EntranceexitBloc, EntranceexitState>(
-        cubit: bloc,
+        bloc: bloc,
         listener: (context, state) {
           if (state is EntranceExitError) {
             Scaffold.of(context).showSnackBar(SnackBar(
@@ -65,7 +65,7 @@ class _PendingEntranceExitRequestsState extends State<PendingEntranceExitRequest
           }
         },
         child: BlocBuilder<EntranceexitBloc, EntranceexitState>(
-          cubit: bloc,
+          bloc: bloc,
           builder: (context, state) {
             if (state is EntranceExitLoading) {
               return Center(
@@ -102,7 +102,7 @@ class _PendingEntranceExitRequestsState extends State<PendingEntranceExitRequest
                                     child: Column(
                                       children: <Widget>[
                                         Text(
-                                          state.items[index].fullName ?? "",
+                                          state.items[index].fullName??"" ,
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold),
                                         ),
@@ -110,8 +110,7 @@ class _PendingEntranceExitRequestsState extends State<PendingEntranceExitRequest
                                           height: 10,
                                         ),
                                         Text(
-                                            state.items[index].logTypeString ??
-                                                "",
+                                            state.items[index].logTypeString??"" ,
                                             style: TextStyle(
                                                 fontSize: 14,
                                                 color: Colors.black54)),

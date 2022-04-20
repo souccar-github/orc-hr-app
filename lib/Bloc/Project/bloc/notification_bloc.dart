@@ -11,89 +11,90 @@ part 'notification_event.dart';
 part 'notification_state.dart';
 
 class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
-  NotificationBloc() : super(NotificationInitial());
-
-  @override
-  Stream<NotificationState> mapEventToState(
-    NotificationEvent event,
-  ) async* {
-    if (event is GetUnreadNotifications){
-      yield NotificationLoading();
-      String error = null;
-      var _list = new List<Notify>();
+  NotificationBloc() : super(NotificationInitial()) {
+    on<GetUnreadNotifications>((event, emit) async {
+      emit(NotificationLoading());
+      String? error;
+      List<Notify> _list = [];
       await Project.apiClient.getUnreadNotification().then((onValue) {
         _list = onValue;
       }).catchError((onError) {
         error = onError;
       });
       if (error == null) {
-        yield GetNotificationsSuccessfully(_list);
+        emit(GetNotificationsSuccessfully(_list));
       } else {
-        yield NotificationError(error);
+        emit(NotificationError(error ?? ""));
       }
-    }
-    if (event is GetLeaveByWorkflowId){
-      yield NotificationLoading();
-      String error = null;
-      LeaveRequest leave;
+    });
+    on<GetLeaveByWorkflowId>((event, emit) async {
+      emit(NotificationLoading());
+      String? error;
+      LeaveRequest? leave;
       await Project.apiClient.getLeaveByWorkflow(event.id).then((onValue) {
         leave = onValue;
       }).catchError((onError) {
         error = onError;
       });
       if (error == null) {
-        yield GetLeaveByWorkflowIdSuccessfully(leave);
+        emit(GetLeaveByWorkflowIdSuccessfully(leave));
       } else {
-        yield NotificationError(error);
+        emit(NotificationError(error ?? ""));
       }
-    }
+    });
 
-    if (event is GetEntranceExitRecordByWorkflowId){
-      yield NotificationLoading();
-      String error = null;
-      EntranceExitRequest leave;
-      await Project.apiClient.getEntranceExitRecordByWorkflow(event.id).then((onValue) {
+    on<GetEntranceExitRecordByWorkflowId>((event, emit) async {
+      emit(NotificationLoading());
+      String? error;
+      EntranceExitRequest? leave;
+      await Project.apiClient
+          .getEntranceExitRecordByWorkflow(event.id)
+          .then((onValue) {
         leave = onValue;
       }).catchError((onError) {
         error = onError;
       });
       if (error == null) {
-        yield GetEntranceExitRecordByWorkflowIdSuccessfully(leave);
+        emit(GetEntranceExitRecordByWorkflowIdSuccessfully(leave));
       } else {
-        yield NotificationError(error);
+        emit(NotificationError(error ?? ""));
       }
-    }
+    });
 
-    if (event is GetTravelMissionByWorkflowId){
-      yield NotificationLoading();
-      String error = null;
-      MissionRequest mission;
-      await Project.apiClient.getTravelMissionByWorkflow(event.id).then((onValue) {
+    on<GetTravelMissionByWorkflowId>((event, emit) async {
+      emit(NotificationLoading());
+      String? error;
+      MissionRequest? mission;
+      await Project.apiClient
+          .getTravelMissionByWorkflow(event.id)
+          .then((onValue) {
         mission = onValue;
       }).catchError((onError) {
         error = onError;
       });
       if (error == null) {
-        yield GetTravelMissionByWorkflowIdSuccessfully(mission);
+        emit(GetTravelMissionByWorkflowIdSuccessfully(mission));
       } else {
-        yield NotificationError(error);
+        emit(NotificationError(error ?? ""));
       }
-    }
+    });
 
-    if (event is GetHourlyMissionByWorkflowId){
-      yield NotificationLoading();
-      String error = null;
-      MissionRequest mission;
-      await Project.apiClient.getHourlyMissionByWorkflow(event.id).then((onValue) {
+    on<GetHourlyMissionByWorkflowId>((event, emit) async {
+      emit(NotificationLoading());
+      String? error;
+      MissionRequest? mission;
+      await Project.apiClient
+          .getHourlyMissionByWorkflow(event.id)
+          .then((onValue) {
         mission = onValue;
       }).catchError((onError) {
         error = onError;
       });
       if (error == null) {
-        yield GetHourlyMissionByWorkflowIdSuccessfully(mission);
+        emit(GetHourlyMissionByWorkflowIdSuccessfully(mission));
       } else {
-        yield NotificationError(error);
+        emit(NotificationError(error ?? ""));
       }
-    }
+    });
   }
 }

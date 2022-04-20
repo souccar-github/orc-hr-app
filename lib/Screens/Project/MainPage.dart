@@ -1,8 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:orc_hr/PushNotification.dart';
 import 'package:orc_hr/Widgets/General/Drawer.dart';
 import 'package:orc_hr/Localization/Localization.dart';
 import 'package:orc_hr/Screens/Project/Notifications.dart';
+import 'package:orc_hr/firebase_options.dart';
+import 'package:orc_hr/locator.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -10,6 +14,16 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(Duration.zero, () async {
+      
+      PushNotification not = locator<PushNotification>();
+      await not.init();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

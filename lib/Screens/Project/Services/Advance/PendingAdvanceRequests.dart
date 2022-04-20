@@ -14,12 +14,12 @@ class PendingAdvances extends StatefulWidget {
 }
 
 class _PendingAdvancesState extends State<PendingAdvances> {
-  AdvanceBloc bloc;
+  AdvanceBloc? bloc;
   @override
   void initState() {
     super.initState();
     bloc = new AdvanceBloc();
-    bloc.add(GetPendingAdvanceRequests());
+    bloc!.add(GetPendingAdvanceRequests());
   }
 
   @override
@@ -51,7 +51,7 @@ class _PendingAdvancesState extends State<PendingAdvances> {
       ),
       backgroundColor: Colors.white,
       body: BlocListener<AdvanceBloc, AdvanceState>(
-        cubit: bloc,
+        bloc: bloc,
         listener: (context, state) {
           if (state is AdvanceError) {
             Scaffold.of(context).showSnackBar(SnackBar(
@@ -64,7 +64,7 @@ class _PendingAdvancesState extends State<PendingAdvances> {
           }
         },
         child: BlocBuilder<AdvanceBloc, AdvanceState>(
-          cubit: bloc,
+          bloc: bloc,
           builder: (context, state) {
             if (state is AdvanceLoading) {
               return Center(
@@ -101,7 +101,7 @@ class _PendingAdvancesState extends State<PendingAdvances> {
                                     child: Column(
                                       children: <Widget>[
                                         Text(
-                                          state.items[index].fullName ?? "",
+                                          state.items[index].fullName ,
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold),
                                         ),
@@ -158,7 +158,7 @@ class _PendingAdvancesState extends State<PendingAdvances> {
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           ApprovePage(
-                                                              bloc: bloc,
+                                                              bloc: bloc!,
                                                               advance:
                                                                   state.items[
                                                                       index])),

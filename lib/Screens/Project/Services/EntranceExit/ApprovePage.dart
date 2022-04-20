@@ -13,27 +13,27 @@ import 'package:sliding_sheet/sliding_sheet.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ApprovePage extends StatefulWidget {
-  final EntranceExitRequest record;
-  final EntranceexitBloc bloc;
-  const ApprovePage({this.bloc, this.record});
+  final EntranceExitRequest ? record;
+  final EntranceexitBloc? bloc;
+  const ApprovePage({ this.bloc, required this.record});
   @override
   _ApprovePageState createState() => _ApprovePageState(this.record);
 }
 
 class _ApprovePageState extends State<ApprovePage> {
-  final EntranceExitRequest record;
-  String note;
-  EntranceexitBloc bloc;
+  final EntranceExitRequest? record;
+  String? note;
+  EntranceexitBloc? bloc;
   DateFormat formatter = DateFormat('dd/MM/yyyy');
   DateFormat timeFormatter = DateFormat('hh:mm');
   _ApprovePageState(this.record);
   List<DropdownMenuItem<int>> _dropdownMenuItems =
-      new List<DropdownMenuItem<int>>();
+      [];
   @override
   void initState() {
     super.initState();
     Future.delayed(Duration(milliseconds: 0), () {
-      List<DropdownMenuItem<int>> items = List();
+      List<DropdownMenuItem<int>> items = [];
       items.add(
         DropdownMenuItem(
           value: 0,
@@ -67,7 +67,7 @@ class _ApprovePageState extends State<ApprovePage> {
       ),
       backgroundColor: Colors.white,
       body: BlocListener<EntranceexitBloc, EntranceexitState>(
-        cubit: bloc,
+        bloc: bloc,
         listener: (context, state) {
           if (state is AcceptEntranceexitRequestSuccessfully) {
             Scaffold.of(context).showSnackBar(SnackBar(
@@ -79,7 +79,7 @@ class _ApprovePageState extends State<ApprovePage> {
               backgroundColor: Colors.green,
             ));
             if (widget.bloc != null) {
-              widget.bloc.add(GetPendingEntranceexitRequests());
+              widget.bloc?.add(GetPendingEntranceexitRequests());
             }
             Future.delayed(Duration(milliseconds: 1500),
                 () => Navigator.of(context).pop());
@@ -94,7 +94,7 @@ class _ApprovePageState extends State<ApprovePage> {
               backgroundColor: Colors.green,
             ));
             if (widget.bloc != null) {
-              widget.bloc.add(GetPendingEntranceexitRequests());
+              widget.bloc?.add(GetPendingEntranceexitRequests());
             }
             Future.delayed(Duration(milliseconds: 1500),
                 () => Navigator.of(context).pop());
@@ -109,7 +109,7 @@ class _ApprovePageState extends State<ApprovePage> {
               backgroundColor: Colors.green,
             ));
             if (widget.bloc != null) {
-              widget.bloc.add(GetPendingEntranceexitRequests());
+              widget.bloc?.add(GetPendingEntranceexitRequests());
             }
             Future.delayed(Duration(milliseconds: 1500),
                 () => Navigator.of(context).pop());
@@ -125,7 +125,7 @@ class _ApprovePageState extends State<ApprovePage> {
           }
         },
         child: BlocBuilder<EntranceexitBloc, EntranceexitState>(
-            cubit: bloc,
+            bloc: bloc,
             builder: (context, state) {
               if (state is EntranceExitLoading) {
                 return Center(
@@ -151,26 +151,32 @@ class _ApprovePageState extends State<ApprovePage> {
                           child: Column(
                             children: <Widget>[
                               Row(children: <Widget>[
-                                RichText(
-                                  text: TextSpan(
-                                      text: Localization.of(context)
-                                          .getTranslatedValue("RecordDate"),
-                                      style: TextStyle(color: Colors.black),
-                                      children: [
-                                        TextSpan(
-                                            text: ' *',
-                                            style: TextStyle(color: Colors.red))
-                                      ]),
+                                Container(
+                                  width: 90,
+                                  child: RichText(
+                                    text: TextSpan(
+                                        text: Localization.of(context)
+                                            .getTranslatedValue("RecordDate"),
+                                        style: TextStyle(color: Colors.black),
+                                        children: [
+                                          TextSpan(
+                                              text: ' *',
+                                              style:
+                                                  TextStyle(color: Colors.red))
+                                        ]),
+                                  ),
                                 ),
                                 SizedBox(
-                                  width: 20,
+                                  width: 10,
                                 ),
                                 Container(
-                                  width: MediaQuery.of(context).size.width / 2,
+                                  width: MediaQuery.of(context).size.width / 1.8,
                                   child: DateTimePicker(
-                                    type: DateTimePickerType.dateTime,
-                                    dateMask: 'dd /MM /yyyy , hh:mm',
-                                    initialValue: record.recordDate.toString(),
+                                    type: DateTimePickerType.dateTimeSeparate,
+                                    dateMask: 'dd /MM /yyyy',
+                                    timeFieldWidth: 45,
+                                    style: TextStyle(fontSize: 13),
+                                    initialValue: record?.recordDate.toString(),
                                     firstDate: DateTime(2000),
                                     lastDate: DateTime(2100),
                                     icon: Icon(Icons.event),
@@ -184,16 +190,20 @@ class _ApprovePageState extends State<ApprovePage> {
                                 height: 10,
                               ),
                               Row(children: <Widget>[
-                                RichText(
-                                  text: TextSpan(
-                                      text: Localization.of(context)
-                                          .getTranslatedValue("RecordType"),
-                                      style: TextStyle(color: Colors.black),
-                                      children: [
-                                        TextSpan(
-                                            text: ' *',
-                                            style: TextStyle(color: Colors.red))
-                                      ]),
+                                Container(
+                                  width: 90,
+                                  child: RichText(
+                                    text: TextSpan(
+                                        text: Localization.of(context)
+                                            .getTranslatedValue("RecordType"),
+                                        style: TextStyle(color: Colors.black),
+                                        children: [
+                                          TextSpan(
+                                              text: ' *',
+                                              style:
+                                                  TextStyle(color: Colors.red))
+                                        ]),
+                                  ),
                                 ),
                                 SizedBox(
                                   width: 20,
@@ -207,7 +217,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                       TextInputType.text,
                                       false,
                                       1,
-                                      record.logTypeString,
+                                      record?.logTypeString??"",
                                       true,
                                       context),
                                 ),
@@ -216,10 +226,15 @@ class _ApprovePageState extends State<ApprovePage> {
                                 height: 10,
                               ),
                               Row(children: <Widget>[
-                                Text(Localization.of(context)
-                                    .getTranslatedValue("Note")),
+                                Container(
+                                  width: 90,
+                                  child: AutoSizeText(
+                                            Localization.of(context)
+                                                .getTranslatedValue("Note"),maxLines: 1,
+                                          ),
+                                ),
                                 SizedBox(
-                                  width: 50,
+                                  width: 20,
                                 ),
                                 Container(
                                   width: MediaQuery.of(context).size.width / 2,
@@ -231,7 +246,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                       TextInputType.multiline,
                                       false,
                                       5,
-                                      record.note,
+                                      record?.note??"",
                                       true,
                                       context),
                                 ),
@@ -274,11 +289,11 @@ class _ApprovePageState extends State<ApprovePage> {
                                           width: MediaQuery.of(context)
                                                   .size
                                                   .width *
-                                              10 /
+                                              13 /
                                               100,
                                           child: AutoSizeText(
                                               Localization.of(context)
-                                                  .getTranslatedValue("Note"))),
+                                                  .getTranslatedValue("Note"),maxLines: 1,)),
                                       SizedBox(
                                         width:
                                             MediaQuery.of(context).size.width *
@@ -288,7 +303,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                       Container(
                                         width:
                                             MediaQuery.of(context).size.width *
-                                                    53 /
+                                                    50 /
                                                     100 -
                                                 20,
                                         child: textFormField((value) {
@@ -303,7 +318,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                             TextInputType.multiline,
                                             false,
                                             5,
-                                            record.desc??"",
+                                            record?.desc ?? "",
                                             false,
                                             context),
                                       ),
@@ -345,18 +360,17 @@ class _ApprovePageState extends State<ApprovePage> {
                                                       child: AutoSizeText(
                                                         Localization.of(context)
                                                             .getTranslatedValue(
-                                                                "Accept"),
+                                                                "Accept"),maxLines: 1,
                                                         style: TextStyle(
                                                             color:
                                                                 Colors.white),
                                                       )),
                                                   onPressed: () {
-                                                    bloc.add(
+                                                    bloc!.add(
                                                         AcceptEntranceexitRequest(
-                                                            record
-                                                                .workflowItemId,
-                                                            record.recordId,
-                                                            note));
+                                                            record?.workflowItemId??0,
+                                                            record?.recordId??0,
+                                                            note??""));
                                                   },
                                                 )),
                                             delay: 200,
@@ -390,18 +404,17 @@ class _ApprovePageState extends State<ApprovePage> {
                                                       child: AutoSizeText(
                                                         Localization.of(context)
                                                             .getTranslatedValue(
-                                                                "Reject"),
+                                                                "Reject"),maxLines: 1,
                                                         style: TextStyle(
                                                             color:
                                                                 Colors.white),
                                                       )),
                                                   onPressed: () {
-                                                    bloc.add(
+                                                    bloc!.add(
                                                         RejectEntranceexitRequest(
-                                                            record
-                                                                .workflowItemId,
-                                                            record.recordId,
-                                                            note));
+                                                            record?.workflowItemId??0,
+                                                            record?.recordId??0,
+                                                            note??""));
                                                   },
                                                 )),
                                             delay: 200,
@@ -435,18 +448,17 @@ class _ApprovePageState extends State<ApprovePage> {
                                                     child: AutoSizeText(
                                                       Localization.of(context)
                                                           .getTranslatedValue(
-                                                              "Pending"),
+                                                              "Pending"),maxLines: 1,
                                                       style: TextStyle(
                                                           color: Colors.white),
                                                     ),
                                                   ),
                                                   onPressed: () {
-                                                    bloc.add(
+                                                    bloc!.add(
                                                         PendingEntranceexitRequest(
-                                                            record
-                                                                .workflowItemId,
-                                                            record.recordId,
-                                                            note));
+                                                            record?.workflowItemId??0,
+                                                            record?.recordId??0,
+                                                            note??""));
                                                   },
                                                 )),
                                             delay: 200,

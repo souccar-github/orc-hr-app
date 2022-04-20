@@ -16,12 +16,12 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
-  NotificationBloc bloc;
+  NotificationBloc? bloc;
   @override
   void initState() {
     super.initState();
     bloc = new NotificationBloc();
-    bloc.add(GetUnreadNotifications());
+    bloc!.add(GetUnreadNotifications());
   }
 
   @override
@@ -40,28 +40,37 @@ class _NotificationPageState extends State<NotificationPage> {
       ),
       backgroundColor: Colors.white,
       body: BlocListener<NotificationBloc, NotificationState>(
-        cubit: bloc,
+        bloc: bloc,
         listener: (context, state) {
           if (state is NotificationError) {
-            Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text(
-                state.error,
-                style: TextStyle(color: Colors.white),
-              ),
-              backgroundColor: Colors.red,
-            ));
+            if (state.error == "400") {
+              Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text(
+                  Localization.of(context)
+                      .getTranslatedValue("ThisWorkFlowIsCompleted"),
+                  style: TextStyle(color: Colors.white),
+                ),
+                backgroundColor: Colors.green,
+              ));
+            } else {
+              Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text(
+                  state.error,
+                  style: TextStyle(color: Colors.white),
+                ),
+                backgroundColor: Colors.red,
+              ));
+            }
           }
           if (state is GetLeaveByWorkflowIdSuccessfully) {
             Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (context) => ApprovePage(
-                      bloc: null,
                       leave: state.item,
                     )));
           }
           if (state is GetEntranceExitRecordByWorkflowIdSuccessfully) {
             Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (context) => record.ApprovePage(
-                      bloc: null,
                       record: state.item,
                     )));
           }
@@ -69,7 +78,6 @@ class _NotificationPageState extends State<NotificationPage> {
           if (state is GetHourlyMissionByWorkflowIdSuccessfully) {
             Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (context) => mission.ApprovePage(
-                      bloc: null,
                       mission: state.item,
                     )));
           }
@@ -77,104 +85,103 @@ class _NotificationPageState extends State<NotificationPage> {
           if (state is GetTravelMissionByWorkflowIdSuccessfully) {
             Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (context) => mission.ApprovePage(
-                      bloc: null,
                       mission: state.item,
                     )));
           }
         },
         child: BlocBuilder<NotificationBloc, NotificationState>(
-          cubit: bloc,
+          bloc: bloc,
           builder: (context, state) {
             if (state is NotificationLoading) {
               return Center(
                 child: CircularProgressIndicator(),
               );
             }
-            if (state is GetNotificationsSuccessfully) {
-              if (state.items.length == 0){
+            else if (state is GetNotificationsSuccessfully) {
+              if (state.items.length == 0) {
                 return Container(
                   child: Center(
-                    child: Text(
-                        Localization.of(context).getTranslatedValue("ThereAreNoNotificationsToShow")),
+                    child: Text(Localization.of(context)
+                        .getTranslatedValue("ThereAreNoNotificationsToShow")),
+                  ),
+                );
+              } else {
+                return Padding(
+                  padding: EdgeInsets.all(7),
+                  child: ListView.builder(
+                    itemCount: state.items.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        elevation: 5,
+                        child: InkWell(
+                          onTap: () {
+                            switch (state.items[index].type) {
+                              case "EntranceExitRequest":
+                                bloc!.add(GetEntranceExitRecordByWorkflowId(
+                                    state.items[index].workflowItemId ?? 0));
+                                break;
+                              case "EmployeeLeaveRequest":
+                                bloc!.add(GetLeaveByWorkflowId(
+                                    state.items[index].workflowItemId ?? 0));
+                                break;
+                              case "TravelMission":
+                                bloc!.add(GetTravelMissionByWorkflowId(
+                                    state.items[index].workflowItemId ?? 0));
+                                break;
+                              case "HourlyMission":
+                                bloc!.add(GetHourlyMissionByWorkflowId(
+                                    state.items[index].workflowItemId ?? 0));
+                                break;
+                            }
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.all(7),
+                            child: Stack(children: <Widget>[
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Stack(
+                                  children: <Widget>[
+                                    Positioned(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            right: 30, left: 30, top: 5),
+                                        child: Text(
+                                          state.items[index].body ?? "",
+                                          style: TextStyle(),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: Stack(
+                                  children: <Widget>[
+                                    Positioned(
+                                      child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10, top: 5),
+                                          child: DelayedAnimation(
+                                            child: Icon(
+                                              Icons.notifications_active,
+                                              color: Color.fromRGBO(
+                                                  243, 119, 55, 1),
+                                            ),
+                                            delay: 200,
+                                          )),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ]),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 );
               }
-              return Padding(
-                padding: EdgeInsets.all(7),
-                child: ListView.builder(
-                  itemCount: state.items.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      elevation: 5,
-                      child: InkWell(
-                        onTap: () {
-                          switch (state.items[index].type) {
-                            case "EntranceExitRecordRequest":
-                              bloc.add(GetEntranceExitRecordByWorkflowId(
-                                  state.items[index].workflowItemId));
-                              break;
-                            case "EmployeeLeaveRequest":
-                              bloc.add(GetLeaveByWorkflowId(
-                                  state.items[index].workflowItemId));
-                              break;
-                            case "TravelMission":
-                              bloc.add(GetTravelMissionByWorkflowId(
-                                  state.items[index].workflowItemId));
-                              break;
-                            case "HourlyMission":
-                              bloc.add(GetHourlyMissionByWorkflowId(
-                                  state.items[index].workflowItemId));
-                              break;
-                          }
-                         
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.all(7),
-                          child: Stack(children: <Widget>[
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Stack(
-                                children: <Widget>[
-                                  Positioned(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 10, top: 5),
-                                      child: Text(
-                                        state.items[index].body ?? "",
-                                        style: TextStyle(),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Stack(
-                                children: <Widget>[
-                                  Positioned(
-                                    child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 10, top: 5),
-                                        child: DelayedAnimation(
-                                          child: Icon(
-                                            Icons.notifications_active,
-                                            color:
-                                                Color.fromRGBO(243, 119, 55, 1),
-                                          ),
-                                          delay: 200,
-                                        )),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ]),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              );
             }
             return Container();
           },

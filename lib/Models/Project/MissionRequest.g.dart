@@ -8,27 +8,21 @@ part of 'MissionRequest.dart';
 
 MissionRequest _$MissionRequestFromJson(Map<String, dynamic> json) {
   return MissionRequest(
-    json['Description'] as String,
+    json['Description'] as String?,
     json['EmployeeId'] as int,
-    json['EndDate'] == null ? null : DateTime.parse(json['EndDate'] as String),
-    json['FromTime'] == null
-        ? null
-        : DateTime.parse(json['FromTime'] as String),
-    json['FullName'] as String,
+    json['EndDate'] = DateTime.parse(json['EndDate'] as String),
+    json['FromTime'] =json['FromTime'] == null ? null : DateTime.parse(json['FromTime'] as String),
+    json['FullName'] as String?,
     json['IsHourlyMission'] as bool,
     json['MissionId'] as int,
     json['PendingType'] as int,
     json['PositionId'] as int,
-    json['PositionName'] as String,
-    json['RequestDate'] == null
-        ? null
-        : DateTime.parse(json['RequestDate'] as String),
-    json['StartDate'] == null
-        ? null
-        : DateTime.parse(json['StartDate'] as String),
-    json['ToTime'] == null ? null : DateTime.parse(json['ToTime'] as String),
+    json['PositionName'] as String?,
+    json['RequestDate'] = DateTime.parse(json['RequestDate'] as String),
+    json['StartDate'] = DateTime.parse(json['StartDate'] as String),
+    json['ToTime'] =json['ToTime'] == null ? null : DateTime.parse(json['ToTime'] as String),
     json['WorkflowItemId'] as int,
-    json['Note'] as String,
+    json['Note'] as String?,
   );
 }
 
@@ -39,12 +33,12 @@ Map<String, dynamic> _$MissionRequestToJson(MissionRequest instance) =>
       'fullName': instance.fullName,
       'positionName': instance.positionName,
       'missionId': instance.missionId,
-      'startDate': instance.startDate?.toIso8601String(),
-      'endDate': instance.endDate?.toIso8601String(),
+      'startDate': instance.startDate.toIso8601String(),
+      'endDate': instance.endDate.toIso8601String(),
       'isHourlyMission': instance.isHourlyMission,
       'fromTime': instance.fromTime?.toIso8601String(),
       'toTime': instance.toTime?.toIso8601String(),
-      'requestDate': instance.requestDate?.toIso8601String(),
+      'requestDate': instance.requestDate.toIso8601String(),
       'description': instance.description,
       'workflowItemId': instance.workflowItemId,
       'pendingType': instance.pendingType,

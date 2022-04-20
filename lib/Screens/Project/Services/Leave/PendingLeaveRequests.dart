@@ -14,12 +14,12 @@ class PendingLeaves extends StatefulWidget {
 }
 
 class _PendingLeavesState extends State<PendingLeaves> {
-  LeaveBloc bloc;
+  LeaveBloc? bloc;
   @override
   void initState() {
     super.initState();
     bloc = new LeaveBloc();
-    bloc.add(GetPendingLeaveRequests());
+    bloc!.add(GetPendingLeaveRequests());
   }
 
   @override
@@ -51,7 +51,7 @@ class _PendingLeavesState extends State<PendingLeaves> {
       ),
       backgroundColor: Colors.white,
       body: BlocListener<LeaveBloc, LeaveState>(
-        cubit: bloc,
+        bloc: bloc,
         listener: (context, state) {
           if (state is LeaveError) {
             Scaffold.of(context).showSnackBar(SnackBar(
@@ -64,7 +64,7 @@ class _PendingLeavesState extends State<PendingLeaves> {
           }
         },
         child: BlocBuilder<LeaveBloc, LeaveState>(
-          cubit: bloc,
+          bloc: bloc,
           builder: (context, state) {
             if (state is LeaveLoading) {
               return Center(
@@ -100,13 +100,12 @@ class _PendingLeavesState extends State<PendingLeaves> {
                                         const EdgeInsets.only(left: 10, top: 5),
                                     child: Column(
                                       children: <Widget>[
-                                        Text(state.items[index].fullName ?? "",style: TextStyle(fontWeight: FontWeight.bold),),
+                                        Text(state.items[index].fullName??"",style: TextStyle(fontWeight: FontWeight.bold),),
                                         SizedBox(
                                           height: 10,
                                         ),
                                         Text(state.items[index]
-                                                .leaveSettingName ??
-                                            "",style: TextStyle(fontSize: 14,color: Colors.black54)),
+                                                .leaveSettingName ??"",style: TextStyle(fontSize: 14,color: Colors.black54)),
                                       ],
                                     ),
                                   ),

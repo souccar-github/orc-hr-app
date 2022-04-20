@@ -8,7 +8,7 @@ import 'Animation/delayed_animation.dart';
 
 Widget loginUI(AuthBloc authBloc, BuildContext context) {
   final Size sizeAware = MediaQuery.of(context).size;
-  String name, password;
+  String? name, password;
   final int delayedAmount = 500;
   return Container(
     child: Container(
@@ -59,15 +59,15 @@ Widget loginUI(AuthBloc authBloc, BuildContext context) {
                     focusedErrorBorder: new OutlineInputBorder(
                       borderRadius: new BorderRadius.circular(20.0),
                       borderSide: new BorderSide(
-                          style: BorderStyle.solid, color: Colors.red[200]),
+                          style: BorderStyle.solid, color: Colors.red[200]??Color(0x000000)),
                     ),
                     errorBorder: new OutlineInputBorder(
                       borderRadius: new BorderRadius.circular(20.0),
                       borderSide: new BorderSide(
-                          style: BorderStyle.solid, color: Colors.red[200]),
+                          style: BorderStyle.solid, color: Colors.red[200]??Color(0x000000)),
                     ),
                     errorStyle: TextStyle(
-                      color: Colors.red[200],
+                      color: Colors.red[200]??Color(0x000000),
                     ),
                   ),
                 ),
@@ -105,15 +105,15 @@ Widget loginUI(AuthBloc authBloc, BuildContext context) {
                     focusedErrorBorder: new OutlineInputBorder(
                       borderRadius: new BorderRadius.circular(20.0),
                       borderSide: new BorderSide(
-                          style: BorderStyle.solid, color: Colors.red[200]),
+                          style: BorderStyle.solid, color: Colors.red[200]??Color(0x000000)),
                     ),
                     errorBorder: new OutlineInputBorder(
                       borderRadius: new BorderRadius.circular(20.0),
                       borderSide: new BorderSide(
-                          style: BorderStyle.solid, color: Colors.red[200]),
+                          style: BorderStyle.solid, color: Colors.red[200]??Color(0x000000)),
                     ),
                     errorStyle: TextStyle(
-                      color: Colors.red[200],
+                      color: Colors.red[200]??Color(0x000000),
                     ),
                   ),
                 ),
@@ -123,7 +123,7 @@ Widget loginUI(AuthBloc authBloc, BuildContext context) {
                 height: 50.0,
               ),
               BlocBuilder<AuthBloc, AuthState>(
-                  cubit: authBloc,
+                  bloc: authBloc,
                   buildWhen: (prev, cur) => cur is Loading || cur is LoginError,
                   builder: (context, state) {
                     if (state is Loading) {
@@ -148,7 +148,7 @@ Widget loginUI(AuthBloc authBloc, BuildContext context) {
                                     fontSize: 20, color: Colors.white),
                               ),
                               onPressed: () {
-                                authBloc.add(Login(name, password));
+                                authBloc.add(Login(name!, password!));
                               },
                             )),
                         delay: delayedAmount + 800,

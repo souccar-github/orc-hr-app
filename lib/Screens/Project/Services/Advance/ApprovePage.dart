@@ -14,23 +14,25 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class ApprovePage extends StatefulWidget {
   final AdvanceRequest advance;
   final AdvanceBloc bloc;
-  const ApprovePage({this.bloc, this.advance});
+  const ApprovePage({required this.bloc, required this.advance});
   @override
   _ApprovePageState createState() => _ApprovePageState(this.advance);
 }
 
 class _ApprovePageState extends State<ApprovePage> {
   final AdvanceRequest advance;
-  String description;
-  AdvanceBloc bloc;
-  DateFormat formatter = DateFormat('dd/MM/yyyy');
-  TextEditingController _desAmountTextCountroller,_amountTextCountroller;
+  String? description;
+  AdvanceBloc? bloc;
+  DateFormat? formatter = DateFormat('dd/MM/yyyy');
+  TextEditingController? _desAmountTextCountroller, _amountTextCountroller;
   _ApprovePageState(this.advance);
   @override
   void initState() {
     super.initState();
-    _desAmountTextCountroller = new TextEditingController(text: advance.deservableAdvanceAmount.toString());
-    _amountTextCountroller = new TextEditingController(text: advance.advanceAmount.toString());
+    _desAmountTextCountroller = new TextEditingController(
+        text: advance.deservableAdvanceAmount.toString());
+    _amountTextCountroller =
+        new TextEditingController(text: advance.advanceAmount.toString());
     bloc = new AdvanceBloc();
   }
 
@@ -50,12 +52,13 @@ class _ApprovePageState extends State<ApprovePage> {
       ),
       backgroundColor: Colors.white,
       body: BlocListener<AdvanceBloc, AdvanceState>(
-        cubit: bloc,
+        bloc: bloc,
         listener: (context, state) {
           if (state is AcceptAdvanceRequestSuccessfully) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(
-                Localization.of(context).getTranslatedValue("AdvanceAcceptedSuccessfully"),
+                Localization.of(context)
+                    .getTranslatedValue("AdvanceAcceptedSuccessfully"),
                 style: TextStyle(color: Colors.white),
               ),
               backgroundColor: Colors.green,
@@ -69,7 +72,8 @@ class _ApprovePageState extends State<ApprovePage> {
           if (state is PendingAdvanceRequestSuccessfully) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(
-                Localization.of(context).getTranslatedValue("AdvancePendingSuccessfully"),
+                Localization.of(context)
+                    .getTranslatedValue("AdvancePendingSuccessfully"),
                 style: TextStyle(color: Colors.white),
               ),
               backgroundColor: Colors.green,
@@ -83,7 +87,8 @@ class _ApprovePageState extends State<ApprovePage> {
           if (state is RejectAdvanceRequestSuccessfully) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(
-                Localization.of(context).getTranslatedValue("AdvanceRejectedSuccessfully"),
+                Localization.of(context)
+                    .getTranslatedValue("AdvanceRejectedSuccessfully"),
                 style: TextStyle(color: Colors.white),
               ),
               backgroundColor: Colors.green,
@@ -105,7 +110,7 @@ class _ApprovePageState extends State<ApprovePage> {
           }
         },
         child: BlocBuilder<AdvanceBloc, AdvanceState>(
-            cubit: bloc,
+            bloc: bloc,
             builder: (context, state) {
               if (state is AdvanceLoading) {
                 return Center(
@@ -131,8 +136,11 @@ class _ApprovePageState extends State<ApprovePage> {
                           child: Column(
                             children: <Widget>[
                               Row(children: <Widget>[
-                                Text(Localization.of(context)
-                                    .getTranslatedValue("OperationDate")),
+                                Container(
+                                  width: 90,
+                                  child: Text(Localization.of(context)
+                                      .getTranslatedValue("OperationDate")),
+                                ),
                                 SizedBox(
                                   width: 20,
                                 ),
@@ -145,7 +153,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                       TextInputType.text,
                                       false,
                                       1,
-                                      formatter.format(advance.operationDate),
+                                      formatter!.format(advance.operationDate),
                                       true,
                                       context),
                                 ),
@@ -154,7 +162,11 @@ class _ApprovePageState extends State<ApprovePage> {
                                 height: 10,
                               ),
                               Row(children: <Widget>[
-                                Text(Localization.of(context).getTranslatedValue("EmployeeName")),
+                                Container(
+                                  width: 90,
+                                  child: Text(Localization.of(context)
+                                      .getTranslatedValue("EmployeeName")),
+                                ),
                                 SizedBox(
                                   width: 20,
                                 ),
@@ -168,156 +180,173 @@ class _ApprovePageState extends State<ApprovePage> {
                                       false,
                                       1,
                                       advance.fullName,
-                                      true,context),
+                                      true,
+                                      context),
                                 ),
                               ]),
                               SizedBox(
                                 height: 10,
                               ),
-                               Row(children: <Widget>[
-                            RichText(
-                              text: TextSpan(
-                                  text: Localization.of(context)
-                                      .getTranslatedValue("DeservableAmount"),
-                                  style: TextStyle(color: Colors.black),
-                                  children: [
-                                    TextSpan(
-                                        text: '',
-                                        style: TextStyle(color: Colors.red))
-                                  ]),
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Container(
-                                  width: MediaQuery.of(context).size.width / 2,
-                                  child: TextFormField(
-                                    onChanged: (_) {},
-                                    controller: _desAmountTextCountroller,
-                                    readOnly: true,
-                                    decoration: new InputDecoration(
-                                      contentPadding: EdgeInsets.fromLTRB(
-                                          20.0, 10.0, 20.0, 10.0),
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      hintText: Localization.of(context)
-                                          .getTranslatedValue("DeservableAmount"),
-                                      labelStyle: TextStyle(
-                                          color:
-                                              Color.fromRGBO(243, 119, 55, 1)),
-                                      enabledBorder: new OutlineInputBorder(
-                                        borderRadius:
-                                            new BorderRadius.circular(20.0),
-                                        borderSide: new BorderSide(
-                                            style: BorderStyle.solid,
-                                            color: Color.fromRGBO(
-                                                243, 119, 55, 0.5)),
-                                      ),
-                                      focusedBorder: new OutlineInputBorder(
-                                        borderRadius:
-                                            new BorderRadius.circular(20.0),
-                                        borderSide: new BorderSide(
-                                            style: BorderStyle.solid,
-                                            color: Color.fromRGBO(
-                                                243, 119, 55, 0.5)),
-                                      ),
-                                      focusedErrorBorder:
-                                          new OutlineInputBorder(
-                                        borderRadius:
-                                            new BorderRadius.circular(20.0),
-                                        borderSide: new BorderSide(
-                                            style: BorderStyle.solid,
-                                            color: Colors.red[200]),
-                                      ),
-                                      errorBorder: new OutlineInputBorder(
-                                        borderRadius:
-                                            new BorderRadius.circular(20.0),
-                                        borderSide: new BorderSide(
-                                            style: BorderStyle.solid,
-                                            color: Colors.red[200]),
-                                      ),
-                                      errorStyle: TextStyle(
-                                        color: Colors.red[200],
-                                      ),
-                                    ),
-                                  )),
-                          ]),
-                          SizedBox(
-                            height: 10,
-                          ),
-                           Row(children: <Widget>[
-                            RichText(
-                              text: TextSpan(
-                                  text: Localization.of(context)
-                                      .getTranslatedValue("Amount"),
-                                  style: TextStyle(color: Colors.black),
-                                  children: [
-                                    TextSpan(
-                                        text: '',
-                                        style: TextStyle(color: Colors.red))
-                                  ]),
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Container(
-                                  width: MediaQuery.of(context).size.width / 2,
-                                  child: TextFormField(
-                                    onChanged: (_) {},
-                                    controller: _amountTextCountroller,
-                                    readOnly: true,
-                                    decoration: new InputDecoration(
-                                      contentPadding: EdgeInsets.fromLTRB(
-                                          20.0, 10.0, 20.0, 10.0),
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      hintText: Localization.of(context)
-                                          .getTranslatedValue("Amount"),
-                                      labelStyle: TextStyle(
-                                          color:
-                                              Color.fromRGBO(243, 119, 55, 1)),
-                                      enabledBorder: new OutlineInputBorder(
-                                        borderRadius:
-                                            new BorderRadius.circular(20.0),
-                                        borderSide: new BorderSide(
-                                            style: BorderStyle.solid,
-                                            color: Color.fromRGBO(
-                                                243, 119, 55, 0.5)),
-                                      ),
-                                      focusedBorder: new OutlineInputBorder(
-                                        borderRadius:
-                                            new BorderRadius.circular(20.0),
-                                        borderSide: new BorderSide(
-                                            style: BorderStyle.solid,
-                                            color: Color.fromRGBO(
-                                                243, 119, 55, 0.5)),
-                                      ),
-                                      focusedErrorBorder:
-                                          new OutlineInputBorder(
-                                        borderRadius:
-                                            new BorderRadius.circular(20.0),
-                                        borderSide: new BorderSide(
-                                            style: BorderStyle.solid,
-                                            color: Colors.red[200]),
-                                      ),
-                                      errorBorder: new OutlineInputBorder(
-                                        borderRadius:
-                                            new BorderRadius.circular(20.0),
-                                        borderSide: new BorderSide(
-                                            style: BorderStyle.solid,
-                                            color: Colors.red[200]),
-                                      ),
-                                      errorStyle: TextStyle(
-                                        color: Colors.red[200],
-                                      ),
-                                    ),
-                                  )),
-                          ]),
-                          SizedBox(
-                            height: 10,
-                          ),
                               Row(children: <Widget>[
-                                Text(Localization.of(context).getTranslatedValue("Note")),
+                                Container(
+                                  width: 90,
+                                  child: RichText(
+                                    text: TextSpan(
+                                        text: Localization.of(context)
+                                            .getTranslatedValue(
+                                                "DeservableAmount"),
+                                        style: TextStyle(color: Colors.black),
+                                        children: [
+                                          TextSpan(
+                                              text: '',
+                                              style:
+                                                  TextStyle(color: Colors.red))
+                                        ]),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Container(
+                                    width:
+                                        MediaQuery.of(context).size.width / 2,
+                                    child: TextFormField(
+                                      onChanged: (_) {},
+                                      controller: _desAmountTextCountroller,
+                                      readOnly: true,
+                                      decoration: new InputDecoration(
+                                        contentPadding: EdgeInsets.fromLTRB(
+                                            20.0, 10.0, 20.0, 10.0),
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        hintText: Localization.of(context)
+                                            .getTranslatedValue(
+                                                "DeservableAmount"),
+                                        labelStyle: TextStyle(
+                                            color: Color.fromRGBO(
+                                                243, 119, 55, 1)),
+                                        enabledBorder: new OutlineInputBorder(
+                                          borderRadius:
+                                              new BorderRadius.circular(20.0),
+                                          borderSide: new BorderSide(
+                                              style: BorderStyle.solid,
+                                              color: Color.fromRGBO(
+                                                  243, 119, 55, 0.5)),
+                                        ),
+                                        focusedBorder: new OutlineInputBorder(
+                                          borderRadius:
+                                              new BorderRadius.circular(20.0),
+                                          borderSide: new BorderSide(
+                                              style: BorderStyle.solid,
+                                              color: Color.fromRGBO(
+                                                  243, 119, 55, 0.5)),
+                                        ),
+                                        focusedErrorBorder:
+                                            new OutlineInputBorder(
+                                          borderRadius:
+                                              new BorderRadius.circular(20.0),
+                                          borderSide: new BorderSide(
+                                              style: BorderStyle.solid,
+                                              color: Colors.red[200]??Color(0x000000)),
+                                        ),
+                                        errorBorder: new OutlineInputBorder(
+                                          borderRadius:
+                                              new BorderRadius.circular(20.0),
+                                          borderSide: new BorderSide(
+                                              style: BorderStyle.solid,
+                                              color: Colors.red[200]??Color(0x000000)),
+                                        ),
+                                        errorStyle: TextStyle(
+                                          color: Colors.red[200]??Color(0x000000),
+                                        ),
+                                      ),
+                                    )),
+                              ]),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(children: <Widget>[
+                                Container(
+                                  width: 90,
+                                  child: RichText(
+                                    text: TextSpan(
+                                        text: Localization.of(context)
+                                            .getTranslatedValue("Amount"),
+                                        style: TextStyle(color: Colors.black),
+                                        children: [
+                                          TextSpan(
+                                              text: '',
+                                              style:
+                                                  TextStyle(color: Colors.red))
+                                        ]),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Container(
+                                    width:
+                                        MediaQuery.of(context).size.width / 2,
+                                    child: TextFormField(
+                                      onChanged: (_) {},
+                                      controller: _amountTextCountroller,
+                                      readOnly: true,
+                                      decoration: new InputDecoration(
+                                        contentPadding: EdgeInsets.fromLTRB(
+                                            20.0, 10.0, 20.0, 10.0),
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        hintText: Localization.of(context)
+                                            .getTranslatedValue("Amount"),
+                                        labelStyle: TextStyle(
+                                            color: Color.fromRGBO(
+                                                243, 119, 55, 1)),
+                                        enabledBorder: new OutlineInputBorder(
+                                          borderRadius:
+                                              new BorderRadius.circular(20.0),
+                                          borderSide: new BorderSide(
+                                              style: BorderStyle.solid,
+                                              color: Color.fromRGBO(
+                                                  243, 119, 55, 0.5)),
+                                        ),
+                                        focusedBorder: new OutlineInputBorder(
+                                          borderRadius:
+                                              new BorderRadius.circular(20.0),
+                                          borderSide: new BorderSide(
+                                              style: BorderStyle.solid,
+                                              color: Color.fromRGBO(
+                                                  243, 119, 55, 0.5)),
+                                        ),
+                                        focusedErrorBorder:
+                                            new OutlineInputBorder(
+                                          borderRadius:
+                                              new BorderRadius.circular(20.0),
+                                          borderSide: new BorderSide(
+                                              style: BorderStyle.solid,
+                                              color: Colors.red[200]??Color(0x000000)),
+                                        ),
+                                        errorBorder: new OutlineInputBorder(
+                                          borderRadius:
+                                              new BorderRadius.circular(20.0),
+                                          borderSide: new BorderSide(
+                                              style: BorderStyle.solid,
+                                              color: Colors.red[200]??Color(0x000000)),
+                                        ),
+                                        errorStyle: TextStyle(
+                                          color: Colors.red[200]??Color(0x000000),
+                                        ),
+                                      ),
+                                    )),
+                              ]),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(children: <Widget>[
+                                Container(
+                                  width: 90,
+                                  child: Text(Localization.of(context)
+                                      .getTranslatedValue("Note")),
+                                ),
                                 SizedBox(
                                   width: 20,
                                 ),
@@ -331,7 +360,8 @@ class _ApprovePageState extends State<ApprovePage> {
                                       false,
                                       5,
                                       advance.note,
-                                      true,context),
+                                      true,
+                                      context),
                                 ),
                               ]),
                               SizedBox(
@@ -358,7 +388,7 @@ class _ApprovePageState extends State<ApprovePage> {
                           left: MediaQuery.of(context).size.width / 2 - 17,
                         ),
                         Container(
-                            padding:EdgeInsets.all(
+                            padding: EdgeInsets.all(
                                 MediaQuery.of(context).size.width * 2 / 100),
                             width: MediaQuery.of(context).size.width,
                             color: Color.fromRGBO(243, 119, 55, 0.5),
@@ -375,37 +405,45 @@ class _ApprovePageState extends State<ApprovePage> {
                                           width: MediaQuery.of(context)
                                                   .size
                                                   .width *
-                                             10/
+                                              10 /
                                               100,
-                                          child:  AutoSizeText(Localization.of(context).getTranslatedValue("Note"))),
+                                          child: AutoSizeText(
+                                              Localization.of(context)
+                                                  .getTranslatedValue("Note"))),
                                       SizedBox(
-                                        width:  MediaQuery.of(context).size.width *
+                                        width:
+                                            MediaQuery.of(context).size.width *
                                                 2 /
                                                 100,
                                       ),
                                       Container(
                                         width:
-                                               MediaQuery.of(context).size.width* 53/100-
+                                            MediaQuery.of(context).size.width *
+                                                    53 /
+                                                    100 -
                                                 20,
                                         child: textFormField((value) {
                                           setState(() {
                                             description = value;
                                           });
                                         },
-                                            Localization.of(context).getTranslatedValue("Typeanote"),
+                                            Localization.of(context)
+                                                .getTranslatedValue(
+                                                    "Typeanote"),
                                             false,
                                             TextInputType.multiline,
                                             false,
                                             5,
-                                            advance.description??"",
-                                            false,context),
+                                            advance.description,
+                                            false,
+                                            context),
                                       ),
                                     ]),
                                     SizedBox(
                                       height: 10,
                                     ),
                                     SizedBox(
-                                      width:  MediaQuery.of(context).size.width *
+                                      width: MediaQuery.of(context).size.width *
                                           3 /
                                           100,
                                     ),
@@ -431,23 +469,28 @@ class _ApprovePageState extends State<ApprovePage> {
                                                           .shrinkWrap,
                                                   color: Color.fromRGBO(
                                                       243, 119, 55, 0.7),
-                                                  child:Container(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            20 /
-                                                            100,
-                                                    child: AutoSizeText(
-                                                    Localization.of(context).getTranslatedValue("Accept"),
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  )),
+                                                  child: Container(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              20 /
+                                                              100,
+                                                      child: AutoSizeText(
+                                                        Localization.of(context)
+                                                            .getTranslatedValue(
+                                                                "Accept"),
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      )),
                                                   onPressed: () {
-                                                    bloc.add(AcceptAdvanceRequest(
-                                                        advance.workflowItemId,
-                                                        advance.advanceId,
-                                                        description));
+                                                    bloc!.add(
+                                                        AcceptAdvanceRequest(
+                                                            advance
+                                                                .workflowItemId,
+                                                            advance.advanceId,
+                                                            description!));
                                                   },
                                                 )),
                                             delay: 200,
@@ -471,7 +514,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                                           .shrinkWrap,
                                                   color: Color.fromRGBO(
                                                       243, 119, 55, 0.7),
-                                                  child:Container(
+                                                  child: Container(
                                                     width:
                                                         MediaQuery.of(context)
                                                                 .size
@@ -479,15 +522,20 @@ class _ApprovePageState extends State<ApprovePage> {
                                                             20 /
                                                             100,
                                                     child: AutoSizeText(
-                                                    Localization.of(context).getTranslatedValue("Reject"),
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  ),),
+                                                      Localization.of(context)
+                                                          .getTranslatedValue(
+                                                              "Reject"),
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
                                                   onPressed: () {
-                                                    bloc.add(RejectAdvanceRequest(
-                                                        advance.workflowItemId,
-                                                        advance.advanceId,
-                                                        description));
+                                                    bloc!.add(
+                                                        RejectAdvanceRequest(
+                                                            advance
+                                                                .workflowItemId,
+                                                            advance.advanceId,
+                                                            description!));
                                                   },
                                                 )),
                                             delay: 200,
@@ -511,7 +559,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                                           .shrinkWrap,
                                                   color: Color.fromRGBO(
                                                       243, 119, 55, 0.7),
-                                                  child:Container(
+                                                  child: Container(
                                                     width:
                                                         MediaQuery.of(context)
                                                                 .size
@@ -519,17 +567,20 @@ class _ApprovePageState extends State<ApprovePage> {
                                                             20 /
                                                             100,
                                                     child: AutoSizeText(
-                                                    Localization.of(context).getTranslatedValue("Pending"),
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  ),),
+                                                      Localization.of(context)
+                                                          .getTranslatedValue(
+                                                              "Pending"),
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
                                                   onPressed: () {
-                                                    bloc.add(
+                                                    bloc!.add(
                                                         PendingAdvanceRequest(
                                                             advance
                                                                 .workflowItemId,
                                                             advance.advanceId,
-                                                            description));
+                                                            description!));
                                                   },
                                                 )),
                                             delay: 200,

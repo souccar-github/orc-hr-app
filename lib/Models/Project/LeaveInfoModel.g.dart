@@ -10,17 +10,17 @@ LeaveInfoModel _$LeaveInfoModelFromJson(Map<String, dynamic> json) {
   return LeaveInfoModel(
     json['Id'] as int,
     json['Title'] as String,
-    (json['Balance'] as num)?.toDouble(),
-    (json['Granted'] as num)?.toDouble(),
+    (json['Balance'] as num).toDouble(),
+    (json['Granted'] as num).toDouble(),
     json['HasMaximumNumber'] as bool,
     json['HasMonthlyBalance'] as bool,
     json['IsDivisibleToHours'] as bool,
     json['IsIndivisible'] as bool,
     json['MaximumNumber'] as int,
-    (json['MonthlyBalance'] as num)?.toDouble(),
-    (json['MonthlyGranted'] as num)?.toDouble(),
-    (json['MonthlyRemain'] as num)?.toDouble(),
-    (json['Remain'] as num)?.toDouble(),
+    (json['MonthlyBalance'] as num).toDouble(),
+    (json['MonthlyGranted'] as num).toDouble(),
+    (json['MonthlyRemain'] as num).toDouble(),
+    (json['Remain'] as num).toDouble(),
   );
 }
 

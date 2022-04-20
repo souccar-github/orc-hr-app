@@ -15,6 +15,12 @@ class GetPendingEntranceexitRequests extends EntranceexitEvent{
 class GetMyPendingRequests extends EntranceexitEvent{
 }
 
+class GetEntranceExitReport extends EntranceexitEvent{
+  final DateTime fromDate,toDate;
+
+  GetEntranceExitReport(this.fromDate, this.toDate);
+}
+
 class AcceptEntranceexitRequest extends EntranceexitEvent{
   final int workflowId;
   final int recordId;

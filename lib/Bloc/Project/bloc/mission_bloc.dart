@@ -9,15 +9,10 @@ part 'mission_event.dart';
 part 'mission_state.dart';
 
 class MissionBloc extends Bloc<MissionEvent, MissionState> {
-  MissionBloc() : super(MissionInitial());
-
-  @override
-  Stream<MissionState> mapEventToState(
-    MissionEvent event,
-  ) async* {
-    if (event is PostMissionRequest) {
-      yield MissionLoading();
-      String error = null;
+  MissionBloc() : super(MissionInitial()) {
+    on<PostMissionRequest>((event, emit) async {
+      emit(MissionLoading());
+      String? error;
       String success;
       await Project.apiClient.addMissionRequest(event.mission).then((onValue) {
         success = onValue;
@@ -26,15 +21,15 @@ class MissionBloc extends Bloc<MissionEvent, MissionState> {
       });
 
       if (error == null) {
-        yield PostMissionRequestSuccessfully();
+        emit(PostMissionRequestSuccessfully());
       } else {
-        yield MissionError(error);
+        emit(MissionError(error??""));
       }
-    }
+    });
 
-    if (event is AcceptMissionRequest) {
-      yield MissionLoading();
-      String error = null;
+    on<AcceptMissionRequest>((event, emit) async {
+      emit(MissionLoading());
+      String? error;
       var info;
       await Project.apiClient
           .acceptMissionRequest(event.workflowId, event.missionId, event.note,event.hourly)
@@ -44,15 +39,15 @@ class MissionBloc extends Bloc<MissionEvent, MissionState> {
         error = onError;
       });
       if (error == null) {
-        yield AcceptMissionRequestSuccessfully();
+        emit(AcceptMissionRequestSuccessfully());
       } else {
-        yield MissionError(error);
+        emit(MissionError(error??""));
       }
-    }
+    });
 
-    if (event is RejectMissionRequest) {
-      yield MissionLoading();
-      String error = null;
+    on<RejectMissionRequest>((event, emit) async {
+      emit(MissionLoading());
+      String? error;
       var info;
       await Project.apiClient
           .rejectMissionRequest(event.workflowId, event.missionId, event.note,event.hourly)
@@ -62,15 +57,15 @@ class MissionBloc extends Bloc<MissionEvent, MissionState> {
         error = onError;
       });
       if (error == null) {
-        yield RejectMissionRequestSuccessfully();
+        emit(RejectMissionRequestSuccessfully());
       } else {
-        yield MissionError(error);
+        emit(MissionError(error??""));
       }
     }
-
-    if (event is PendingMissionRequest) {
-      yield MissionLoading();
-      String error = null;
+    );
+    on<PendingMissionRequest>((event, emit) async {
+      emit(MissionLoading());
+      String? error;
       var info;
       await Project.apiClient
           .pendingMissionRequest(event.workflowId, event.missionId, event.note,event.hourly)
@@ -80,42 +75,42 @@ class MissionBloc extends Bloc<MissionEvent, MissionState> {
         error = onError;
       });
       if (error == null) {
-        yield PendingMissionRequestSuccessfully();
+        emit(PendingMissionRequestSuccessfully());
       } else {
-        yield MissionError(error);
+        emit(MissionError(error??""));
       }
-    }
+    });
 
-    if (event is GetPendingMissionRequests) {
-      yield MissionLoading();
-      String error = null;
-      var _list = new List<MissionRequest>();
+    on<GetPendingMissionRequests>((event, emit) async {
+      emit(MissionLoading());
+      String? error;
+      List<MissionRequest> _list = [];
       await Project.apiClient.getPendingMissionRequests().then((onValue) {
         _list = onValue;
       }).catchError((onError) {
         error = onError;
       });
       if (error == null) {
-        yield GetPendingMissionRequestsSuccessfully(_list);
+        emit(GetPendingMissionRequestsSuccessfully(_list));
       } else {
-        yield MissionError(error);
+        emit(MissionError(error??""));
       }
-    }
+    });
 
-    if (event is GetMyPendingRequests) {
-      yield MissionLoading();
-      String error = null;
-      var _list = new List<WorkflowInfo>();
+    on<GetMyPendingRequests>((event, emit) async {
+      emit(MissionLoading());
+      String? error;
+      List<WorkflowInfo> _list = [];
       await Project.apiClient.getMyPendingMissionRequests().then((onValue) {
         _list = onValue;
       }).catchError((onError) {
         error = onError;
       });
       if (error == null) {
-        yield GetMyPendingRequestsSuccessfully(_list);
+        emit(GetMyPendingRequestsSuccessfully(_list));
       } else {
-        yield MissionError(error);
+        emit(MissionError(error??""));
       }
-    }
+    });
   }
 }

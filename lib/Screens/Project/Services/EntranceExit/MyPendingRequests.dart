@@ -13,12 +13,12 @@ class MyPendingRequests extends StatefulWidget {
 }
 
 class _MyPendingRequestsState extends State<MyPendingRequests> {
-  EntranceexitBloc bloc;
+  EntranceexitBloc? bloc;
   @override
   void initState() {
     super.initState();
     bloc = new EntranceexitBloc();
-    bloc.add(GetMyPendingRequests());
+    bloc!.add(GetMyPendingRequests());
   }
 
   @override
@@ -37,7 +37,7 @@ class _MyPendingRequestsState extends State<MyPendingRequests> {
         ),
         backgroundColor: Colors.white,
         body: BlocListener<EntranceexitBloc, EntranceexitState>(
-            cubit: bloc,
+            bloc: bloc,
             listener: (context, state) {
               if (state is EntranceExitError) {
                 Scaffold.of(context).showSnackBar(SnackBar(
@@ -50,7 +50,7 @@ class _MyPendingRequestsState extends State<MyPendingRequests> {
               }
             },
             child: BlocBuilder<EntranceexitBloc, EntranceexitState>(
-              cubit: bloc,
+              bloc: bloc,
               builder: (context, state) {
                 if (state is EntranceExitLoading) {
                   return Center(

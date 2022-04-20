@@ -12,46 +12,41 @@ part 'leave_event.dart';
 part 'leave_state.dart';
 
 class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
-  LeaveBloc() : super(LeaveInitial());
-
-  @override
-  Stream<LeaveState> mapEventToState(
-    LeaveEvent event,
-  ) async* {
-    if (event is InitMainLeavesBalancePage) {
-      yield LeaveLoading();
-      String error = null;
-      var _list = new List<LeaveInfoModel>();
+  LeaveBloc() : super(LeaveInitial()) {
+    on<InitMainLeavesBalancePage>((event, emit) async {
+      emit(LeaveLoading());
+      String? error;
+      List<LeaveInfoModel> _list = [];
       await Project.apiClient.initLeaveBalance().then((onValue) {
         _list = onValue;
       }).catchError((onError) {
         error = onError;
       });
       if (error == null) {
-        yield MainLeavesBalanceInitSuccessfully(_list);
+        emit(MainLeavesBalanceInitSuccessfully(_list));
       } else {
-        yield LeaveError(error);
+        emit(LeaveError(error ?? ""));
       }
-    }
-    if (event is GetLeaveSettings) {
-      yield LeaveLoading();
-      String error = null;
-      var _list = new List<LeaveSetting>();
+    });
+    on<GetLeaveSettings>((event, emit) async {
+      emit(LeaveLoading());
+      String? error;
+      List<LeaveSetting> _list = [];
       await Project.apiClient.getLeaveSettings().then((onValue) {
         _list = onValue;
       }).catchError((onError) {
         error = onError;
       });
       if (error == null) {
-        yield GetLeaveSettingsSuccessfully(_list);
+        emit(GetLeaveSettingsSuccessfully(_list));
       } else {
-        yield LeaveError(error);
+        emit(LeaveError(error ?? ""));
       }
-    }
+    });
 
-    if (event is GetLeaveSettingInfo) {
-      yield LeaveLoading();
-      String error = null;
+    on<GetLeaveSettingInfo>((event, emit) async {
+      emit(LeaveLoading());
+      String? error;
       var info;
       await Project.apiClient
           .getLeaveSettingInfo(event.id, event.startDate)
@@ -61,15 +56,15 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
         error = onError;
       });
       if (error == null) {
-        yield GetLeaveSettingInfoSuccessfully(info);
+        emit(GetLeaveSettingInfoSuccessfully(info));
       } else {
-        yield LeaveError(error);
+        emit(LeaveError(error ?? ""));
       }
-    }
+    });
 
-    if (event is GetSpentDays) {
-      yield DaysLoading();
-      String error = null;
+    on<GetSpentDays>((event, emit) async {
+      emit(DaysLoading());
+      String? error;
       var info;
       await Project.apiClient.getSpentDays(event.leave).then((onValue) {
         info = onValue;
@@ -77,43 +72,42 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
         error = onError;
       });
       if (error == null) {
-        yield GetSpentDaysSuccessfully(info);
+        emit(GetSpentDaysSuccessfully(info));
       } else {
-        yield LeaveError(error);
+        emit(LeaveError(error ?? ""));
       }
-    }
-
-    if (event is GetLeaveReasons) {
-      yield LeaveLoading();
-      String error = null;
-      var _list = new List<LeaveReason>();
+    });
+    on<GetLeaveReasons>((event, emit) async {
+      emit(LeaveLoading());
+      String? error;
+      List<LeaveReason> _list = [];
       await Project.apiClient.getLeaveReasons().then((onValue) {
         _list = onValue;
       }).catchError((onError) {
         error = onError;
       });
       if (error == null) {
-        yield GetLeaveReasonsSuccessfully(_list);
+        emit(GetLeaveReasonsSuccessfully(_list));
       } else {
-        yield LeaveError(error);
+        emit(LeaveError(error ?? ""));
       }
-    }
+    });
 
-    if (event is PostLeaveRequest) {
-      yield LeaveLoading();
-      String error = null;
+    on<PostLeaveRequest>((event, emit) async {
+      emit(LeaveLoading());
+      String? error;
       var info;
       if (event.leave.leaveSettingId == 0 || event.leave.leaveReasonId == 0) {
         error = "Required Message";
-        yield LeaveError(error);
-      } else {  
-        
-      if (event.info.isIndivisible){
-        var end = new DateTime(event.leave.startDate.year);
-        end = event.leave.startDate.add(Duration(days: event.duration.round()));
-        event.leave.endDate = end;
-        event.leave.toDateTime = end;
-      }
+        emit(LeaveError(error));
+      } else {
+        if (event.info.isIndivisible) {
+          var end = new DateTime(event.leave.startDate.year);
+          end =
+              event.leave.startDate.add(Duration(days: event.duration.round()));
+          event.leave.endDate = end;
+          event.leave.toDateTime = end;
+        }
         await Project.apiClient.addLeaveRequest(event.leave).then((onValue) {
           info = onValue;
         }).catchError((onError) {
@@ -121,15 +115,15 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
         });
       }
       if (error == null) {
-        yield PostLeaveRequestSuccessfully();
+        emit(PostLeaveRequestSuccessfully());
       } else {
-        yield LeaveError(error);
+        emit(LeaveError(error ?? ""));
       }
-    }
+    });
 
-    if (event is AcceptLeaveRequest) {
-      yield LeaveLoading();
-      String error = null;
+    on<AcceptLeaveRequest>((event, emit) async {
+      emit(LeaveLoading());
+      String? error;
       var info;
       await Project.apiClient
           .acceptLeaveRequest(event.workflowId, event.leaveId, event.note)
@@ -139,15 +133,15 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
         error = onError;
       });
       if (error == null) {
-        yield AcceptLeaveRequestSuccessfully();
+        emit(AcceptLeaveRequestSuccessfully());
       } else {
-        yield LeaveError(error);
+        emit(LeaveError(error ?? ""));
       }
-    }
+    });
 
-    if (event is RejectLeaveRequest) {
-      yield LeaveLoading();
-      String error = null;
+    on<RejectLeaveRequest>((event, emit) async {
+      emit(LeaveLoading());
+      String? error;
       var info;
       await Project.apiClient
           .rejectLeaveRequest(event.workflowId, event.leaveId, event.note)
@@ -157,15 +151,14 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
         error = onError;
       });
       if (error == null) {
-        yield RejectLeaveRequestSuccessfully();
+        emit(RejectLeaveRequestSuccessfully());
       } else {
-        yield LeaveError(error);
+        emit(LeaveError(error ?? ""));
       }
-    }
-
-    if (event is PendingLeaveRequest) {
-      yield LeaveLoading();
-      String error = null;
+    });
+    on<PendingLeaveRequest>((event, emit) async {
+      emit(LeaveLoading());
+      String? error;
       var info;
       await Project.apiClient
           .pendingLeaveRequest(event.workflowId, event.leaveId, event.note)
@@ -175,42 +168,42 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
         error = onError;
       });
       if (error == null) {
-        yield PendingLeaveRequestSuccessfully();
+        emit(PendingLeaveRequestSuccessfully());
       } else {
-        yield LeaveError(error);
+        emit(LeaveError(error ?? ""));
       }
-    }
+    });
 
-    if (event is GetPendingLeaveRequests) {
-      yield LeaveLoading();
-      String error = null;
-      var _list = new List<LeaveRequest>();
+    on<GetPendingLeaveRequests>((event, emit) async {
+      emit(LeaveLoading());
+      String? error;
+      List<LeaveRequest> _list = [];
       await Project.apiClient.getPendingLeaveRequests().then((onValue) {
         _list = onValue;
       }).catchError((onError) {
         error = onError;
       });
       if (error == null) {
-        yield GetPendingLeaveRequestsSuccessfully(_list);
+        emit(GetPendingLeaveRequestsSuccessfully(_list));
       } else {
-        yield LeaveError(error);
+        emit(LeaveError(error ?? ""));
       }
-    }
+    });
 
-    if (event is GetMyPendingRequests) {
-      yield LeaveLoading();
-      String error = null;
-      var _list = new List<WorkflowInfo>();
+    on<GetMyPendingRequests>((event, emit) async {
+      emit(LeaveLoading());
+      String? error;
+      List<WorkflowInfo> _list = [];
       await Project.apiClient.getMyPendingLeaveRequests().then((onValue) {
         _list = onValue;
       }).catchError((onError) {
         error = onError;
       });
       if (error == null) {
-        yield GetMyPendingRequestsSuccessfully(_list);
+        emit(GetMyPendingRequestsSuccessfully(_list));
       } else {
-        yield LeaveError(error);
+        emit(LeaveError(error ?? ""));
       }
-    }
+    });
   }
 }

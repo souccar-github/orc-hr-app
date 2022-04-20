@@ -4,29 +4,29 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPref {
   SharedPref._();
-  SharedPreferences _preferences;
+  SharedPreferences? _preferences;
   static final SharedPref pref = SharedPref._();
 
   Future<SharedPreferences> get _getSharedPref async {
     if (_preferences != null)
-      return _preferences;
+      return _preferences!;
     else {
       _preferences = await SharedPreferences.getInstance();
-      return _preferences;
+      return _preferences!;
     }
   }
 
-  Future<Void> setUserName(String userName) async {
+  Future<void> setUserName(String ?userName) async {
     final SharedPreferences p = await _getSharedPref;
-    p.setString("username", userName);
+    p.setString("username", userName??"");
   }
 
-  Future<Void> setEmployeeName(String empName) async {
+  Future<void> setEmployeeName(String empName) async {
     final SharedPreferences p = await _getSharedPref;
     p.setString("empName", empName.substring(1,empName.length-1));
   }
 
-  Future<Void> setFCMToken(String token) async {
+  Future<void> setFCMToken(String token) async {
     final SharedPreferences p = await _getSharedPref;
     p.setString("token", token);
   }
@@ -34,41 +34,41 @@ class SharedPref {
 
   Future<String> getUserName() async {
     final SharedPreferences p = await _getSharedPref;
-    String username = p.getString("username");
-    return username;
+    String? username = p.getString("username");
+    return username??"";
   }
 
   Future<String> getFCMToken() async {
     final SharedPreferences p = await _getSharedPref;
-    String token = p.getString("token");
-    return token;
+    String ?token = p.getString("token");
+    return token??"";
   }
 
   Future<String> getEmployeeName() async {
     final SharedPreferences p = await _getSharedPref;
-    String empName = p.getString("empName");
-    return empName;
+    String? empName = p.getString("empName");
+    return empName??"";
   }
 
   Future<String> getLocale() async {
     final SharedPreferences p = await _getSharedPref;
-    String locale = p.getString("locale");
-    return locale;
+    String? locale = p.getString("locale");
+    return locale??"";
   }
 
-  Future<Void> setPassword(String password) async {
+  Future<void> setPassword(String password) async {
     final SharedPreferences p = await _getSharedPref;
     p.setString("password", password);
   }
 
-  Future<Void> setLocale(String locale) async {
+  Future<void> setLocale(String locale) async {
     final SharedPreferences p = await _getSharedPref;
     p.setString("locale", locale);
   }
 
   Future<String> getPassword() async {
     final SharedPreferences p = await _getSharedPref;
-    String password = p.getString("password");
-    return password;
+    String ?password = p.getString("password");
+    return password??"";
   }
 }

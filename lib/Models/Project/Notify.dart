@@ -4,9 +4,9 @@ part 'Notify.g.dart';
 
 @JsonSerializable()
 class Notify {
-  final int workflowItemId;
-  final String body;
-  final String type;
+  final int? workflowItemId;
+  final String? body;
+  final String? type;
 
   Notify(
       this.workflowItemId,

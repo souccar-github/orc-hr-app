@@ -4,18 +4,26 @@ part 'WorkflowInfo.g.dart';
 
 @JsonSerializable()
 class WorkflowInfo {
-  final String pendingStep;
-  final String type;
+  final String? pendingStep;
+  final String? type;
+  final String? leaveSetting;
   final bool waitingApprove;
-  final DateTime date;
-  final int logType;
+  final DateTime? date;
+  final DateTime? fromTime;
+  final DateTime? toTime;
+  final int? logType;
+  final bool isHourly;
 
   WorkflowInfo(
+      this.leaveSetting,
       this.type,
       this.pendingStep,
       this.waitingApprove,
       this.date,
-      this.logType
+      this.fromTime,
+      this.toTime,
+      this.logType,
+      this.isHourly
       );
 
   factory WorkflowInfo.fromJson(Map<String, dynamic> json) =>

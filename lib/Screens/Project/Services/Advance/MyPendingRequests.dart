@@ -13,12 +13,12 @@ class MyPendingRequests extends StatefulWidget {
 }
 
 class _MyPendingRequestsState extends State<MyPendingRequests> {
-  AdvanceBloc bloc;
+  AdvanceBloc? bloc;
   @override
   void initState() {
     super.initState();
     bloc = new AdvanceBloc();
-    bloc.add(GetMyPendingRequests());
+    bloc!.add(GetMyPendingRequests());
   }
 
   @override
@@ -37,7 +37,7 @@ class _MyPendingRequestsState extends State<MyPendingRequests> {
         ),
         backgroundColor: Colors.white,
         body: BlocListener<AdvanceBloc, AdvanceState>(
-            cubit: bloc,
+            bloc: bloc,
             listener: (context, state) {
               if (state is AdvanceError) {
                 Scaffold.of(context).showSnackBar(SnackBar(
@@ -50,7 +50,7 @@ class _MyPendingRequestsState extends State<MyPendingRequests> {
               }
             },
             child: BlocBuilder<AdvanceBloc, AdvanceState>(
-              cubit: bloc,
+              bloc: bloc,
               builder: (context, state) {
                 if (state is AdvanceLoading) {
                   return Center(
