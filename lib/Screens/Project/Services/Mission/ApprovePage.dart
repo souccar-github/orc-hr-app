@@ -13,8 +13,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ApprovePage extends StatefulWidget {
   final MissionRequest? mission;
-  final MissionBloc ?bloc;
-  const ApprovePage({ this.bloc, required this.mission});
+  final MissionBloc? bloc;
+  const ApprovePage({this.bloc, required this.mission});
   @override
   _ApprovePageState createState() => _ApprovePageState(this.mission);
 }
@@ -149,7 +149,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                       TextInputType.text,
                                       false,
                                       1,
-                                      mission?.fullName??"",
+                                      mission?.fullName ?? "",
                                       true,
                                       context),
                                 ),
@@ -175,7 +175,8 @@ class _ApprovePageState extends State<ApprovePage> {
                                       TextInputType.text,
                                       false,
                                       1,
-                                      formatter.format(mission?.startDate??new DateTime.now()),
+                                      formatter.format(mission?.startDate ??
+                                          new DateTime.now()),
                                       true,
                                       context),
                                 ),
@@ -201,7 +202,8 @@ class _ApprovePageState extends State<ApprovePage> {
                                       TextInputType.text,
                                       false,
                                       1,
-                                      formatter.format(mission?.endDate??new DateTime.now()),
+                                      formatter.format(mission?.endDate ??
+                                          new DateTime.now()),
                                       true,
                                       context),
                                 ),
@@ -219,14 +221,14 @@ class _ApprovePageState extends State<ApprovePage> {
                                   width: 20,
                                 ),
                                 Checkbox(
-                                  value: mission?.isHourlyMission??false,
+                                  value: mission?.isHourlyMission ?? false,
                                   onChanged: null,
                                 ),
                               ]),
                               SizedBox(
                                 height: 10,
                               ),
-                              mission?.isHourlyMission??false
+                              mission?.isHourlyMission ?? false
                                   ? Row(children: <Widget>[
                                       Container(
                                         width: 90,
@@ -247,19 +249,20 @@ class _ApprovePageState extends State<ApprovePage> {
                                             TextInputType.text,
                                             false,
                                             1,
-                                            timeFormatter
-                                                .format(mission?.fromTime??new DateTime.now()),
+                                            timeFormatter.format(
+                                                mission?.fromTime ??
+                                                    new DateTime.now()),
                                             true,
                                             context),
                                       ),
                                     ])
                                   : Container(),
-                              mission?.isHourlyMission??false
+                              mission?.isHourlyMission ?? false
                                   ? SizedBox(
                                       height: 10,
                                     )
                                   : Container(),
-                              mission?.isHourlyMission??false
+                              mission?.isHourlyMission ?? false
                                   ? Row(children: <Widget>[
                                       Container(
                                         width: 90,
@@ -280,13 +283,57 @@ class _ApprovePageState extends State<ApprovePage> {
                                             TextInputType.text,
                                             false,
                                             1,
-                                            timeFormatter
-                                                .format(mission?.toTime??new DateTime.now()),
+                                            timeFormatter.format(
+                                                mission?.toTime ??
+                                                    new DateTime.now()),
                                             true,
                                             context),
                                       ),
                                     ])
                                   : Container(),
+                              mission?.isHourlyMission == true
+                                  ? Container()
+                                  : SizedBox(
+                                      height: 10,
+                                    ),
+                              mission?.isHourlyMission == true
+                                  ? Container()
+                                  : Row(children: <Widget>[
+                                      Container(
+                                        width: 90,
+                                        child: RichText(
+                                          text: TextSpan(
+                                              text: Localization.of(context)
+                                                  .getTranslatedValue("Type"),
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                              children: [
+                                                TextSpan(
+                                                    text: ' *',
+                                                    style: TextStyle(
+                                                        color: Colors.red))
+                                              ]),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                2,
+                                        child: textFormField(
+                                            (_) {},
+                                            "",
+                                            false,
+                                            TextInputType.text,
+                                            false,
+                                            1,
+                                            mission?.typeString ?? "",
+                                            true,
+                                            context),
+                                      ),
+                                    ]),
                               SizedBox(
                                 height: 10,
                               ),
@@ -308,7 +355,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                       TextInputType.multiline,
                                       false,
                                       5,
-                                      mission?.description??"",
+                                      mission?.description ?? "",
                                       true,
                                       context),
                                 ),
@@ -358,7 +405,8 @@ class _ApprovePageState extends State<ApprovePage> {
                                               100,
                                           child: AutoSizeText(
                                             Localization.of(context)
-                                                .getTranslatedValue("Note"),maxLines: 1,
+                                                .getTranslatedValue("Note"),
+                                            maxLines: 1,
                                           )),
                                       SizedBox(
                                         width:
@@ -436,10 +484,12 @@ class _ApprovePageState extends State<ApprovePage> {
                                                       )),
                                                   onPressed: () {
                                                     bloc!.add(AcceptMissionRequest(
-                                                        mission?.workflowItemId??0,
-                                                        mission?.missionId??0,
-                                                        note??"",
-                                                        mission?.isHourlyMission??false));
+                                                        mission?.workflowItemId ??
+                                                            0,
+                                                        mission?.missionId ?? 0,
+                                                        note ?? "",
+                                                        mission?.isHourlyMission ??
+                                                            false));
                                                   },
                                                 )),
                                             delay: 200,
@@ -480,10 +530,12 @@ class _ApprovePageState extends State<ApprovePage> {
                                                   ),
                                                   onPressed: () {
                                                     bloc!.add(RejectMissionRequest(
-                                                        mission?.workflowItemId??0,
-                                                        mission?.missionId??0,
-                                                        note??"",
-                                                        mission?.isHourlyMission??false));
+                                                        mission?.workflowItemId ??
+                                                            0,
+                                                        mission?.missionId ?? 0,
+                                                        note ?? "",
+                                                        mission?.isHourlyMission ??
+                                                            false));
                                                   },
                                                 )),
                                             delay: 200,
@@ -524,10 +576,12 @@ class _ApprovePageState extends State<ApprovePage> {
                                                   ),
                                                   onPressed: () {
                                                     bloc!.add(PendingMissionRequest(
-                                                        mission?.workflowItemId??0,
-                                                        mission?.missionId??0,
-                                                        note??"",
-                                                        mission?.isHourlyMission??false));
+                                                        mission?.workflowItemId ??
+                                                            0,
+                                                        mission?.missionId ?? 0,
+                                                        note ?? "",
+                                                        mission?.isHourlyMission ??
+                                                            false));
                                                   },
                                                 )),
                                             delay: 200,

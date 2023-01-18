@@ -462,12 +462,15 @@ Widget pendingRequests(List<WorkflowInfo> list, BuildContext _context) {
                   ],
                 ),
               ),
-             Positioned(bottom: 0,
-             left: 0,
+             Positioned(
+              bottom: 0,
+              left:Localizations.localeOf(context).languageCode == 'en'
+                    ? MediaQuery.of(context).size.width -170
+                    : 0 ,
                   child: Align(
                 alignment: Localizations.localeOf(context).languageCode == 'en'
-                    ? Alignment.centerRight
-                    : Alignment.centerLeft,
+                    ? Alignment.bottomRight
+                    : Alignment.bottomRight,
                 child: Column(
                   children: <Widget>[
                     list[index].waitingApprove

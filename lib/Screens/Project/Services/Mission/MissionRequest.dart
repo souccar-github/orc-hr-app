@@ -18,8 +18,10 @@ class MissionRequestPage extends StatefulWidget {
 }
 
 class _MissionRequestState extends State<MissionRequestPage> {
-  double ?duration;
+  double? duration;
   MissionBloc? bloc;
+  int? _selectedType;
+  List<DropdownMenuItem<int>> _dropdownMenuItems = [];
   TextEditingController? _controller, _textController;
   String? requestDate, startDate, endDate, fromTime, toTime, note;
   bool? hourly;
@@ -43,8 +45,32 @@ class _MissionRequestState extends State<MissionRequestPage> {
     });
   }
 
+  onChangeDropdownItem(int? selectedItem) {
+    setState(() {
+      _selectedType = selectedItem ?? 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    List<DropdownMenuItem<int>> items = [];
+    Future.delayed(Duration(milliseconds: 100), () {
+      items.add(
+        DropdownMenuItem(
+          value: 0,
+          child: Text(Localization.of(context).getTranslatedValue("Internal")),
+        ),
+      );
+      items.add(
+        DropdownMenuItem(
+          value: 1,
+          child: Text(Localization.of(context).getTranslatedValue("External")),
+        ),
+      );
+      setState(() {
+        _dropdownMenuItems = items;
+      });
+    });
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -113,7 +139,8 @@ class _MissionRequestState extends State<MissionRequestPage> {
                               width: 90,
                               child: RichText(
                                 text: TextSpan(
-                                    text: Localization.of(context)
+                                    text: hourly!?Localization.of(context)
+                                        .getTranslatedValue("Date"):Localization.of(context)
                                         .getTranslatedValue("StartDate"),
                                     style: TextStyle(color: Colors.black),
                                     children: [
@@ -148,7 +175,7 @@ class _MissionRequestState extends State<MissionRequestPage> {
                           SizedBox(
                             height: 10,
                           ),
-                          Row(children: <Widget>[
+                         hourly!?Container(): Row(children: <Widget>[
                             Container(
                               width: 90,
                               child: RichText(
@@ -202,7 +229,7 @@ class _MissionRequestState extends State<MissionRequestPage> {
                               value: hourly,
                               onChanged: (bool? value) {
                                 setState(() {
-                                  hourly = value??false;
+                                  hourly = value ?? false;
                                   _controller!.text = DateTime.now().toString();
                                   endDate = startDate;
                                   if (!hourly!) {
@@ -300,6 +327,69 @@ class _MissionRequestState extends State<MissionRequestPage> {
                                   ),
                                 ])
                               : Container(),
+                          hourly == true
+                              ? Container()
+                              : SizedBox(
+                                  height: 10,
+                                ),
+                          hourly == true
+                              ? Container()
+                              : Row(children: <Widget>[
+                                  Container(
+                                    width: 90,
+                                    child: RichText(
+                                      text: TextSpan(
+                                          text: Localization.of(context)
+                                              .getTranslatedValue("Type"),
+                                          style: TextStyle(color: Colors.black),
+                                          children: [
+                                            TextSpan(
+                                                text: ' *',
+                                                style: TextStyle(
+                                                    color: Colors.red))
+                                          ]),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  DropdownButton(
+                                    underline: Container(
+                                      width: MediaQuery.of(context).size.width -
+                                          60,
+                                      decoration: BoxDecoration(
+                                        color: Color.fromRGBO(243, 119, 55, 1),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                                Color.fromRGBO(243, 119, 55, 1),
+                                            blurRadius: 20.0,
+                                          ),
+                                          BoxShadow(
+                                            color:
+                                                Color.fromRGBO(243, 119, 55, 1),
+                                            blurRadius: 20.0,
+                                          ),
+                                        ],
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            color:
+                                                Color.fromRGBO(243, 119, 55, 1),
+                                            width: 1.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    hint: Text(
+                                      Localization.of(context)
+                                          .getTranslatedValue("Type"),
+                                      style: TextStyle(fontSize: 16),
+                                    ), // Not necessary for Option 1
+                                    value: _selectedType,
+                                    onChanged: onChangeDropdownItem,
+                                    items: _dropdownMenuItems,
+                                  ),
+                                ]),
                           SizedBox(
                             height: 10,
                           ),
@@ -349,8 +439,12 @@ class _MissionRequestState extends State<MissionRequestPage> {
                                 ),
                                 onPressed: () {
                                   setState(() {
-                                    fromTime = startDate.toString().substring(0,11)+fromTime.toString().substring(11);
-                                    toTime = startDate.toString().substring(0,11)+toTime.toString().substring(11);
+                                    fromTime =
+                                        startDate.toString().substring(0, 11) +
+                                            fromTime.toString().substring(11);
+                                    toTime =
+                                        startDate.toString().substring(0, 11) +
+                                            toTime.toString().substring(11);
                                   });
                                   var model = new MissionRequest(
                                       note ?? "",
@@ -372,6 +466,8 @@ class _MissionRequestState extends State<MissionRequestPage> {
                                           ? new DateTime.now()
                                           : DateTime.parse(toTime!),
                                       0,
+                                      hourly!?0:_selectedType!,
+                                      "",
                                       "");
                                   bloc!.add(PostMissionRequest(model));
                                 },

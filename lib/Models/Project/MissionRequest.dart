@@ -17,7 +17,9 @@ class MissionRequest {
   final DateTime requestDate;
   final String ?description;
   final String ?note;
+  final String? typeString;
   final int workflowItemId;
+  final int type;
   final int pendingType;
 
   MissionRequest(
@@ -35,6 +37,8 @@ class MissionRequest {
       this.startDate,
       this.toTime,
       this.workflowItemId,
+      this.type,
+      this.typeString,
       this.note);
 
   factory MissionRequest.fromJson(Map<String, dynamic> json) =>

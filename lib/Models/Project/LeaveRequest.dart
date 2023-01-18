@@ -27,6 +27,7 @@ class LeaveRequest {
   final int leaveReasonId;
   final DateTime requestDate;
   final String? description;
+  final List<dynamic>? attachmentsPaths;
   final int workflowItemId;
   final int pendingType;
 
@@ -53,7 +54,8 @@ class LeaveRequest {
       this.toDateTime,
       this.toTime,
       this.workflowItemId,
-      this.note);
+      this.note,
+      this.attachmentsPaths);
 
   factory LeaveRequest.fromJson(Map<String, dynamic> json) =>
       _$LeaveRequestFromJson(json);

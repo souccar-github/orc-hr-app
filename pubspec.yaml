@@ -16,8 +16,12 @@ dependencies:
   http:  ^0.13.4
   autocomplete_textfield: ^1.7.3
   json_annotation: ^4.4.0
+  flutter_linkify: ^5.0.2
   font_awesome_flutter: ^10.1.0
   connectivity: 0.4.5+3
+  badges: ^2.0.2
+  url_launcher: ^6.0.0
+  file_picker: ^4.5.1
   syncfusion_flutter_datagrid: ^20.1.47
   get_it: ^7.2.0
   flutter_bloc: ^8.0.1
@@ -29,13 +33,11 @@ dependencies:
   multilevel_drawer: ^1.0.3
   date_time_picker: "^2.1.0"
   rxdart: ^0.27.3
-  zefyr: ^0.10.0
   sliding_sheet: ^0.5.2
   flutter_typeahead: ^1.8.0
   flutter_offline: "^0.3.0"
   path_provider:
   shared_preferences: any
-  url_launcher: any
   avatar_glow:
   table_calendar: ^2.2.3
   cupertino_icons: ^0.1.3

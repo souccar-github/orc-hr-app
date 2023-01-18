@@ -21,14 +21,14 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     
 
-    if (DateTime.now().isBefore(DateTime(2022, 5, 1))) {
+    if (DateTime.now().isBefore(DateTime(2022, 12, 31))) {
       checkUser(context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (DateTime.now().isAfter(DateTime(2022, 5, 1))) {
+    if (DateTime.now().isAfter(DateTime(2022,12, 31))) {
       Future.delayed(Duration.zero, () {
         showDialog(
           context: context,
