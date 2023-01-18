@@ -27,7 +27,8 @@ class PostLeaveRequest extends LeaveEvent{
   final LeaveRequest leave;
   final LeaveInfoModel info;
   final double duration;
-  PostLeaveRequest(this.leave,this.info,this.duration);
+  final List<PlatformFile> files;
+  PostLeaveRequest(this.leave,this.info,this.duration,this.files);
 }
 
 class GetPendingLeaveRequests extends LeaveEvent{

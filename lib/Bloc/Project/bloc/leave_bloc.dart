@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:orc_hr/API/Project/Project.dart';
 import 'package:orc_hr/Models/Project/LeaveInfoModel.dart';
 import 'package:orc_hr/Models/Project/LeaveRequest.dart';
@@ -108,7 +109,7 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
           event.leave.endDate = end;
           event.leave.toDateTime = end;
         }
-        await Project.apiClient.addLeaveRequest(event.leave).then((onValue) {
+        await Project.apiClient.addLeaveRequest(event.leave,event.files).then((onValue) {
           info = onValue;
         }).catchError((onError) {
           error = onError;

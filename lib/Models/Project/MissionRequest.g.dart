@@ -22,6 +22,8 @@ MissionRequest _$MissionRequestFromJson(Map<String, dynamic> json) {
     json['StartDate'] = DateTime.parse(json['StartDate'] as String),
     json['ToTime'] =json['ToTime'] == null ? null : DateTime.parse(json['ToTime'] as String),
     json['WorkflowItemId'] as int,
+    json['Type'] as int,
+    json['TypeString'] as String?,
     json['Note'] as String?,
   );
 }
@@ -42,5 +44,7 @@ Map<String, dynamic> _$MissionRequestToJson(MissionRequest instance) =>
       'description': instance.description,
       'workflowItemId': instance.workflowItemId,
       'pendingType': instance.pendingType,
+      'type': instance.type,
+      'typeString': instance.typeString??"",
       'note': instance.note,
     };

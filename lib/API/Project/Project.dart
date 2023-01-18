@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart';
 import 'package:orc_hr/API/Statics.dart';
 import 'package:orc_hr/Bloc/Project/bloc/advance_bloc.dart';
@@ -1313,27 +1314,31 @@ return [];
     }
   }
 
-  Future addLeaveRequest(LeaveRequest item) async {
+  Future addLeaveRequest(LeaveRequest item,List<PlatformFile> files) async {
     String error;
     try {
       var username = await SharedPref.pref.getUserName();
       var password = await SharedPref.pref.getPassword();
-      final response = await Statics.httpClient.post(
-         Uri.parse( Statics.BaseUrl + "/api/leave/postRequest?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"),
-          headers: {
-            HttpHeaders.contentTypeHeader: 'application/json',
-            HttpHeaders.authorizationHeader: '$username:$password',
-            
-          },
-          body: jsonEncode(item.toJson()));
-      if (response.statusCode == 200) {
-        return "success";
-      } else if (response.statusCode == 401) {
-        return Future.error("You are unauthorized !");
-      } else {
-        error = (jsonDecode(response.body))["Message"] as String;
+       MultipartRequest request = MultipartRequest(
+      "POST", Uri.parse( Statics.BaseUrl + "/api/leave/postRequest?loc=${await SharedPref.pref.getLocale() == "en" ? "49" : "14"}"));
+      request.headers[HttpHeaders.authorizationHeader] = '$username:$password';
+      request.headers[HttpHeaders.contentTypeHeader] = 'application/json';
+      request.fields.addAll(item.toJson().map((key, value) => MapEntry(key, value.toString())));
+      for (var i = 0; i < files.length; i++) {
+        request.files.add(new MultipartFile(
+        'file$i', files[i].readStream!, files[i].size,
+        filename: files[i].name));
+      }
+      await request.send().then((value) async {
+      //------Read response
+      String result = await value.stream.bytesToString();
+      if (result.length>1){
+        error = (jsonDecode(result))["Message"] as String;
         return Future.error(error );
       }
+      //-------Your response
+      print(result);
+    });
     } on SocketException {
       return Future.error("check your internet connection");
     } on ClientException {

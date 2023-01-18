@@ -3,7 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:orc_hr/API/Statics.dart';
 import 'package:orc_hr/Bloc/Project/bloc/leave_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:orc_hr/Models/Project/LeaveRequest.dart';
 import 'package:orc_hr/Widgets/General/Animation/delayed_animation.dart';
 import 'package:orc_hr/Widgets/General/TextFormField.dart';
@@ -14,7 +17,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class ApprovePage extends StatefulWidget {
   final LeaveRequest? leave;
   final LeaveBloc? bloc;
-  const ApprovePage({ this.bloc, required this.leave});
+  const ApprovePage({this.bloc, required this.leave});
   @override
   _ApprovePageState createState() => _ApprovePageState(this.leave);
 }
@@ -149,7 +152,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                       TextInputType.text,
                                       false,
                                       1,
-                                      leave?.fullName??"",
+                                      leave?.fullName ?? "",
                                       true,
                                       context),
                                 ),
@@ -175,7 +178,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                       TextInputType.text,
                                       false,
                                       1,
-                                      leave?.leaveSettingName??"",
+                                      leave?.leaveSettingName ?? "",
                                       true,
                                       context),
                                 ),
@@ -201,7 +204,8 @@ class _ApprovePageState extends State<ApprovePage> {
                                       TextInputType.text,
                                       false,
                                       1,
-                                      formatter.format(leave?.requestDate??DateTime.now()),
+                                      formatter.format(
+                                          leave?.requestDate ?? DateTime.now()),
                                       true,
                                       context),
                                 ),
@@ -227,7 +231,8 @@ class _ApprovePageState extends State<ApprovePage> {
                                       TextInputType.text,
                                       false,
                                       1,
-                                      formatter.format(leave?.startDate??DateTime.now()),
+                                      formatter.format(
+                                          leave?.startDate ?? DateTime.now()),
                                       true,
                                       context),
                                 ),
@@ -253,7 +258,8 @@ class _ApprovePageState extends State<ApprovePage> {
                                       TextInputType.text,
                                       false,
                                       1,
-                                      formatter.format(leave?.endDate??DateTime.now()),
+                                      formatter.format(
+                                          leave?.endDate ?? DateTime.now()),
                                       true,
                                       context),
                                 ),
@@ -278,7 +284,7 @@ class _ApprovePageState extends State<ApprovePage> {
                               SizedBox(
                                 height: 10,
                               ),
-                              leave?.isHourlyLeave??false
+                              leave?.isHourlyLeave ?? false
                                   ? Row(children: <Widget>[
                                       Container(
                                         width: 90,
@@ -299,14 +305,15 @@ class _ApprovePageState extends State<ApprovePage> {
                                             TextInputType.text,
                                             false,
                                             1,
-                                            timeFormatter
-                                                .format(leave?.fromTime??DateTime.now()),
+                                            timeFormatter.format(
+                                                leave?.fromTime ??
+                                                    DateTime.now()),
                                             true,
                                             context),
                                       ),
                                     ])
                                   : Container(),
-                              leave?.isHourlyLeave??false
+                              leave?.isHourlyLeave ?? false
                                   ? Row(children: <Widget>[
                                       Container(
                                         width: 90,
@@ -327,7 +334,9 @@ class _ApprovePageState extends State<ApprovePage> {
                                             TextInputType.text,
                                             false,
                                             1,
-                                            timeFormatter.format(leave?.toTime??DateTime.now()),
+                                            timeFormatter.format(
+                                                leave?.toTime ??
+                                                    DateTime.now()),
                                             true,
                                             context),
                                       ),
@@ -354,7 +363,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                       TextInputType.text,
                                       false,
                                       1,
-                                      leave?.spentDays.toString()??"",
+                                      leave?.spentDays.toString() ?? "",
                                       true,
                                       context),
                                 ),
@@ -380,7 +389,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                       TextInputType.text,
                                       false,
                                       1,
-                                      leave?.leaveReason??"",
+                                      leave?.leaveReason ?? "",
                                       true,
                                       context),
                                 ),
@@ -406,7 +415,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                       TextInputType.multiline,
                                       false,
                                       5,
-                                      leave?.description??"",
+                                      leave?.description ?? "",
                                       true,
                                       context),
                                 ),
@@ -414,6 +423,46 @@ class _ApprovePageState extends State<ApprovePage> {
                               SizedBox(
                                 height: 10,
                               ),
+                              Row(children: <Widget>[
+                                Container(
+                                  width: 90,
+                                  child: Text(Localization.of(context)
+                                      .getTranslatedValue("Attachments")),
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                               leave?.attachmentsPaths != null? Container(
+                                    width:
+                                        MediaQuery.of(context).size.width / 2,
+                                    height: 100,
+                                    child: ListView.builder(
+                                        itemCount:
+                                            leave?.attachmentsPaths!.length,
+                                        itemBuilder: (context, index) {
+                                          return Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 10),
+                                              child: InkWell(
+                                                  onTap: () {
+                                                    launch(Statics.BaseUrl +
+                                                        "/Content/UploadedFiles/" +
+                                                        "HRIS.Domain.EmployeeRelationServices.Entities.LeaveAttachment" +
+                                                        "/" +
+                                                        "FilePath" +
+                                                        "/" +
+                                                        leave?.attachmentsPaths![
+                                                            index]);
+                                                  },
+                                                  child: Text(
+                                                    leave?.attachmentsPaths![
+                                                            index] ??
+                                                        "",
+                                                    style: TextStyle(
+                                                        color: Colors.blue),
+                                                  )));
+                                        })):Container(),
+                              ]),
                             ],
                           ),
                         ),
@@ -456,7 +505,8 @@ class _ApprovePageState extends State<ApprovePage> {
                                               100,
                                           child: AutoSizeText(
                                             Localization.of(context)
-                                                .getTranslatedValue("Note"),maxLines: 1,
+                                                .getTranslatedValue("Note"),
+                                            maxLines: 1,
                                           )),
                                       SizedBox(
                                         width:
@@ -531,9 +581,10 @@ class _ApprovePageState extends State<ApprovePage> {
                                                   ),
                                                   onPressed: () {
                                                     bloc!.add(AcceptLeaveRequest(
-                                                        leave?.workflowItemId??0,
-                                                        leave?.leaveId??0,
-                                                        note??""));
+                                                        leave?.workflowItemId ??
+                                                            0,
+                                                        leave?.leaveId ?? 0,
+                                                        note ?? ""));
                                                   },
                                                 )),
                                             delay: 200,
@@ -574,9 +625,10 @@ class _ApprovePageState extends State<ApprovePage> {
                                                   ),
                                                   onPressed: () {
                                                     bloc!.add(RejectLeaveRequest(
-                                                        leave?.workflowItemId??0,
-                                                        leave?.leaveId??0,
-                                                        note??""));
+                                                        leave?.workflowItemId ??
+                                                            0,
+                                                        leave?.leaveId ?? 0,
+                                                        note ?? ""));
                                                   },
                                                 )),
                                             delay: 200,
@@ -616,11 +668,11 @@ class _ApprovePageState extends State<ApprovePage> {
                                                     ),
                                                   ),
                                                   onPressed: () {
-                                                    bloc!.add(
-                                                        PendingLeaveRequest(
-                                                            leave?.workflowItemId??0,
-                                                            leave?.leaveId??0,
-                                                            note??""));
+                                                    bloc!.add(PendingLeaveRequest(
+                                                        leave?.workflowItemId ??
+                                                            0,
+                                                        leave?.leaveId ?? 0,
+                                                        note ?? ""));
                                                   },
                                                 )),
                                             delay: 200,
